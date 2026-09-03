@@ -24,7 +24,7 @@ export default function Footer() {
 
         <ul className="space-y-3 text-sm text-muted-foreground">
           <li className="flex items-center gap-2">
-            <Phone className="size-4 text-primary" /> +995 55 55 55
+            <Phone className="size-4 text-primary rotate-270" /> +995 55 55 55
           </li>
           <li className="flex items-center gap-2">
             <Mail className="size-4 text-primary" /> Scootarea@info.ge

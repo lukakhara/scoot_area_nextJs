@@ -21,6 +21,7 @@ import { Placeholder } from "@/components/Placeholder";
 // import desktopImage from "/public/aboutUs.png";
 // import mobileImage from "/public/aboutUsMobile.png";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 const PARAGRAPHS = [
   "ჩვენ გვჯერა, რომ გადაადგილება უნდა იყოს მარტივი, სწრაფი და ეკოლოგიურად სუფთა. სწორედ ამიტომ დაფუძნდა ScootArea — ბრენდი, რომელიც ქალაქურ გადაადგილებას აკავშირებს თანამედროვე ტექნოლოგიებთან, სტილთან და პასუხისმგებლობასთან.",
@@ -208,7 +209,7 @@ function AboutPage() {
                   <span
                     className={`grid size-7 shrink-0 place-items-center rounded-full ${tone}`}
                   >
-                    <Icon className="size-3.5 text-primary-foreground" />
+                    <Icon className={cn(" size-3.5 text-primary-foreground", Icon === Phone ? "rotate-270" : "")} />
                   </span>
                   {label}
                 </li>

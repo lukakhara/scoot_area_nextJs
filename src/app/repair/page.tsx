@@ -1,4 +1,4 @@
-
+import { Clock, Phone } from "lucide-react";
 import Image from "next/image";
 
 const Repair = () => {
@@ -10,8 +10,13 @@ const Repair = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8.5">
         <picture>
-          <source src="repairDes.png" media="(min-width : 768px)" />
-          <Image src="repairMob.png" alt="repairing image" />
+          <source src="/repairDes.png" media="(min-width : 768px)" />
+          <Image
+            src="/repairMob.png"
+            alt="repairing image"
+            width={629}
+            height={639}
+          />
         </picture>
         <div className="flex gap-18 flex-col">
           <p>
@@ -29,11 +34,11 @@ const Repair = () => {
           </p>
           <div className="flex flex-col gap-4 ">
             <div>
-              <img src="" alt="" />
+              <Phone className=" size-3.5 text-primary-foreground" />
               ხელოსნის ნომერი: +995 55 55 55
             </div>
             <div>
-              <img src="" alt="" />
+              <Clock className=" size-3.5 text-primary-foreground" />
               სამუშაო საათები:ორშაბათი-შაბათი | 10:00 - 18:00
             </div>
           </div>

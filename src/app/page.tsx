@@ -1,9 +1,10 @@
-'use client'
+"use client";
 import { ChevronLeft, ChevronRight, Phone } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { type Product } from "@/types/product";
 import PaginatedGridSection from "@/components/PaginatedGridSection";
 import Image from "next/image";
+import HeroSection from "@/components/HeroSection";
 
 interface CarouselSectionHeaderProps {
   title: string;
@@ -43,6 +44,17 @@ const ACCESSORIES: Product[] = Array.from({ length: 15 }, (_, i) => ({
     desktop: "/helmetDesktop.png",
   },
 }));
+
+const heroImages = [
+  {
+    mobile: "/langindPageBgMobile.png",
+    desktop: "/langindPageBgDesktop.png",
+  },
+  {
+    mobile: "/landingPage.png",
+    desktop: "/landingPage.png",
+  },
+];
 
 export function CarouselSectionHeader({
   title,
@@ -88,63 +100,18 @@ export function CarouselSectionHeader({
 
 function Home() {
   return (
-    <div className="min-h-screen bg-background  ">
+    <div className="min-h-screen bg-background min-w-screen  ">
       {/* Hero */}
-      <section className="grid *:col-start-1 *:row-start-1 justify-between ">
-        <picture>
-          <source media="(min-width: 768px)" srcSet='/langindPageBgDesktop.png' />
-          <Image
-            src='/langindPageBgMobile.png'
-            className=" w-full object-cover xl:h-[1024px] "
-            alt="item image"
-            width={1440}
-            height={1024}
-          />
-        </picture>
-
-        <div className="flex flex-col justify-end bg-gradient-to-t from-brand-ink/95 via-brand-ink/40 to-transparent pl-4 pr-5.5 pb-10 md:px-18">
-          <div
-            className="mx-auto flex max-w-[1400px] h-full  justify-end flex-col gap-4 text-primary-foreground
-          "
-          >
-            <div className="flex flex-wrap flex-col  sm:gap-6">
-              <h1
-                className="max-w-2xl font-bold tracking-tight uppercase  text-[27px] lg:text-[58px]  xl:text-[64px]
-    md:max-w-[1029px]  "
-              >
-                ეკო-მეგობრული ელექტრო სკუტერები ScootArea-სგან
-              </h1>
-              <div className="flex items-end justify-between">
-                <h1 className="flex-1 min-w-[200px] text-[16px] lg:text-[33px] xl:text-[36px] ">
-                  აღმოაჩინე თანამედროვე ელექტრო
-                  <br className="block md:hidden" /> სკუტერები ყოველდღიური
-                  <br className="block md:hidden" /> გადაადგილებისთვის
-                </h1>
-                <div className="gap-2 flex shrink-0">
-                  <button
-                    aria-label="წინა"
-                    className="rounded-full border md:border-[1.28px] border-white size-4 sm:size-9 flex items-center justify-center"
-                  >
-                    <ChevronLeft className="size-2 sm:size-6" />
-                  </button>
-                  <button
-                    aria-label="შემდეგი"
-                    className="rounded-full border md:border-[1.28px] border-white size-4 sm:size-9 flex items-center justify-center"
-                  >
-                    <ChevronRight className="size-2 sm:size-6" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* Promo banner */}
       <section className="w-full  pt-[60px] md:pt-[99px] pr-[15px] pl-4 md:px-[72px] test">
         <div className="relative overflow-hidden rounded-2xl">
           <picture>
-            <source media="(min-width: 768px)" srcSet="/landingPageBannerDesktop.png" />
+            <source
+              media="(min-width: 768px)"
+              srcSet="/landingPageBannerDesktop.png"
+            />
             <Image
               src="/landingPageBannerMobile.png"
               className="h-[128] w-full object-cover md:h-[304px] "
@@ -197,9 +164,12 @@ function Home() {
               {/* Image + ICON */}
               <div className="relative w-full xl:max-w-[853px] flex-shrink-0 self-stretch min-h-0">
                 <picture className="block w-full h-full">
-                  <source media="(min-width: 768px)" srcSet="/repairDes.png" />
+                  <source
+                    media="(min-width: 768px)"
+                    srcSet="/langindPageServiceDesktop.png"
+                  />
                   <Image
-                    src="/repairMob.png"
+                    src="/langindPageServiceMobile.png"
                     className="w-full h-full object-cover rounded-[20px]"
                     alt="service image"
                     width={853}
@@ -209,9 +179,11 @@ function Home() {
                 {/* ICON WITH NUMBER */}
                 <div className="absolute left-1 bottom-1 flex items-center gap-3 whitespace-nowrap">
                   <div className="size-7.5 bg-[#2C3E50] flex flex-shrink-0 rounded-full items-center justify-center">
-                    <Phone className="size-3.5 text-white rounded-full" />
+                    <Phone className="size-3.5 text-white rounded-full rotate-270" />
                   </div>
-                  <div className="text-[18px] text-[#212121]">+995 55 55 55</div>
+                  <div className="text-[18px] text-[#212121]">
+                    +995 55 55 55
+                  </div>
                 </div>
               </div>
 
@@ -272,7 +244,10 @@ function Home() {
             >
               <div className="relative ">
                 <picture className=" block w-full h-full">
-                  <source media="(min-width: 768px)" srcSet="/blogDesktop.png" />
+                  <source
+                    media="(min-width: 768px)"
+                    srcSet="/blogDesktop.png"
+                  />
                   <Image
                     src="/blogMobile.png"
                     className=" w-full h-auto object-cover rounded-[20px] border-black border"

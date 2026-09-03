@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Placeholder } from "./Placeholder";
 import { type Product } from "../types/product";
+import Image from "next/image";
 
 const SCOOTER_SPECS = [
   { Icon: Repeat, label: "ძრავი - 125 კუბი" },
@@ -20,16 +21,16 @@ const SCOOTER_SPECS = [
 ];
 
 const DETAIL_ROUTES: Record<Product["productType"], string> = {
-  scooter: "/scooter-detail/:id",
-  accessory: "/accessory-detail/:id",
-  parts: "/parts-detail/:id",
+  scooter: "/scooters/:id",
+  accessory: "/equiment-accessories/:id",
+  parts: "/parts/:id",
 };
 
 export function ProductCard({ item }: { item: Product }) {
   const isScooter = item.productType === "scooter";
 
   return (
-    <article className="flex h-full flex-col rounded-2xl bg-secondary p-4 ">
+    <article className="flex h-full  flex-col rounded-2xl bg-secondary p-4 ">
       <div className="relative overflow-hidden rounded-xl bg-card ">
         {item.imagePath ? (
           <picture>
@@ -37,16 +38,12 @@ export function ProductCard({ item }: { item: Product }) {
               media="(min-width: 768px)"
               srcSet={item.imagePath.desktop}
             />
-            <img
+            <Image
               src={item.imagePath.mobile}
-              className={
-                isScooter
-                  ? "aspect-[4/3] w-full object-cover"
-                  : item.productType === "accessory"
-                    ? "aspect-[4/3] w-full object-cover"
-                    : "aspect-[4/3] w-full object-cover"
-              }
+              className='w-full h-full object-cover'
               alt={`${item.productType} image`}
+              width={379.78}
+              height={214.6}
             />
           </picture>
         ) : (
@@ -75,7 +72,7 @@ export function ProductCard({ item }: { item: Product }) {
         </div>
       </div>
 
-      <h3 className="mt-4 text-[13px] sm:text-[15.8px] font-bold tracking-wide uppercase">
+      <h3 className="mt-4 text-[13px] sm:text-[15.8px] font-bold tracking-wide uppercase ">
         <Link
           href={DETAIL_ROUTES[item.productType]}
           className="transition-colors hover:text-primary"
@@ -121,20 +118,20 @@ export function ProductCard({ item }: { item: Product }) {
         </ul>
       )}
 
-      <div className="mt-auto flex flex-wrap gap-2 pt-4">
+      <div className=" flex  w-full flex-wrap gap-2 pt-4">
         {isScooter && (
           <button className="inline-flex items-center gap-2 rounded-full border border-[#212121] px-4 py-2 text-[10.89px] sm:text-[13.16px]  uppercase transition-colors hover:border-primary hover:text-primary text-[#212121] max-w-[130.08px] sm:max-w-[157.3px] w-full justify-center">
             <Shuffle className="size-3.5" /> შედარება
           </button>
         )}
         <button
-          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10.89px] sm:text-[13.16px]  uppercase transition-colors hover:border-primary hover:text-primary max-w-[179.61px] sm:max-w-[217.2px] w-full justify-center ${
+          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10.89px]   uppercase transition-colors hover:border-primary hover:text-primary  w-full justify-center border-[#212121] sm:text-[20px] ${
             isScooter
-              ? "text-[#212121] border-[#212121]"
-              : "flex-1 justify-center py-2.5"
+              ? "text-[#212121] "
+              : "flex-1 justify-center py-2.5 w-full"
           }`}
         >
-          <ShoppingBasket className="size-3.5" /> კალათაში დამატება
+          <ShoppingBasket className="size-[8.78px] sm:size-6  " /> კალათაში დამატება
         </button>
       </div>
     </article>

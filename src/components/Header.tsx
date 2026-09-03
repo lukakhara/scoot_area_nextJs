@@ -14,7 +14,7 @@ import Image from "next/image";
 
 const NAV: { label: string; to: string }[] = [
   { label: "სკუტერები", to: "/scooters" },
-  { label: "ეკიპირება და აქსესუარები", to: "/accessories" },
+  { label: "ეკიპირება და აქსესუარები", to: "/equiment-accessories" },
   { label: "სათადარიგო ნაწილები", to: "/parts" },
   { label: "შეკეთება", to: "/repair" },
   { label: "ბლოგი", to: "/blog" },

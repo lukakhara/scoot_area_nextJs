@@ -7,12 +7,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface postTypes {
+  id: string;
   date: string;
   title: string;
   excerpt: string;
 }
 
-const POSTS: postTypes[] = Array.from({ length: 6 }, () => ({
+const POSTS: postTypes[] = Array.from({ length: 6 }, (_, i) => ({
+  id: `post${i}`,
   date: "30/05/2025",
   title: "ელექტრო სკუტერები — მომავლის გადაადგილება უკვე დღეს",
   excerpt:
@@ -30,7 +32,7 @@ function BlogPage() {
         <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-8h">
           {POSTS.map((post, i) => (
             <Link
-              key={post.title}
+              key={post.id}
               href={"/blogDetail"}
               className="uppercase transition-opacity hover:opacity-70"
               // activeProps={{ className: "text-primary" }}
@@ -48,6 +50,8 @@ function BlogPage() {
                       src='/blogMob.png'
                       className="aspect-[4/3] w-full object-cover"
                       alt="item image"
+                      width={584}
+                      height={312}
                     />
                   </picture>
                   <span className="absolute bottom-0 left-0 rounded-tr-2xl bg-secondary py-2 pr-4 text-lg font-medium text-foreground/80">
