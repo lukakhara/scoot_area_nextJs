@@ -12,15 +12,7 @@ const heroImages = [
   {
     mobile: "/landingPage.png",
     desktop: "/landingPage.png",
-  },
-  {
-    mobile: "/landingPage2.png",
-    desktop: "/landingPage2.png",
-  },
-  {
-    mobile: "/landingPage3.png",
-    desktop: "/landingPage3.png",
-  },
+  }
 ];
 
 export function HeroSection() {

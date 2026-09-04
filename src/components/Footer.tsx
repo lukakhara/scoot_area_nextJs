@@ -15,22 +15,22 @@ export default function Footer() {
                 />
                 <Image
                   src='/logoMobile.png'
-                  className=" w-full h-full max-w-[140px]  object-cover relative -top-9 left-0"
+                  className="max-w-[82px]  w-full h-full md:max-w-[140px]   object-cover relative -top-9 left-0"
                   alt="product image"
-                  height={140}
-                  width={140}
+                  height={82}
+                  width={82}
                 />
           </picture>
 
-        <ul className="space-y-3 text-sm text-muted-foreground">
+        <ul className="space-y-3 text-sm text-[#212121]">
           <li className="flex items-center gap-2">
-            <Phone className="size-4 text-primary rotate-270" /> +995 55 55 55
+            <Phone className=" bg-[#2C3E50]  rounded-full  flex items-center justify-center text-white rotate-270" /> +995 55 55 55
           </li>
           <li className="flex items-center gap-2">
-            <Mail className="size-4 text-primary" /> Scootarea@info.ge
+            <Mail className=" bg-[#2C3E50] rounded-full  flex items-center justify-center  text-white" /> Scootarea@info.ge
           </li>
           <li className="flex items-start gap-2">
-            <MapPin className="mt-0.5 size-4 text-primary" /> რუსთაველის გამზ. 10, თბილისი, საქართველო
+            <MapPin className="mt-0.5  bg-[#2C3E50] rounded-full   flex items-center justify-center text-white" /> რუსთაველის გამზ. 10, თბილისი, საქართველო
           </li>
         </ul>
 

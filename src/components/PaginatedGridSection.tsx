@@ -2,13 +2,11 @@
 import { useState, useEffect } from "react";
 import useMeasure from "react-use-measure";
 import { motion } from "framer-motion";
-import { CarouselSectionHeader } from "@/app/page";
+import CarouselSectionHeader from "@/components/CarouselSectionHeader";
 
-interface PaginatedGridSectionProps<T> {
+interface PaginatedGridSectionProps<T extends { id: string | number }> {
   title: string;
-  items: T[];
-  renderItem: (item: T) => React.ReactNode;
-  itemKey: (item: T) => string | number;
+  items: React.ReactNode[];
   visibleCount?: number; // used for lg/xl and above
 }
 
@@ -36,13 +34,9 @@ function useResponsiveVisibleCount(desktopCount: number) {
   return visibleCount;
 }
 
-export default function PaginatedGridSection<T>({
-  title,
-  items,
-  renderItem,
-  itemKey,
-  visibleCount = 3,
-}: PaginatedGridSectionProps<T>) {
+export default function PaginatedGridSection<
+  T extends { id: string | number },
+>({ title, items, visibleCount = 3 }: PaginatedGridSectionProps<T>) {
   const responsiveVisibleCount = useResponsiveVisibleCount(visibleCount);
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -91,16 +85,13 @@ export default function PaginatedGridSection<T>({
         >
           {items.map((item, i) => (
             <motion.div
-              key={itemKey(item)}
+              key={i} // items are pre-rendered; index is fine since order is stable
               className="flex-shrink-0"
               style={{ width: cardWidth }}
-              whileHover={{
-                y: -8,
-                transition: { duration: 0.2 },
-              }}
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
               whileTap={{ scale: 0.95 }}
             >
-              {renderItem(item)}
+              {item}
             </motion.div>
           ))}
         </motion.div>

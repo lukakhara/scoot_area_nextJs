@@ -1,5 +1,5 @@
 import React from "react";
-import ProductListingPage from "../products/page";
+import ProductListingPage from "@/components/ProductListingPage";
 
 const page = () => {
   return <ProductListingPage pageType="scooters" />

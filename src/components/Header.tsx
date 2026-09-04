@@ -5,11 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, ShoppingCart, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-// import logoDesk from "/public/logoDesk.png";
-// import logoMobile from "/public/logoMobile.png";
 import CartPopover from "@/components/CartPopover";
-// import GeorgianFlag from "/public/georgia.png";
-// import GBFlag from "/public/gb-flag.png";
 import Image from "next/image";
 
 const NAV: { label: string; to: string }[] = [
@@ -67,7 +63,7 @@ export default function Header({
           </picture>
         </Link>
 
-        <nav className=" flex-1 items-center justify-center gap-6 text-[14px] font-medium  xl:flex">
+        <nav className=" flex-1 items-center justify-center gap-6 text-[14px] font-medium hidden xl:flex">
           {NAV.map((item) => (
             <Link
               key={item.label}
@@ -106,7 +102,7 @@ export default function Header({
           </Link>
 
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
-          <div className="flex items-center justify-center sm:size-10 size-6 rounded-full border border-white p-[5.7px]">
+          <div className={cn("flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px]",  solid ? "border-black" : "border-white")}>
               <Image
             src={flag}
             onClick={() => setLangEnglish((prev) => !prev)}

@@ -1,7 +1,5 @@
 'use client'
 import { Minus, Plus, ShoppingBasket } from "lucide-react";
-
-import { Placeholder } from "../components/Placeholder";
 // import { AccessoryCard, type Accessory } from "../components/AccessoryCardOLD";
 import {ProductCard } from "../components/ProductCard";
 import type {Product} from "../types/product";

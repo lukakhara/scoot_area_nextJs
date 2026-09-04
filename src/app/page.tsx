@@ -1,20 +1,9 @@
-"use client";
-import { ChevronLeft, ChevronRight, Phone } from "lucide-react";
+import {  Phone } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { type Product } from "@/types/product";
 import PaginatedGridSection from "@/components/PaginatedGridSection";
 import Image from "next/image";
 import HeroSection from "@/components/HeroSection";
-
-interface CarouselSectionHeaderProps {
-  title: string;
-  onPrev: () => void;
-  onNext: () => void;
-  canGoPrev: boolean;
-  canGoNext: boolean;
-  currentPage?: number;
-  totalPages?: number;
-}
 
 const SCOOTERS: Product[] = Array.from({ length: 15 }, (_, i) => ({
   id: `scoteer${i}`,
@@ -45,63 +34,11 @@ const ACCESSORIES: Product[] = Array.from({ length: 15 }, (_, i) => ({
   },
 }));
 
-const heroImages = [
-  {
-    mobile: "/langindPageBgMobile.png",
-    desktop: "/langindPageBgDesktop.png",
-  },
-  {
-    mobile: "/landingPage.png",
-    desktop: "/landingPage.png",
-  },
-];
 
-export function CarouselSectionHeader({
-  title,
-  onPrev,
-  onNext,
-  canGoPrev,
-  canGoNext,
-}: CarouselSectionHeaderProps) {
-  return (
-    <div className=" flex items-center justify-between gap-4">
-      <h2 className="text-[24px] font-bold tracking-wide uppercase sm:text-[40px]">
-        {title}
-      </h2>
-      <div className="flex items-center gap-3">
-        <a
-          href="#"
-          className="text-[12px] md:text-[16px] text-[#888888] hover:text-primary"
-        >
-          ყველას ნახვა
-        </a>
-        <div className="flex gap-1.5 border-[#888888]">
-          <button
-            aria-label="წინა"
-            onClick={onPrev}
-            disabled={!canGoPrev}
-            className="rounded-full border p-1.5 hover:border-primary disabled:opacity-30 disabled:pointer-events-none"
-          >
-            <ChevronLeft className="size-3.5  sm:size-5" />
-          </button>
-          <button
-            aria-label="შემდეგი"
-            onClick={onNext}
-            disabled={!canGoNext}
-            className="rounded-full border p-1.5 hover:border-primary disabled:opacity-30 disabled:pointer-events-none"
-          >
-            <ChevronRight className="size-3.5 sm:size-5" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function Home() {
   return (
     <div className="min-h-screen bg-background min-w-screen  ">
-      {/* Hero */}
       <HeroSection />
 
       {/* Promo banner */}
@@ -134,9 +71,9 @@ function Home() {
       {/* Scooters */}
       <PaginatedGridSection
         title="სკუტერები"
-        items={SCOOTERS}
-        itemKey={(item) => item.id}
-        renderItem={(item) => <ProductCard item={item} />}
+        items={SCOOTERS.map((item) => (
+          <ProductCard key={item.id} item={item} />
+        ))}
       />
 
       {/* Service */}
@@ -223,14 +160,12 @@ function Home() {
         </section>
       </div>
 
-      {/* Accessories */}
       <PaginatedGridSection
         title="აქსესუარები"
-        items={ACCESSORIES}
-        itemKey={(item) => item.id}
-        renderItem={(item) => <ProductCard item={item} />}
+        items={ACCESSORIES.map((item) => (
+          <ProductCard key={item.id} item={item} />
+        ))}
       />
-
       {/* Blog */}
       <section className="mx-auto max-w-[1400px] px-4 md:px-5 pb-16">
         <h2 className="mb-6 text-xl font-bold tracking-wide uppercase sm:text-2xl text-[#212121] md:text-[40px]">

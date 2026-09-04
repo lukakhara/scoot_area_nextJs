@@ -33,7 +33,7 @@ function BlogPage() {
           {POSTS.map((post, i) => (
             <Link
               key={post.id}
-              href={"/blogDetail"}
+              href={"/blog/:id"}
               className="uppercase transition-opacity hover:opacity-70"
               // activeProps={{ className: "text-primary" }}
             >

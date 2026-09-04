@@ -118,17 +118,17 @@ export function ProductCard({ item }: { item: Product }) {
         </ul>
       )}
 
-      <div className=" flex  w-full flex-wrap gap-2 pt-4">
+      <div className=" flex flex-row w-full  gap-2 pt-4 items-center">
         {isScooter && (
-          <button className="inline-flex items-center gap-2 rounded-full border border-[#212121] px-4 py-2 text-[10.89px] sm:text-[13.16px]  uppercase transition-colors hover:border-primary hover:text-primary text-[#212121] max-w-[130.08px] sm:max-w-[157.3px] w-full justify-center">
+          <button className="inline-flex items-center gap-2 rounded-full border border-[#212121] px-4 py-2 text-[10.89px] sm:text-[13.16px]  uppercase transition-colors hover:border-primary hover:text-primary text-[#212121] sm:max-w-[157.3px]  justify-center">
             <Shuffle className="size-3.5" /> შედარება
           </button>
         )}
         <button
-          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10.89px]   uppercase transition-colors hover:border-primary hover:text-primary  w-full justify-center border-[#212121] sm:text-[20px] ${
+          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10.89px]   uppercase transition-colors hover:border-primary hover:text-primary   border-[#212121]  ${
             isScooter
               ? "text-[#212121] "
-              : "flex-1 justify-center py-2.5 w-full"
+              : "flex-1  py-2.5  sm:text-[20px] w-full justify-center"
           }`}
         >
           <ShoppingBasket className="size-[8.78px] sm:size-6  " /> კალათაში დამატება
