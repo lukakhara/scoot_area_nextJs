@@ -33,19 +33,26 @@ export function ProductCard({ item }: { item: Product }) {
     <article className="flex h-full  flex-col rounded-2xl bg-secondary p-4 ">
       <div className="relative overflow-hidden rounded-xl bg-card ">
         {item.imagePath ? (
-          <picture>
+          <Link
+          href={DETAIL_ROUTES[item.productType]}
+          className="transition-colors hover:text-primary cursor-pointer group "
+        >
+           <picture className="">
             <source
-              media="(min-width: 768px)"
+              media="(min-width: 768px) "
               srcSet={item.imagePath.desktop}
+              className=""
             />
             <Image
               src={item.imagePath.mobile}
-              className='w-full h-full object-cover'
+              className='w-full h-full object-cover group-hover:scale-105 group-hover:opacity-80 '
               alt={`${item.productType} image`}
               width={379.78}
               height={214.6}
             />
           </picture>
+        </Link>
+        
         ) : (
           <Placeholder className="aspect-[4/3] w-full" label={item.title} />
         )}

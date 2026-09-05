@@ -138,7 +138,7 @@ export default function ProductListingPage({ pageType }: { pageType: PageType })
           </aside>
 
           <div>
-            <div className={config.gridClassName}>
+            <div className={config.gridClassName} >
               {config.items.map((item, i) => (
                 <ProductCard key={item.title + i} item={item} />
               ))}

@@ -1,22 +1,13 @@
-'use client'
+"use client";
 import { useState } from "react";
-
-import Link from "next/link";
+import { Link } from "../i18n/navigation";
 import { usePathname } from "next/navigation";
 import { Menu, ShoppingCart, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CartPopover from "@/components/CartPopover";
 import Image from "next/image";
-
-const NAV: { label: string; to: string }[] = [
-  { label: "სკუტერები", to: "/scooters" },
-  { label: "ეკიპირება და აქსესუარები", to: "/equiment-accessories" },
-  { label: "სათადარიგო ნაწილები", to: "/parts" },
-  { label: "შეკეთება", to: "/repair" },
-  { label: "ბლოგი", to: "/blog" },
-  { label: "ჩვენს შესახებ", to: "/about" },
-  { label: "კონტაქტი", to: "/contact" },
-];
+import { routing } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export default function Header({
   variant = "overlay",
@@ -26,11 +17,22 @@ export default function Header({
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [langEnglish, setLangEnglish] = useState(false);
-  console.log(langEnglish);
   const flag = langEnglish ? "/gb-flag.png" : "/georgia.png";
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
+  const isHomePage = routing.locales.some((loc) => pathname === `/${loc}`);
   const solid = isHomePage ? false : true;
+
+  const t = useTranslations("Header");
+
+  const NAV: { label: string; to: string }[] = [
+    { label: t("scooters"), to: "/scooters" },
+    { label: t("gearAndAccessories"), to: "/equiment-accessories" },
+    { label: t("spareParts"), to: "/parts" },
+    { label: t("repair"), to: "/repair" },
+    { label: t("blog"), to: "/blog" },
+    { label: t("aboutUs"), to: "/about" },
+    { label: t("contact"), to: "/contact" },
+  ];
 
   return (
     <header
@@ -49,12 +51,16 @@ export default function Header({
       >
         <Link
           href="/"
-          className="shrink-0 text-2xl leading-5 font-extrabold tracking-tight"
+          className="shrink-0 text-2xl leading-5 font-extrabold tracking-tight hover:opacity-90 hover:scale-105"
         >
           <picture className="size-[64px] sm:size-[110px]">
-            <source media="(min-width: 768px)" srcSet='/logoDesk.png' className="" />
+            <source
+              media="(min-width: 768px)"
+              srcSet="/logoDesk.png"
+              className=""
+            />
             <Image
-              src='/logoMobile.png'
+              src="/logoMobile.png"
               className=" w-full object-cover"
               alt="product image"
               width={110}
@@ -68,7 +74,10 @@ export default function Header({
             <Link
               key={item.label}
               href={item.to}
-              className=" transition-opacity hover:opacity-70"
+              className={cn(
+                " transition-opacity hover:opacity-70 ",
+                pathname === item.to ? "text-[#EA6200]" : "",
+              )}
               // activeProps={{ className: "text-primary" }}
             >
               {item.label}
@@ -81,9 +90,7 @@ export default function Header({
           <button
             aria-label="ძებნა"
             className="hidden transition-opacity hover:opacity-70 sm:block"
-          >
-  
-          </button>
+          ></button>
           <Link
             href="/cart"
             className="relative flex items-center gap-2 text-xs font-semibold"
@@ -102,20 +109,25 @@ export default function Header({
           </Link>
 
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
-          <div className={cn("flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px]",  solid ? "border-black" : "border-white")}>
-              <Image
-            src={flag}
-            onClick={() => setLangEnglish((prev) => !prev)}
+          <div
             className={cn(
-              " size-[13.25px] sm:size-[22.07px] rounded-full border-white ",
-              solid ? "bg-foregrhound/15" : "bg-primary-foreground/20",
+              "flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px]",
+              solid ? "border-black" : "border-white",
             )}
-            alt="flag icon"
-            width={22.08}
-            height={220}
-          />
+          >
+            <Image
+              src={flag}
+              onClick={() => setLangEnglish((prev) => !prev)}
+              className={cn(
+                " size-[13.25px] sm:size-[22.07px] rounded-full border-white ",
+                solid ? "bg-foregrhound/15" : "bg-primary-foreground/20",
+              )}
+              alt="flag icon"
+              width={22.08}
+              height={220}
+            />
           </div>
-        
+
           <button
             aria-label="მენიუ"
             className="xl:hidden"

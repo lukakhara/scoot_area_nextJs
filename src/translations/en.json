@@ -1,0 +1,39 @@
+{
+  "Header": {
+    "scooters": "Scooters",
+    "gearAndAccessories": "Gear and Accessories",
+    "spareParts": "Spare Parts",
+    "repair": "Repair",
+    "blog": "Blog",
+    "aboutUs": "About Us",
+    "contact": "Contact"
+  },
+  "Footer": {
+    "scooters": "Scooters",
+    "electricBicycles": "Electric Bicycles",
+    "spareParts": "Spare Parts",
+    "repair": "Repair",
+    "blog": "Blog",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "sitemap": "Sitemap"
+  },
+  "HomePage": {
+    "HeroSection": {
+      "title": "Eco-friendly electric scooters from ScootArea",
+      "subtitle": "Discover modern electric scooters for everyday commuting"
+    },
+    "PromoBanner": {
+      "discount": "10% off when paying with a new TBC card"
+    },
+    "Service": {
+      "header": "Repair",
+      "subtitle": "Service you can trust",
+      "description": "SCOOTAREA offers fast and professional repair services for scooters.",
+      "details": "Certified specialists, fast service, and high-quality parts—everything to get you back on the road with peace of mind."
+    },
+    "Blog": {
+      "header": "Blog"
+    }
+  }
+}
