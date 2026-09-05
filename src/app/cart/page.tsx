@@ -1,9 +1,8 @@
-'use client'
+"use client";
 import { useState } from "react";
 import { ChevronDown, Trash2 } from "lucide-react";
 import { Placeholder } from "@/components/Placeholder";
-
-
+import Image from "next/image";
 
 type CartItem = {
   title: string;
@@ -45,24 +44,28 @@ const INITIAL: CartItem[] = [
 function CartPage() {
   const [items, setItems] = useState(INITIAL);
   const [delivery, setDelivery] = useState<"pickup" | "courier">("courier");
+  const [isOrdersPlaced, setIsOrdersPlaced] = useState(false);
 
   const setQty = (i: number, d: number) =>
     setItems((prev) =>
-      prev.map((it, idx) => (idx === i ? { ...it, qty: Math.max(1, it.qty + d) } : it)),
+      prev.map((it, idx) =>
+        idx === i ? { ...it, qty: Math.max(1, it.qty + d) } : it,
+      ),
     );
-  const remove = (i: number) => setItems((prev) => prev.filter((_, idx) => idx !== i));
+  const remove = (i: number) =>
+    setItems((prev) => prev.filter((_, idx) => idx !== i));
 
   return (
-    <div className="min-h-screen bg-background">
-     
+    <div className="min-h-screen bg-background  flex flex-col items-center w-full md:pt-20 md:pb-30 md:px-[75px]   px-5 pt-8 pb-16 ">
+      <main className="w-full">
+        <h1 className="text-[24px] font-bp;d tracking-tight uppercase sm:text-4xl">
+          კალათა
+        </h1>
 
-      <main className="mx-auto max-w-[1400px] px-5 pt-8 pb-16 lg:pt-12">
-        <h1 className="text-3xl font-extrabold tracking-tight uppercase sm:text-4xl">კალათა</h1>
-
-        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_420px] lg:gap-8">
+        <div className="mt-6  gap-8 flex flex-col md:flex-row  ">
           {/* Items */}
-          <section className="overflow-hidden rounded-2xl border bg-card">
-            <div className="grid grid-cols-[1fr_90px_80px_90px_44px] items-center gap-2 border-b px-4 py-4 text-[11px] tracking-wide text-muted-foreground uppercase sm:px-6 sm:text-sm">
+          <section className="overflow-hidden rounded-2xl border bg-card  w-full ">
+            <div className="grid grid-cols-[1fr_90px_80px_90px_44px] items-center gap-2 border-b px-4 py-4 text-[9px] md:text-[11px] tracking-wide  uppercase sm:px-6 sm:text-sm text-[#212121]">
               <span>პროდუქტი</span>
               <span>ფასი</span>
               <span>ცალი</span>
@@ -73,28 +76,36 @@ function CartPage() {
             {items.map((item, i) => (
               <div
                 key={i}
-                className="grid grid-cols-[1fr_90px_80px_90px_44px] items-center gap-2 border-b px-4 py-4 last:border-b-0 sm:px-6"
+                className="grid grid-cols-[1fr_90px_80px_90px_44px] items-center gap-2 border-b px-4 py-4 last:border-b-0 sm:px-6  w-full text-[#5A5A5A]"
               >
                 <div className="flex items-center gap-3">
-                  <Placeholder
-                    className="hidden size-16 shrink-0 rounded-xl border sm:flex"
-                    label="scooter"
+                  <Image
+                    src="/scooterMobile.png"
+                    className="hidden size-32 shrink-0 rounded-xl border sm:flex bg-cover"
+                    alt="product image"
+                    width={128}
+                    height={128}
                   />
+
                   <div className="min-w-0">
-                    <p className="text-[11px] leading-tight font-extrabold uppercase sm:text-sm">
+                    <p className="text-[7.39px] leading-[100%] md:leading-tight font-extrabold uppercase sm:text-sm text-[#212121]">
                       {item.title}
                     </p>
-                    <p className="mt-1 text-[11px] text-muted-foreground sm:text-sm">
+                    <p className="mt-1 text-[7.39px] md:text-[11px]  sm:text-sm ">
                       ფერი: {item.color}
                     </p>
                   </div>
                 </div>
 
-                <div className="text-[11px] sm:text-sm">
+                <div className="text-[11px] sm:text-sm font-normal">
                   {item.oldPrice && (
-                    <p className="text-muted-foreground line-through">{item.oldPrice}</p>
+                    <p className="text-muted-foreground line-through">
+                      {item.oldPrice}
+                    </p>
                   )}
-                  <p className={item.oldPrice ? "font-semibold text-sale" : ""}>{item.price}</p>
+                  <p className={item.oldPrice ? "text-[#EA2700]  " : ""}>
+                    {item.price}
+                  </p>
                 </div>
 
                 <div className="text-center text-[11px] sm:text-sm">
@@ -106,7 +117,7 @@ function CartPage() {
                     >
                       −
                     </button>
-                    <span className="min-w-4 font-medium">{item.qty}</span>
+                    <span className="min-w-4 font-normal">{item.qty}</span>
                     <button
                       aria-label="გაზრდა"
                       onClick={() => setQty(i, 1)}
@@ -115,10 +126,16 @@ function CartPage() {
                       +
                     </button>
                   </div>
-                  {item.sale && <p className="mt-0.5 text-[10px] text-sale">მაქს.</p>}
+                  {item.sale && (
+                    <p className="mt-0.5 text-[14px] font-normal text-[#EA2700]">
+                      მაქს.
+                    </p>
+                  )}
                 </div>
 
-                <p className="text-[11px] font-medium sm:text-sm">{item.total}</p>
+                <p className="text-[11px] font-medium sm:text-sm">
+                  {item.total}
+                </p>
 
                 <button
                   aria-label="წაშლა"
@@ -131,105 +148,165 @@ function CartPage() {
             ))}
 
             {items.length === 0 && (
-              <p className="px-6 py-10 text-center text-sm text-muted-foreground">კალათა ცარიელია</p>
+              <p className="px-6 py-10 text-center text-sm text-muted-foreground">
+                კალათა ცარიელია
+              </p>
             )}
           </section>
 
           {/* Summary */}
-          <aside className="h-fit rounded-2xl border bg-card p-5 sm:p-6">
-            <h2 className="text-lg font-extrabold tracking-tight uppercase">შეკვეთის დეტალები</h2>
+          {!isOrdersPlaced && (
+            <aside className="h-fit rounded-2xl border bg-card p-5 sm:p-6 ">
+              <h2 className="text-lg font-extrabold tracking-tight uppercase">
+                შეკვეთის დეტალები
+              </h2>
 
-            <dl className="mt-5 space-y-4 text-sm">
-              <div className="flex items-center justify-between border-b pb-4">
-                <dt className="text-muted-foreground">ჯამი:</dt>
-                <dd className="font-semibold">9000.00₾</dd>
-              </div>
-              <div className="flex items-center justify-between border-b pb-4">
-                <dt className="text-muted-foreground">ფასდაკლება:</dt>
-                <dd className="font-semibold">2000.00₾</dd>
-              </div>
-              <div className="flex items-center justify-between">
-                <dt className="text-muted-foreground">გადასახდელი თანხა:</dt>
-                <dd className="font-semibold">7000.00₾</dd>
-              </div>
-            </dl>
+              <dl className="mt-5 space-y-4 text-sm">
+                <div className="flex items-center justify-between  pb-4">
+                  <dt className="text-muted-foreground">ჯამი:</dt>
+                  <dd className="font-semibold">9000.00₾</dd>
+                </div>
+                <div className="flex items-center justify-between pb-4">
+                  <dt className="text-muted-foreground">ფასდაკლება:</dt>
+                  <dd className="font-semibold">2000.00₾</dd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <dt className="text-muted-foreground text-nowrap">
+                    გადასახდელი თანხა:
+                  </dt>
+                  <dd className="font-semibold">7000.00₾</dd>
+                </div>
+              </dl>
 
-            <button className="mt-6 w-full rounded-full bg-[oklch(0.62_0.16_150)] py-3.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90">
-              ყიდვა
-            </button>
-          </aside>
+              <button
+                className="mt-6 w-full rounded-full bg-[oklch(0.62_0.16_150)] py-3.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 cursor-pointer"
+                onClick={() => setIsOrdersPlaced(true)}
+              >
+                ყიდვა
+              </button>
+            </aside>
+          )}
         </div>
 
         {/* Checkout form */}
-        <section className="mt-10 max-w-[720px] space-y-5">
-          <Select label="თბილისი" />
+        {isOrdersPlaced && (
+          <section className="mt-10 w-full space-y-5 ">
+            {/* Checkout form top */}
+            <div className="flex gap-8 flex-col md:flex-row">
+              {/* // leftside */}
+              <div className="flex-1">
+                <div className="flex justify-between gap-8">
+                  <Select label="თბილისი" />
+                  <div className="hidden">
+                    {" "}
+                    <Select label="რაიონი" />
+                  </div>
+                </div>
 
-          <div className="space-y-3 text-sm">
-            <Radio
-              label="ფილიალიდან გატანა"
-              checked={delivery === "pickup"}
-              onChange={() => setDelivery("pickup")}
-            />
-            <Radio
-              label="მიტანის სერვისით სარგებლობა"
-              checked={delivery === "courier"}
-              onChange={() => setDelivery("courier")}
-            />
-          </div>
+                <div className=" text-sm flex md:items-center gap-2 flex-col md:flex-row items-start">
+                  <Radio
+                    label="ფილიალიდან გატანა"
+                    checked={delivery === "pickup"}
+                    onChange={() => setDelivery("pickup")}
+                  />
+                  <Radio
+                    label="მიტანის სერვისით სარგებლობა"
+                    checked={delivery === "courier"}
+                    onChange={() => setDelivery("courier")}
+                  />
+                </div>
 
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            მიტანის სერვისის საფასური - 50₾
-            <br />
-            მიტანის სერვისი უფასოა 1500₾ შეკვეთის შემთხვევაში
-          </p>
+                <p className="text-xs leading-relaxed text-muted-foreground md:border-b-[0.5px] md:border-[#888888] border-none pb-6 text-nowrap">
+                  მიტანის სერვისის საფასური - 50₾
+                  <br />
+                  მიტანის სერვისი უფასოა 1500₾ შეკვეთის შემთხვევაში
+                </p>
 
-          <Select label="რაიონი" />
+                <div className="border-b-[0.5px] border-[#888888] pb-[25px] md:pb-6   md:hidden">
+                  <Select label="რაიონი" />
+                </div>
 
-          <hr />
+                <div className="pt-6 flex flex-col gap-2 md:gap-4 w-full">
+                  <Input placeholder="მისამართი*" />
+                  <Input placeholder="კომენტარი" />
+                  <div className="flex gap-2 md:gap-8 flex-col md:flex-row">
+                    <Input placeholder="სახელი*" />
+                    <Input placeholder="გვარი*" />
+                  </div>
+                </div>
+              </div>
+              {/* // rightside */}
+              <aside className="h-fit rounded-2xl border bg-card p-5 sm:p-6 order-first md:order-">
+                <h2 className="text-lg font-extrabold tracking-tight uppercase">
+                  შეკვეთის დეტალები
+                </h2>
 
-          <Input placeholder="მისამართი*" />
-          <Input placeholder="კომენტარი" />
-          <Input placeholder="სახელი*" />
-          <Input placeholder="გვარი*" />
+                <dl className="mt-5 space-y-4 text-sm">
+                  <div className="flex items-center justify-between border-b pb-4">
+                    <dt className="text-muted-foreground">ჯამი:</dt>
+                    <dd className="font-semibold">9000.00₾</dd>
+                  </div>
+                  <div className="flex items-center justify-between border-b pb-4">
+                    <dt className="text-muted-foreground">ფასდაკლება:</dt>
+                    <dd className="font-semibold">2000.00₾</dd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <dt className="text-muted-foreground">
+                      გადასახდელი თანხა:
+                    </dt>
+                    <dd className="font-semibold">7000.00₾</dd>
+                  </div>
+                </dl>
+              </aside>
+            </div>
 
-          <hr />
+            <hr />
 
-          <Input placeholder="ტელეფონის ნომერი*" />
+            <div>
+              <div className="border-b-[0.5px] border-[#888888] flex md:gap-8 pb-6 md:pb-8  gap-2 flex-col md:flex-row">
+                <Input placeholder="ტელეფონის ნომერი*" />
 
-          <button className="w-full rounded-full bg-secondary py-3 text-sm font-semibold">
-            კოდის გაგზავნა
-          </button>
+                <button className="w-full rounded-full bg-secondary py-3 text-sm font-semibold">
+                  კოდის გაგზავნა
+                </button>
 
-          <div className="relative">
-            <input
-              placeholder="SMS კოდი"
-              className="w-full rounded-full border py-3 pr-40 pl-5 text-sm outline-none focus:border-primary"
-            />
-            <button className="absolute top-1 right-1 rounded-full bg-secondary px-6 py-2 text-sm font-semibold">
-              დადასტურება
-            </button>
-          </div>
+                <div className="relative">
+                  <input
+                    placeholder="SMS კოდი"
+                    className="w-full rounded-full border py-3 pr-40 pl-5 text-sm outline-none focus:border-primary"
+                  />
+                  <button className="absolute top-1 right-1 rounded-full bg-secondary px-6 py-2 text-sm font-semibold">
+                    დადასტურება
+                  </button>
+                </div>
+              </div>
 
-          <hr />
+              <div className="flex md:gap-29 pt-6  md:pt-8 flex-col gap-6 md:flex-row">
+                <label className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    className="size-4 accent-[oklch(0.62_0.16_150)]"
+                  />
+                  <span className="underline text-nowrap">
+                    ვეთანხმები წესებსა და პირობებს
+                  </span>
+                </label>
 
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" className="size-4 accent-[oklch(0.62_0.16_150)]" />
-            <span className="underline">ვეთანხმები წესებსა და პირობებს</span>
-          </label>
-
-          <button className="w-full rounded-full border py-3.5 text-sm font-semibold transition-colors hover:border-primary hover:text-primary">
-            შეკვეთის განთავსება
-          </button>
-        </section>
+                <button className="w-full rounded-full border py-3.5 text-sm font-semibold transition-colors hover:border-primary hover:text-primary ">
+                  შეკვეთის განთავსება
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
       </main>
-
     </div>
   );
 }
 
 function Select({ label }: { label: string }) {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <select className="w-full appearance-none rounded-full border bg-transparent px-5 py-3 text-sm outline-none focus:border-primary">
         <option>{label}</option>
       </select>

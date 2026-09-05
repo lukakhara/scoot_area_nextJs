@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState } from "react";
 
 import {
@@ -18,10 +18,9 @@ import {
   SiYoutube as Youtube,
 } from "@icons-pack/react-simple-icons";
 import { Placeholder } from "@/components/Placeholder";
-// import desktopImage from "/public/aboutUs.png";
-// import mobileImage from "/public/aboutUsMobile.png";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import GalleryImage from "@/components/GalleryImage";
 
 const PARAGRAPHS = [
   "ჩვენ გვჯერა, რომ გადაადგილება უნდა იყოს მარტივი, სწრაფი და ეკოლოგიურად სუფთა. სწორედ ამიტომ დაფუძნდა ScootArea — ბრენდი, რომელიც ქალაქურ გადაადგილებას აკავშირებს თანამედროვე ტექნოლოგიებთან, სტილთან და პასუხისმგებლობასთან.",
@@ -52,6 +51,23 @@ const CONTACTS = [
   { icon: Send, label: "+995 55 55 55", tone: "bg-[oklch(0.65_0.14_235)]" },
 ];
 
+const GALLERY_IMAGES = [
+  { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk2.png" },
+  { mobile: "/BlogImageMob3.png", desktop: "/blogImageDesk3.png" },
+  {
+    mobile: "/blogImageMob2.png",
+    desktop: "/blogImageDesk4.png",
+    desktopOnly: true,
+  },
+  { mobile: "/BlogImageMob3.png", desktop: "/blogImageDesk3.png" },
+  {
+    mobile: "/blogImageMob2.png",
+    desktop: "/blogImageDesk4.png",
+    desktopOnly: true,
+  },
+  { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk2.png" },
+];
+
 function AboutPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -64,12 +80,12 @@ function AboutPage() {
             ჩვენს შესახებ
           </h1>
           <picture>
-            <source media="(min-width: 768px)" srcSet="/aboutUsMobile.png" />
+            <source media="(min-width: 768px)" srcSet="/aboutUs.png" />
             <Image
-              src="/aboutUs.png"
-              width={800}
-              height={600}
-              className="aspect-[4/3] w-full object-cover"
+              src="/aboutUsMobile.png"
+              width={1296}
+              height={545}
+              className="w-full object-cover"
               alt="product image"
             />
           </picture>
@@ -209,12 +225,17 @@ function AboutPage() {
                   <span
                     className={`grid size-7 shrink-0 place-items-center rounded-full ${tone}`}
                   >
-                    <Icon className={cn(" size-3.5 text-primary-foreground", Icon === Phone ? "rotate-270" : "")} />
+                    <Icon
+                      className={cn(
+                        " size-3.5 text-primary-foreground",
+                        Icon === Phone ? "rotate-270" : "",
+                      )}
+                    />
                   </span>
                   {label}
                 </li>
               ))}
-              <li className="flex items-center gap-3 border-t pt-4">
+              <li className="flex items-center gap-3  pt-4">
                 <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand-ink">
                   <Mail className="size-3.5 text-primary-foreground" />
                 </span>
@@ -239,7 +260,7 @@ function AboutPage() {
                   თბილისი, საქართველო
                 </span>
               </li>
-              <li className="flex items-center gap-3 border-t pt-4">
+              <li className="flex items-center gap-3  pt-4">
                 <div className="flex items-center gap-3">
                   {[Facebook, Instagram, Linkedin, Send].map((Icon, i) => (
                     <Icon key={i} className="size-4" />
@@ -257,12 +278,8 @@ function AboutPage() {
             გალერეა
           </h2>
           <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Placeholder
-                key={i}
-                className="aspect-[4/3] w-full rounded-xl"
-                label="gallery"
-              />
+            {GALLERY_IMAGES.map((img, i) => (
+              <GalleryImage key={i} {...img} />
             ))}
           </div>
         </section>
