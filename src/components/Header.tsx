@@ -70,19 +70,20 @@ export default function Header({
         </Link>
 
         <nav className=" flex-1 items-center justify-center gap-6 text-[14px] font-medium hidden xl:flex">
-          {NAV.map((item) => (
-            <Link
-              key={item.label}
-              href={item.to}
-              className={cn(
-                " transition-opacity hover:opacity-70 ",
-                pathname === item.to ? "text-[#EA6200]" : "",
-              )}
-              // activeProps={{ className: "text-primary" }}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {NAV.map((item) => {
+            const isActive = routing.locales.some(
+              (loc) => pathname === `/${loc}${item.to}`,
+            );
+            return (
+              <Link
+                key={item.to}
+                href={item.to}
+                className={cn(isActive && "text-[#EA6200]")}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="ml-auto flex items-center gap-4 xl:ml-0">

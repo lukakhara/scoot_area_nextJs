@@ -2,13 +2,6 @@
 'use client'
 import { useState } from "react";
 import {
-  Minus,
-  Plus,
-  Shuffle,
-  ShoppingBasket,
-  type LucideIcon,
-} from "lucide-react";
-import {
   Battery,
   CalendarDays,
   CircleCheck,
@@ -20,6 +13,11 @@ import {
   Users,
   Weight,
   Zap,
+   Minus,
+  Plus,
+  Shuffle,
+  ShoppingBasket,
+  type LucideIcon,
 } from "lucide-react";
 import { Placeholder } from "../components/Placeholder";
 import { ProductCard } from "../components/ProductCard";

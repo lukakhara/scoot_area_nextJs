@@ -35,5 +35,23 @@
     "Blog": {
       "header": "Blog"
     }
+  },
+  "ProductListingPage": {
+    "titles": {
+      "scooters": "Scooters",
+      "spareParts": "Spare Parts",
+      "accessories": "Accessories"
+    },
+    "description": "An electric scooter often reaches speeds of 25 to 50 km/h. In the event of a fall or collision, a helmet significantly reduces the risk of head injury. This is not a choice — it is a necessity.",
+    "actions": {
+      "filter": "Filter",
+      "sort": "Sort",
+      "compare": "Compare"
+    },
+    "pagination": {
+      "pages": "Pages",
+      "previous": "Previous",
+      "next": "Next"
+    }
   }
 }

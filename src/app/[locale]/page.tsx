@@ -42,7 +42,7 @@ function Home() {
       <HeroSection />
 
       {/* Promo banner */}
-      <section className="w-full  pt-[60px] md:pt-[99px] pr-[15px] pl-4 md:px-[72px] test">
+      <section className="w-full  pt-[60px] md:pt-[99px] pr-[15px] pl-4 md:px-[72px] ">
         <div className="relative overflow-hidden rounded-2xl">
           <picture>
             <source
@@ -86,28 +86,29 @@ function Home() {
           style={{ zIndex: 0 }}
         ></div>
         <section
-          className="md:bg-[#F5F5F5] pr-3.75  pl-4 pb-0 pt-3  md:px-18 md:py-12 flex items-center justify-center  relative z-100 "
+          className="md:bg-[#F5F5F5] pr-3.75  pl-4 pb-0 pt-3  md:px-18 md:py-12 flex items-center justify-center  relative z-100  test"
           style={{ zIndex: 1 }}
         >
           {/* <div className="px-18 py-12 flex items-center justify-center relative z-100 flex-col gap-8 md:gap-16 max-w-[1400px] w-full"> */}
           {/* HEADING WRAPPER */}
-          <div className=" flex items-center justify-center relative z-100 flex-col  max-w-[1400px] w-full gap-8">
+          <div className=" flex items-center justify-center relative z-100 flex-col  max-w-[1400px] 2xl:max-w-full w-full gap-8 test ">
             <h2 className=" text-xl font-bold tracking-wide uppercase sm:text-2xl md:text-[40px] w-full">
               შეკეთება
             </h2>
 
             {/* PARENT — now correctly holds BOTH image and text as flex children */}
-            <div className="flex flex-col items-stretch gap-8.75  md:flex-row w-full justify-center ">
+            <div className="flex flex-col items-stretch gap-8.75  md:flex-row w-full justify-center test ">
               {/* Image + ICON */}
-              <div className="relative w-full xl:max-w-[853px] flex-shrink-0 self-stretch min-h-0">
+              <div className="relative w-full xl:max-w-[853px] 2xl:max-w-full   flex-shrink-0 self-stretch min-h-0 flex-1">
                 <picture className="block w-full h-full">
                   <source
                     media="(min-width: 768px)"
                     srcSet="/langindPageServiceDesktop.png"
                   />
+                  {/* BUG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
                   <Image
                     src="/langindPageServiceMobile.png"
-                    className="w-full h-full object-cover rounded-[20px]"
+                    className="2xl:w-full object-cover h-auto rounded-[20px]"
                     alt="service image"
                     width={853}
                     height={411}
@@ -167,15 +168,15 @@ function Home() {
         ))}
       />
       {/* Blog */}
-      <section className="mx-auto max-w-[1400px] px-4 md:px-5 pb-16">
+      <section className="flex justify-center flex-col 2xl:w-full px-4 md:px-18 pb-16 gap-[23px]">
         <h2 className="mb-6 text-xl font-bold tracking-wide uppercase sm:text-2xl text-[#212121] md:text-[40px]">
           ბლოგი
         </h2>
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-8 lg:grid-cols-2">
           {[0, 1].map((i) => (
             <article
               key={i}
-              className="overflow-hidden rounded-xl    p-7 bg-[#F5F5F5]"
+              className="overflow-hidden rounded-xl     bg-[#F5F5F5]"
             >
               <div className="relative ">
                 <picture className=" block w-full h-full">
