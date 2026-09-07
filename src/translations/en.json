@@ -53,5 +53,33 @@
       "previous": "Previous",
       "next": "Next"
     }
+  },
+  
+  "FilterPanel": {
+    "titles": {
+      "brand": "Brand",
+      "category": "Category",
+      "size": "Size",
+      "releaseDate": "Release Date",
+      "gender": "Gender",
+      "enginePower": "Motor Power",
+      "chargingTime": "Charging Time",
+      "weight": "Weight"
+    },
+    "categoryOptions": {
+      "helmets": "Helmets",
+      "gloves": "Gloves",
+      "vests": "Vests",
+      "locks": "Locks",
+      "bags": "Bags",
+      "glasses": "Glasses",
+      "lorem": "Lorem ipsum"
+    },
+    "genderOptions": {
+      "female": "Female",
+      "male": "Male",
+      "unisex": "Unisex"
+    }
+
   }
 }

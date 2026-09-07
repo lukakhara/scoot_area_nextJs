@@ -53,5 +53,34 @@
       "previous": "წინა",
       "next": "შემდეგი"
     }
-  }
+  },
+
+  
+  "FilterPanel": {
+    "titles": {
+      "brand": "ბრენდი",
+      "category": "კატეგორია",
+      "size": "ზომა",
+      "releaseDate": "გამოშვების თარიღი",
+      "gender": "სქესი",
+      "enginePower": "ძრავის სიმძლავრე",
+      "chargingTime": "დატენვის დრო",
+      "weight": "წონა"
+    },
+    "categoryOptions": {
+      "helmets": "ჩაფხუტები",
+      "gloves": "ხელთათმანები",
+      "vests": "ჟილეტები",
+      "locks": "საკეტები",
+      "bags": "ჩანთები",
+      "glasses": "სათვალეები",
+      "lorem": "lorem ipsum"
+    },
+    "genderOptions": {
+      "female": "მდედრობითი",
+      "male": "მამრობითი",
+      "unisex": "უნისექსი"
+    }
+  
+}
 }

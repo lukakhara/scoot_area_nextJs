@@ -1,13 +1,12 @@
 "use client";
 import { useState } from "react";
-import { Link } from "../i18n/navigation";
-import { usePathname } from "next/navigation";
+import { Link, usePathname, useRouter } from "../i18n/navigation";
 import { Menu, ShoppingCart, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CartPopover from "@/components/CartPopover";
 import Image from "next/image";
 import { routing } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function Header({
   variant = "overlay",
@@ -17,10 +16,20 @@ export default function Header({
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [langEnglish, setLangEnglish] = useState(false);
-  const flag = langEnglish ? "/gb-flag.png" : "/georgia.png";
+
   const pathname = usePathname();
-  const isHomePage = routing.locales.some((loc) => pathname === `/${loc}`);
+  const router = useRouter();
+  const locale = useLocale(); // "en" | "ka"
+
+  function toggleLocale() {
+    const nextLocale = locale === "en" ? "ka" : "en";
+    router.replace(pathname, { locale: nextLocale });
+  }
+
+  const flag = langEnglish ? "/gb-flag.png" : "/georgia.png";
+  const isHomePage = pathname === "/";
   const solid = isHomePage ? false : true;
+
 
   const t = useTranslations("Header");
 
@@ -118,7 +127,7 @@ export default function Header({
           >
             <Image
               src={flag}
-              onClick={() => setLangEnglish((prev) => !prev)}
+              onClick={toggleLocale}
               className={cn(
                 " size-[13.25px] sm:size-[22.07px] rounded-full border-white ",
                 solid ? "bg-foregrhound/15" : "bg-primary-foreground/20",
