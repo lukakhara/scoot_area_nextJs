@@ -1,10 +1,8 @@
 import React from "react";
-import ProductListingPage from "@/components/ProductListingPage";
+import ProductListingPage from "@/components/product-listing/ProductListingPage";
 
 const page = () => {
-  return (
-      <ProductListingPage pageType="parts" />
-  );
+  return <ProductListingPage pageType="parts" />;
 };
 
 export default page;

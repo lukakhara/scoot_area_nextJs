@@ -20,7 +20,7 @@ import {
   Weight,
   Zap,
 } from "lucide-react";
-import { Placeholder } from "@/components/Placeholder";
+import { Placeholder } from "@/components/ui/Placeholder";
 
 const SPEC_ROWS = [
   { Icon: Repeat, label: "ძრავი" },

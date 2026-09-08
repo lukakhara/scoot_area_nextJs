@@ -20,9 +20,7 @@ import {
   Weight,
   Zap,
 } from "lucide-react";
-import { Placeholder } from "./Placeholder";
-
-
+import { Placeholder } from "./ui/Placeholder";
 
 const CANDIDATES = Array.from({ length: 7 }, (_, i) => ({
   id: i,
@@ -58,8 +56,6 @@ export default function ComparePage() {
 
   return (
     <div className="min-h-screen bg-background">
-    
-
       <main className="mx-auto max-w-[1400px] px-5 pt-8 pb-16 lg:pt-12">
         <h1 className="text-2xl font-extrabold tracking-tight uppercase sm:text-3xl">
           შეადარე სასურველი პროდუქტები
@@ -80,21 +76,32 @@ export default function ComparePage() {
                 className="grid grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-4 border-b py-4 sm:grid-cols-[minmax(0,1fr)_140px_40px]"
               >
                 <div className="flex min-w-0 items-center gap-4 sm:col-span-1">
-                  <Placeholder className="size-16 shrink-0 rounded-xl" label="scooter" />
+                  <Placeholder
+                    className="size-16 shrink-0 rounded-xl"
+                    label="scooter"
+                  />
                   <div className="min-w-0">
-                    <p className="truncate text-xs font-bold uppercase">{item.title}</p>
-                    <p className="mt-1 text-[11px] text-muted-foreground">{item.color}</p>
+                    <p className="truncate text-xs font-bold uppercase">
+                      {item.title}
+                    </p>
+                    <p className="mt-1 text-[11px] text-muted-foreground">
+                      {item.color}
+                    </p>
                   </div>
                 </div>
 
-                <span className="text-sm font-semibold text-muted-foreground">{item.price}</span>
+                <span className="text-sm font-semibold text-muted-foreground">
+                  {item.price}
+                </span>
 
                 <button
                   aria-label="არჩევა"
                   aria-pressed={selected === item.id}
                   onClick={() => setSelected(item.id)}
                   className={`justify-self-end flex size-4 items-center justify-center rounded-full border transition-colors ${
-                    selected === item.id ? "border-sale bg-sale" : "border-border"
+                    selected === item.id
+                      ? "border-sale bg-sale"
+                      : "border-border"
                   }`}
                 />
               </li>
@@ -115,15 +122,22 @@ export default function ComparePage() {
           <div className="mt-6 overflow-x-auto rounded-2xl border">
             <div className="min-w-[640px]">
               <div className="grid grid-cols-[minmax(180px,1fr)_repeat(2,minmax(150px,1fr))_120px] items-center gap-4 border-b p-5">
-                <span className="text-sm font-bold uppercase">მახასიათებლები</span>
+                <span className="text-sm font-bold uppercase">
+                  მახასიათებლები
+                </span>
                 {[0, 1].map((i) => (
                   <div key={i} className="flex min-w-0 items-center gap-3">
-                    <Placeholder className="size-12 shrink-0 rounded-lg" label="scooter" />
+                    <Placeholder
+                      className="size-12 shrink-0 rounded-lg"
+                      label="scooter"
+                    />
                     <div className="min-w-0">
                       <p className="text-[11px] leading-tight font-bold uppercase">
                         Ninebot by Segway - F30 Plus
                       </p>
-                      <p className="mt-1 text-[10px] text-muted-foreground">ფერი: შავი</p>
+                      <p className="mt-1 text-[10px] text-muted-foreground">
+                        ფერი: შავი
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -165,7 +179,6 @@ export default function ComparePage() {
           </p>
         </section>
       </main>
-
     </div>
   );
 }

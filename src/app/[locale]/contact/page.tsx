@@ -1,5 +1,5 @@
 import React from "react";
-import { Placeholder } from "@/components/Placeholder";
+import { Placeholder } from "@/components/ui/Placeholder";
 import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
 import {
   SiFacebook as Facebook,

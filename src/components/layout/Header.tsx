@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Link, usePathname, useRouter } from "../i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Menu, ShoppingCart, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CartPopover from "@/components/CartPopover";

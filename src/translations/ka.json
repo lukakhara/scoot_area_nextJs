@@ -55,17 +55,25 @@
     }
   },
 
-  
   "FilterPanel": {
     "titles": {
       "brand": "ბრენდი",
       "category": "კატეგორია",
       "size": "ზომა",
-      "releaseDate": "გამოშვების თარიღი",
+      "releaseDate": "გამოშვების წელი",
       "gender": "სქესი",
       "enginePower": "ძრავის სიმძლავრე",
       "chargingTime": "დატენვის დრო",
-      "weight": "წონა"
+      "weight": "წონა",
+
+      "drivetrainPower": "ამძრავი და კვება",
+      "wheelsTires": "თვლები და საბურავები",
+      "brakes": "მუხრუჭები",
+      "frameBody": "ჩარჩო და კორპუსი",
+      "electricalLighting": "ელექტროობა და განათება",
+      "steeringHandlebars": "საჭე და სახელურები",
+      "suspension": "ამორტიზაცია",
+      "fastenersSmallParts": "სამაგრები და წვრილი ნაწილები"
     },
     "categoryOptions": {
       "helmets": "ჩაფხუტები",
@@ -73,14 +81,50 @@
       "vests": "ჟილეტები",
       "locks": "საკეტები",
       "bags": "ჩანთები",
-      "glasses": "სათვალეები",
-      "lorem": "lorem ipsum"
+      "glasses": "საინფორმაციო სათვალეები",
+      "lorem": "Lorem ipsum",
+
+      "motors": "ძრავები",
+      "batteries": "ელემენტები / აკუმულატორები",
+      "chargers": "დამტენები",
+      "controllers": "კონტროლერები",
+      "throttles": "ამაჩქარებლები (Aქსელერატორი)",
+
+      "tires": "საბურავები",
+      "innerTubes": "კამერები",
+      "rimsHubs": "დისკები და მორგვები",
+      "bearings": "საკისრები (პოდშიპნიკები)",
+
+      "brakePads": "სამუხრუჭე ხუნდები",
+      "brakeDiscs": "სამუხრუჭე დისკები",
+      "brakeLevers": "მუხრუჭის სახელურები",
+      "brakeCables": "მუხრუჭის ტროსები",
+
+      "foldingMechanisms": "კეცვის მექანიზმები",
+      "kickstands": "საყრდენი ფეხები",
+      "fenders": "ფრთები (ტალახდამცავები)",
+      "deckGrips": "დეკის დასაკრობი (გრიპი)",
+
+      "headlightsTaillights": "წინა და უკანა განათება",
+      "turnSignals": "მოხვევის მაჩვენებლები",
+      "wiringHarnesses": "სადენების შეკვრა",
+      "displays": "დისპლეები / ეკრანები",
+      "hornsBells": "საყვირები და ზარები",
+
+      "handlebarGrips": "საჭის სახელურები (გრიპსები)",
+      "stems": "საჭის ღერძი (ღერო)",
+      "handlebarClamps": "საჭის დამჭერები",
+
+      "shocks": "ამორტიზატორები",
+      "suspensionSprings": "ამორტიზატორის ზამბარები",
+
+      "screwsBolts": "ჭანჭიკები და ხრახნები",
+      "rubberGrommets": "რეზინის დამჭერები / ბალიშები"
     },
     "genderOptions": {
-      "female": "მდედრობითი",
-      "male": "მამრობითი",
+      "female": "ქალი",
+      "male": "კაცი",
       "unisex": "უნისექსი"
     }
-  
-}
+  }
 }

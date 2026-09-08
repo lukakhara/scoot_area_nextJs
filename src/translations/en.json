@@ -54,7 +54,7 @@
       "next": "Next"
     }
   },
-  
+
   "FilterPanel": {
     "titles": {
       "brand": "Brand",
@@ -64,7 +64,16 @@
       "gender": "Gender",
       "enginePower": "Motor Power",
       "chargingTime": "Charging Time",
-      "weight": "Weight"
+      "weight": "Weight",
+
+      "drivetrainPower": "Drivetrain & Power",
+      "wheelsTires": "Wheels & Tires",
+      "brakes": "Brakes",
+      "frameBody": "Frame & Body",
+      "electricalLighting": "Electrical & Lighting",
+      "steeringHandlebars": "Steering & Handlebars",
+      "suspension": "Suspension",
+      "fastenersSmallParts": "Fasteners & Small Parts"
     },
     "categoryOptions": {
       "helmets": "Helmets",
@@ -73,13 +82,49 @@
       "locks": "Locks",
       "bags": "Bags",
       "glasses": "Glasses",
-      "lorem": "Lorem ipsum"
+      "lorem": "Lorem ipsum",
+
+      "motors": "Motors",
+      "batteries": "Batteries",
+      "chargers": "Chargers",
+      "controllers": "Controllers",
+      "throttles": "Throttles",
+
+      "tires": "Tires",
+      "innerTubes": "Inner Tubes",
+      "rimsHubs": "Rims & Hubs",
+      "bearings": "Bearings",
+
+      "brakePads": "Brake Pads",
+      "brakeDiscs": "Brake Discs",
+      "brakeLevers": "Brake Levers",
+      "brakeCables": "Brake Cables",
+
+      "foldingMechanisms": "Folding Mechanisms",
+      "kickstands": "Kickstands",
+      "fenders": "Fenders",
+      "deckGrips": "Deck Grips",
+
+      "headlightsTaillights": "Headlights & Taillights",
+      "turnSignals": "Turn Signals",
+      "wiringHarnesses": "Wiring Harnesses",
+      "displays": "Displays",
+      "hornsBells": "Horns & Bells",
+
+      "handlebarGrips": "Handlebar Grips",
+      "stems": "Stems",
+      "handlebarClamps": "Handlebar Clamps",
+
+      "shocks": "Shocks",
+      "suspensionSprings": "Suspension Springs",
+
+      "screwsBolts": "Screws & Bolts",
+      "rubberGrommets": "Rubber Grommets"
     },
     "genderOptions": {
       "female": "Female",
       "male": "Male",
       "unisex": "Unisex"
     }
-
   }
 }

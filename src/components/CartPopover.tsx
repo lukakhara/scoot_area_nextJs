@@ -1,16 +1,25 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import { X } from "lucide-react";
-import { Placeholder } from "../components/Placeholder";
+import { Placeholder } from "./ui/Placeholder";
 import Link from "next/link";
-
 
 type Item = { title: string; color: string; price: string; qty: number };
 
 const INITIAL: Item[] = [
-  { title: "Ninebot by Segway - F30 Plus", color: "შავი", price: "750.00₾", qty: 2 },
-  { title: "Ninebot by Segway - F30 Plus", color: "შავი", price: "750.00₾", qty: 2 },
+  {
+    title: "Ninebot by Segway - F30 Plus",
+    color: "შავი",
+    price: "750.00₾",
+    qty: 2,
+  },
+  {
+    title: "Ninebot by Segway - F30 Plus",
+    color: "შავი",
+    price: "750.00₾",
+    qty: 2,
+  },
 ];
 
 export default function CartPopover({ onClose }: { onClose: () => void }) {
@@ -18,13 +27,17 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
 
   const setQty = (i: number, d: number) =>
     setItems((prev) =>
-      prev.map((it, idx) => (idx === i ? { ...it, qty: Math.max(1, it.qty + d) } : it)),
+      prev.map((it, idx) =>
+        idx === i ? { ...it, qty: Math.max(1, it.qty + d) } : it,
+      ),
     );
 
   return (
     <div className="absolute top-full right-0 z-50 mt-3 w-[min(92vw,420px)] rounded-2xl border bg-card p-5 text-foreground shadow-xl">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-extrabold tracking-tight uppercase">კალათა</h2>
+        <h2 className="text-lg font-extrabold tracking-tight uppercase">
+          კალათა
+        </h2>
         <button
           onClick={() => setItems([])}
           className="text-sm text-muted-foreground underline hover:text-primary"
@@ -35,11 +48,18 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
 
       <div className="mt-4 space-y-4">
         {items.map((item, i) => (
-          <div key={i} className="grid grid-cols-[64px_minmax(0,1fr)_auto] items-start gap-3">
+          <div
+            key={i}
+            className="grid grid-cols-[64px_minmax(0,1fr)_auto] items-start gap-3"
+          >
             <Placeholder className="size-16 rounded-xl" label="" />
             <div className="min-w-0">
-              <p className="text-xs leading-tight font-extrabold uppercase">{item.title}</p>
-              <p className="mt-1 text-xs text-muted-foreground">ფერი: {item.color}</p>
+              <p className="text-xs leading-tight font-extrabold uppercase">
+                {item.title}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                ფერი: {item.color}
+              </p>
             </div>
             <div className="flex flex-col items-end gap-2">
               <button
@@ -67,14 +87,18 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
                     +
                   </button>
                 </div>
-                <span className="font-medium whitespace-nowrap">{item.price}</span>
+                <span className="font-medium whitespace-nowrap">
+                  {item.price}
+                </span>
               </div>
             </div>
           </div>
         ))}
 
         {items.length === 0 && (
-          <p className="py-6 text-center text-sm text-muted-foreground">კალათა ცარიელია</p>
+          <p className="py-6 text-center text-sm text-muted-foreground">
+            კალათა ცარიელია
+          </p>
         )}
       </div>
 

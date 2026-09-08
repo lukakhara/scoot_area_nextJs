@@ -1,5 +1,5 @@
 // ProductDetailPage.tsx
-'use client'
+"use client";
 import { useState } from "react";
 import {
   Battery,
@@ -13,17 +13,16 @@ import {
   Users,
   Weight,
   Zap,
-   Minus,
+  Minus,
   Plus,
   Shuffle,
   ShoppingBasket,
   type LucideIcon,
 } from "lucide-react";
-import { Placeholder } from "../components/Placeholder";
-import { ProductCard } from "../components/ProductCard";
-import { type Product } from "../types/product";
+import { Placeholder } from "@/components/ui/Placeholder";
+import { ProductCard } from "@/components/ProductCard";
+import { type Product } from "@/types/product";
 import Image from "next/image";
-
 
 type PageType = "scooter" | "accessory" | "parts";
 
@@ -69,7 +68,10 @@ const PAGE_CONFIG: Record<PageType, PageConfig> = {
       price: "750.00₾",
       oldPrice: "900.00₾",
       discount: "10% ფასდაკლება",
-      imagePath: { mobile: "/scooterMobile.png", desktop: "/scooterDesktop.png" },
+      imagePath: {
+        mobile: "/scooterMobile.png",
+        desktop: "/scooterDesktop.png",
+      },
       description: [
         "სეგვეის ნაინბოტ სი20 არის ელექტრო ქიმიკატების სერიის ნაწილი, რომელიც შექმნილია ექსკლუზიურად მოხმარებისთვის. დამატებითი კურვადობა დაეთმო უსაფრთხოების მახასიათებლებს, როგორიცაა ელასტიური რეზინის საბურავები.",
         "აღმოსაჩენად განკუთვნილი გამძლეობის სავალფურის ქვედა ნაწილში და არის 3 სხვადასხვა ფერში, ტარების რეჟიმის მიხედვით. ბატარეა მოთავსებულია სავალფურში, რომელიც ინარჩუნებს სიმძიმის ცენტრს დაბალ დონეზე და ადვილად სამართავს.",
@@ -84,7 +86,10 @@ const PAGE_CONFIG: Record<PageType, PageConfig> = {
       year: "2025",
       installment: "თვეში 55 ლარიდან",
       oldPrice: "900.00₾",
-      imagePath: { mobile: "/scooterMobile.png", desktop: "/scooterDesktop.png" },
+      imagePath: {
+        mobile: "/scooterMobile.png",
+        desktop: "/scooterDesktop.png",
+      },
     })),
     specs: SCOOTER_SPECS,
     sectionTitle: "რატომ ნაინბოტ სი20?",
@@ -132,7 +137,7 @@ const PAGE_CONFIG: Record<PageType, PageConfig> = {
       title: "Ninebot by Segway - F30 Plus",
       price: "750.00₾",
       imagePath: {
-        mobile: "/productBatteryMobile.png" ,
+        mobile: "/productBatteryMobile.png",
         desktop: "/productBatteryDesktop.png",
       },
     })),

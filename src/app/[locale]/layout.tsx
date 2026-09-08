@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/app/globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -57,12 +57,12 @@ export default async function RootLayout({
     return (
       <html
         lang="en"
-        className={`${notoSansGeorgian.variable} h-full antialiased`}
+        className={`${notoSansGeorgian.variable}   antialiased `}
       >
-        <body className="min-h-full flex flex-col font-sans ">
+        <body className="flex flex-col font-sans ">
           <NextIntlClientProvider messages={messages}>
             <Header />
-            <main className="flex-1"> {children}</main>
+            <main className="flex-1 overflow-x-hidden"> {children}</main>
             <Footer />
           </NextIntlClientProvider>
         </body>

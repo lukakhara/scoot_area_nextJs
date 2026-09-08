@@ -38,7 +38,7 @@ const ACCESSORIES: Product[] = Array.from({ length: 15 }, (_, i) => ({
 
 function Home() {
   return (
-    <div className="min-h-screen bg-background min-w-screen  ">
+    <div className=" min-w-screen bg-background">
       <HeroSection />
 
       {/* Promo banner */}
@@ -86,18 +86,18 @@ function Home() {
           style={{ zIndex: 0 }}
         ></div>
         <section
-          className="md:bg-[#F5F5F5] pr-3.75  pl-4 pb-0 pt-3  md:px-18 md:py-12 flex items-center justify-center  relative z-100  test"
+          className="md:bg-[#F5F5F5] pr-3.75  pl-4 pb-0 pt-3  md:px-18 md:py-12 flex items-center justify-center  relative z-100  "
           style={{ zIndex: 1 }}
         >
           {/* <div className="px-18 py-12 flex items-center justify-center relative z-100 flex-col gap-8 md:gap-16 max-w-[1400px] w-full"> */}
           {/* HEADING WRAPPER */}
-          <div className=" flex items-center justify-center relative z-100 flex-col  max-w-[1400px] 2xl:max-w-full w-full gap-8 test ">
+          <div className=" flex items-center justify-center relative z-100 flex-col  max-w-[1400px] 2xl:max-w-full w-full gap-8  ">
             <h2 className=" text-xl font-bold tracking-wide uppercase sm:text-2xl md:text-[40px] w-full">
               შეკეთება
             </h2>
 
             {/* PARENT — now correctly holds BOTH image and text as flex children */}
-            <div className="flex flex-col items-stretch gap-8.75  md:flex-row w-full justify-center test ">
+            <div className="flex flex-col items-stretch gap-8.75  md:flex-row w-full justify-center  ">
               {/* Image + ICON */}
               <div className="relative w-full xl:max-w-[853px] 2xl:max-w-full   flex-shrink-0 self-stretch min-h-0 flex-1">
                 <picture className="block w-full h-full">

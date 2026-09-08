@@ -33,11 +33,57 @@ export const ACCESSORY_GROUPS: Group[] = [
 ];
 
 export const PART_GROUPS: Group[] = [
-  { titleKey: "brand", type: "radio", optionKeys: ["Ninebot", "Kukirin", "Ninebot", "Kukirin"] },
   {
-    titleKey: "category",
+    titleKey: "brand",
     type: "radio",
-    optionKeys: Array.from({ length: 8 }, () => "lorem"),
+    optionKeys: ["Ninebot", "Kukirin", "Xiaomi", "Segway"],
+  },
+  {
+    titleKey: "drivetrainPower",
+    type: "checkbox",
+    optionKeys: ["motors", "batteries", "chargers", "controllers", "throttles"],
+    optionNamespace: "categoryOptions",
+  },
+  {
+    titleKey: "wheelsTires",
+    type: "checkbox",
+    optionKeys: ["tires", "innerTubes", "rimsHubs", "bearings"],
+    optionNamespace: "categoryOptions",
+  },
+  {
+    titleKey: "brakes",
+    type: "checkbox",
+    optionKeys: ["brakePads", "brakeDiscs", "brakeLevers", "brakeCables"],
+    optionNamespace: "categoryOptions",
+  },
+  {
+    titleKey: "frameBody",
+    type: "checkbox",
+    optionKeys: ["foldingMechanisms", "kickstands", "fenders", "deckGrips"],
+    optionNamespace: "categoryOptions",
+  },
+  {
+    titleKey: "electricalLighting",
+    type: "checkbox",
+    optionKeys: ["headlightsTaillights", "turnSignals", "wiringHarnesses", "displays", "hornsBells"],
+    optionNamespace: "categoryOptions",
+  },
+  {
+    titleKey: "steeringHandlebars",
+    type: "checkbox",
+    optionKeys: ["handlebarGrips", "stems", "handlebarClamps"],
+    optionNamespace: "categoryOptions",
+  },
+  {
+    titleKey: "suspension",
+    type: "checkbox",
+    optionKeys: ["shocks", "suspensionSprings"],
+    optionNamespace: "categoryOptions",
+  },
+  {
+    titleKey: "fastenersSmallParts",
+    type: "checkbox",
+    optionKeys: ["screwsBolts", "rubberGrommets"],
     optionNamespace: "categoryOptions",
   },
 ];
@@ -67,7 +113,7 @@ function FilterGroup({ group }: { group: Group }) {
   const t = useTranslations("FilterPanel");
 
   return (
-    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121] p-5">
+    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121] p-5 test">
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-3 border-b-[0.5px] border-[#606060] pb-4 text-left text-base font-normal uppercase text-[20px] text-[#212121] "

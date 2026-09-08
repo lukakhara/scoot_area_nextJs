@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { Placeholder } from "@/components/Placeholder";
+import { Placeholder } from "@/components/ui/Placeholder";
 
 const CANDIDATES = Array.from({ length: 7 }, (_, i) => ({
   id: i,

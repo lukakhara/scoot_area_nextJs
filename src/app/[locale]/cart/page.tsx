@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ChevronDown, Trash2 } from "lucide-react";
-import { Placeholder } from "@/components/Placeholder";
+import { Placeholder } from "@/components/ui/Placeholder";
 import Image from "next/image";
 
 type CartItem = {

@@ -17,7 +17,7 @@ import {
   SiLinkerd as Linkedin,
   SiYoutube as Youtube,
 } from "@icons-pack/react-simple-icons";
-import { Placeholder } from "@/components/Placeholder";
+import { Placeholder } from "@/components/ui/Placeholder";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import GalleryImage from "@/components/GalleryImage";

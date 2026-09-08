@@ -1,10 +1,11 @@
-import ProductDetailPage from '@/components/ProductDetailPage'
-
+import ProductDetailPage from "@/components/product-listing/ProductDetailPage";
 
 const page = () => {
   return (
-    <div><ProductDetailPage pageType="parts" /></div>
-  )
-}
+    <div>
+      <ProductDetailPage pageType="parts" />
+    </div>
+  );
+};
 
-export default page
+export default page;

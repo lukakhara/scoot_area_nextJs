@@ -1,4 +1,4 @@
-import  Link  from "next/link";
+import Link from "next/link";
 import {
   CircleCheck,
   Gauge,
@@ -8,7 +8,7 @@ import {
   Weight,
   Zap,
 } from "lucide-react";
-import { Placeholder } from "./Placeholder";
+import { Placeholder } from "./ui/Placeholder";
 import { type Product } from "../types/product";
 import Image from "next/image";
 
@@ -34,25 +34,24 @@ export function ProductCard({ item }: { item: Product }) {
       <div className="relative overflow-hidden rounded-xl bg-card ">
         {item.imagePath ? (
           <Link
-          href={DETAIL_ROUTES[item.productType]}
-          className="transition-colors hover:text-primary cursor-pointer group "
-        >
-           <picture className="">
-            <source
-              media="(min-width: 768px) "
-              srcSet={item.imagePath.desktop}
-              className=""
-            />
-            <Image
-              src={item.imagePath.mobile}
-              className='w-full h-full object-cover group-hover:scale-105 group-hover:opacity-80 '
-              alt={`${item.productType} image`}
-              width={379.78}
-              height={214.6}
-            />
-          </picture>
-        </Link>
-        
+            href={DETAIL_ROUTES[item.productType]}
+            className="transition-colors hover:text-primary cursor-pointer group "
+          >
+            <picture className="">
+              <source
+                media="(min-width: 768px) "
+                srcSet={item.imagePath.desktop}
+                className=""
+              />
+              <Image
+                src={item.imagePath.mobile}
+                className="w-full h-full object-cover group-hover:scale-105 group-hover:opacity-80 "
+                alt={`${item.productType} image`}
+                width={379.78}
+                height={214.6}
+              />
+            </picture>
+          </Link>
         ) : (
           <Placeholder className="aspect-[4/3] w-full" label={item.title} />
         )}
@@ -138,7 +137,8 @@ export function ProductCard({ item }: { item: Product }) {
               : "flex-1  py-2.5  sm:text-[20px] w-full justify-center"
           }`}
         >
-          <ShoppingBasket className="size-[8.78px] sm:size-6  " /> კალათაში დამატება
+          <ShoppingBasket className="size-[8.78px] sm:size-6  " /> კალათაში
+          დამატება
         </button>
       </div>
     </article>

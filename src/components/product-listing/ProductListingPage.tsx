@@ -6,14 +6,20 @@ import {
   ChevronLeft,
   ChevronRight,
   ListFilter,
-  Shuffle,
-  Funnel,
+
 } from "lucide-react";
-import { FilterPanel, PART_GROUPS } from "../components/FilterPanel";
-import { ProductCard } from "../components/ProductCard";
-import { SCOOTER_ITEMS, PARTS_ITEMS, ACCESSORY_ITEMS } from "../data/products";
-import { type Product } from "../types/product";
+import { FilterPanel, PART_GROUPS } from "./FilterPanel";
+import { ProductCard } from "../ProductCard";
+import {
+  SCOOTER_ITEMS,
+  PARTS_ITEMS,
+  ACCESSORY_ITEMS,
+} from "../../data/products";
+import { type Product } from "../../types/product";
 import { useTranslations } from "next-intl";
+import { FilterButton } from "./FilterButton";
+import { SortButton } from "./SortButton";
+import { CompareButton } from "./CompareButton";
 
 type PageType = "scooters" | "parts" | "accessories";
 
@@ -25,37 +31,6 @@ type PageConfig = {
   gridClassName: string;
   headerActions: boolean;
 };
-
-const PAGES = ["1", "2", "3", "4", "…"];
-
-function FilterButton({ onClick }: { onClick: () => void }) {
-  const t = useTranslations("ProductListingPage.actions");
-
-  return (
-    <button
-      onClick={onClick}
-      className="inline-flex items-center gap-2 rounded-full bg-[#F5F5F5] px-4 py-2 text-xs font-semibold uppercase lg:bg-transparent lg:px-0 lg:text-lg "
-    >
-      <Funnel className="size-4 sm:size-6" /> {t("filter")}
-    </button>
-  );
-}
-
-function SortButton({ compact = false }: { compact?: boolean }) {
-  const t = useTranslations("ProductListingPage.actions");
-
-  return (
-    <button
-      className={
-        compact
-          ? "inline-flex items-center gap-2 rounded-full bg-[#F5F5F5] px-4 py-2 text-xs font-semibold lg:hidden"
-          : "inline-flex items-center gap-2 rounded-full bg-[#F5F5F5] px-4 py-2 text-xs font-semibold lg:bg-transparent lg:px-0 lg:text-lg"
-      }
-    >
-      <ListFilter className="size-4 sm:size-6 " /> {t("sort")}
-    </button>
-  );
-}
 
 export default function ProductListingPage({
   pageType,
@@ -91,6 +66,10 @@ export default function ProductListingPage({
   const config = PAGE_CONFIG[pageType];
   const toggleFilters = () => setFiltersOpen((v) => !v);
 
+  const PAGES = ["1", "2", "3", "4", "…"];
+  const itemsPerPage = 10;
+  const pages = itemsPerPage;
+
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1400px] px-5 pt-10 pb-16">
@@ -104,7 +83,7 @@ export default function ProductListingPage({
               <button className="inline-flex items-center gap-2 text-lg font-normal">
                 <ListFilter className="size-5" /> {t("actions.sort")}
               </button>
-              <button className="inline-flex items-center gap-2 rounded-full border px-6 py-3 text-base transition-colors hover:border-primary hover:text-primary font-medium">
+              <button className="inline-flex items-center gap-2 rounded-full border px-6 py-3 text-base transition-colors hover:border-primary hover:text-primary font-medium ">
                 <ArrowLeftRight className="size-4" /> {t("actions.compare")}
               </button>
             </div>
@@ -122,22 +101,19 @@ export default function ProductListingPage({
         <div
           className={
             config.headerActions
-              ? "mt-6 flex items-center justify-between gap-3 lg:mt-8"
-              : "mt-10 flex items-center justify-between gap-3 border-b pb-6"
+              ? "mt-6 flex items-center justify-between gap-3 lg:mt-8 "
+              : "mt-10 flex items-center justify-between gap-3 border-b pb-6 "
           }
         >
           <FilterButton onClick={toggleFilters} />
           {config.headerActions ? (
             <SortButton compact />
           ) : (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 ">
               <SortButton />
-              <button className="size-[30px]  inline-flex  gap-2  border  text-xs font-semibold uppercase transition-colors hover:border-primary hover:text-primary sm:px-6 sm:py-3 rounded-full items-center justify-center ">
-                <Shuffle className="size-4 sm:size-6" />
-                <span className="hidden sm:inline text-[24px]">
-                  {t("actions.compare")}
-                </span>
-              </button>
+              {/* COMPARE BUTTON STYLES IF NEEDED:className="w-7.5 h-7.5 sm:h-auto sm:min-h-[48px] sm:max-w-[239px] sm:w-full flex gap-2 border text-xs font-semibold uppercase transition-colors hover:border-primary hover:text-primary sm:px-[37.5px] sm:py-3 rounded-full items-center justify-center md:w-[239px]  EXTRA CODE 
+               " */}
+              <CompareButton />
             </div>
           )}
         </div>
@@ -147,7 +123,7 @@ export default function ProductListingPage({
             <FilterPanel groups={config.filterGroups} />
           </aside>
 
-          <div>
+          <div className="">
             <div className={config.gridClassName}>
               {config.items.map((item, i) => (
                 <ProductCard key={item.title + i} item={item} />

@@ -42,7 +42,7 @@ export function HeroSection() {
           <source media="(min-width: 768px)" srcSet={image.desktop} />
           <Image
             src={image.mobile}
-            className="w-full object-cover xl:h-[1024px] "
+            className="w-full h-auto object-cover xl:h-[1024px] "
             alt="item image"
             width={1440}
             height={1024}

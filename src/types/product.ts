@@ -1,13 +1,23 @@
 type BaseProduct = {
-  id:string;
+ id: string;
+  productType: "scooter" | "accessory" | "parts";
   title: string;
   price: string;
   oldPrice?: string;
   discount?: string;
-  imagePath: {
-    mobile: string;
-    desktop: string;
-  };
+  year?: string;
+  installment?: string;
+  imagePath: { mobile: string; desktop: string };
+  imageLabel?: string;
+  // Filter fields
+  brand?: string;
+  enginePower?: string;
+  releaseDate?: string;
+  chargingTime?: string;
+  weight?: string;
+  category?: string;
+  size?: string;
+  gender?: string;
 };
 
 export type ScooterProduct = BaseProduct & {
@@ -22,6 +32,7 @@ export type AccessoryProduct = BaseProduct & {
 
 export type PartsProduct = BaseProduct & {
   productType: "parts";
+  partType:string;
 };
 
 export type Product = ScooterProduct | AccessoryProduct | PartsProduct;
