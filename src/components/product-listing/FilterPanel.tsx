@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -11,7 +11,11 @@ export type Group = {
 };
 
 export const ACCESSORY_GROUPS: Group[] = [
-  { titleKey: "brand", type: "radio", optionKeys: ["Ninebot", "Kukirin", "Xiaomi", "Segway"] },
+  {
+    titleKey: "brand",
+    type: "radio",
+    optionKeys: ["Ninebot", "Kukirin", "Xiaomi", "Segway"],
+  },
   {
     titleKey: "category",
     type: "radio",
@@ -65,7 +69,13 @@ export const PART_GROUPS: Group[] = [
   {
     titleKey: "electricalLighting",
     type: "checkbox",
-    optionKeys: ["headlightsTaillights", "turnSignals", "wiringHarnesses", "displays", "hornsBells"],
+    optionKeys: [
+      "headlightsTaillights",
+      "turnSignals",
+      "wiringHarnesses",
+      "displays",
+      "hornsBells",
+    ],
     optionNamespace: "categoryOptions",
   },
   {
@@ -89,8 +99,16 @@ export const PART_GROUPS: Group[] = [
 ];
 
 const GROUPS: Group[] = [
-  { titleKey: "brand", type: "checkbox", optionKeys: ["Ninebot", "Kukirin", "Xiaomi", "Segway"] },
-  { titleKey: "enginePower", type: "radio", optionKeys: ["125", "200", "250", "300"] },
+  {
+    titleKey: "brand",
+    type: "checkbox",
+    optionKeys: ["Ninebot", "Kukirin", "Xiaomi", "Segway"],
+  },
+  {
+    titleKey: "enginePower",
+    type: "radio",
+    optionKeys: ["125", "200", "250", "300"],
+  },
   {
     titleKey: "releaseDate",
     type: "radio",
@@ -104,7 +122,19 @@ const GROUPS: Group[] = [
   {
     titleKey: "weight",
     type: "radio",
-    optionKeys: ["30", "40", "50", "60", "70", "80", "90", "100", "110", "120", "130"],
+    optionKeys: [
+      "30",
+      "40",
+      "50",
+      "60",
+      "70",
+      "80",
+      "90",
+      "100",
+      "110",
+      "120",
+      "130",
+    ],
   },
 ];
 
@@ -113,13 +143,15 @@ function FilterGroup({ group }: { group: Group }) {
   const t = useTranslations("FilterPanel");
 
   return (
-    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121] p-5 test">
+    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121] p-5 ">
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-3 border-b-[0.5px] border-[#606060] pb-4 text-left text-base font-normal uppercase text-[20px] text-[#212121] "
       >
         {t(`titles.${group.titleKey}`)}
-        <ChevronUp className={`size-4 transition-transform ${open ? "" : "rotate-180"}`} />
+        <ChevronUp
+          className={`size-4 transition-transform ${open ? "" : "rotate-180"}`}
+        />
       </button>
       {open && (
         <ul className="mt-4 space-y-3 text-[18px]">
@@ -133,7 +165,9 @@ function FilterGroup({ group }: { group: Group }) {
                     group.type === "radio" ? "rounded-full" : "rounded-[3px]"
                   } checked:border-primary checked:bg-primary`}
                 />
-                {group.optionNamespace ? t(`${group.optionNamespace}.${opt}`) : opt}
+                {group.optionNamespace
+                  ? t(`${group.optionNamespace}.${opt}`)
+                  : opt}
               </label>
             </li>
           ))}
@@ -144,11 +178,16 @@ function FilterGroup({ group }: { group: Group }) {
 }
 
 export function FilterPanel({ groups = GROUPS }: { groups?: Group[] }) {
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const toggleFilters = () => setFiltersOpen((v) => !v);
   return (
-    <div className="space-y-5">
+    <aside
+      className={`${filtersOpen ? "block" : "hidden"} lg:flex  flex-col gap-4`}
+    >
       {groups.map((g) => (
         <FilterGroup key={g.titleKey} group={g} />
       ))}
-    </div>
+    </aside>
   );
 }

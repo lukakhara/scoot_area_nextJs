@@ -1,13 +1,6 @@
-"use client";
 // ProductListingPage.tsx
-import { useState } from "react";
-import {
-  ArrowLeftRight,
-  ChevronLeft,
-  ChevronRight,
-  ListFilter,
 
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FilterPanel, PART_GROUPS } from "./FilterPanel";
 import { ProductCard } from "../ProductCard";
 import {
@@ -17,9 +10,10 @@ import {
 } from "../../data/products";
 import { type Product } from "../../types/product";
 import { useTranslations } from "next-intl";
-import { FilterButton } from "./FilterButton";
+
 import { SortButton } from "./SortButton";
-import { CompareButton } from "./CompareButton";
+
+import FilterToolbar from "./FilterToolbar";
 
 type PageType = "scooters" | "parts" | "accessories";
 
@@ -62,66 +56,42 @@ export default function ProductListingPage({
     },
   };
 
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const config = PAGE_CONFIG[pageType];
-  const toggleFilters = () => setFiltersOpen((v) => !v);
 
   const PAGES = ["1", "2", "3", "4", "…"];
   const itemsPerPage = 10;
   const pages = itemsPerPage;
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1400px] px-5 pt-10 pb-16">
-        <div className="flex items-start justify-between gap-4">
-          <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px]">
-            {config.title}
-          </h1>
-
-          {config.headerActions && (
-            <div className="hidden items-center gap-6 lg:flex sm:text-[24px]">
-              <button className="inline-flex items-center gap-2 text-lg font-normal">
-                <ListFilter className="size-5" /> {t("actions.sort")}
-              </button>
-              <button className="inline-flex items-center gap-2 rounded-full border px-6 py-3 text-base transition-colors hover:border-primary hover:text-primary font-medium ">
-                <ArrowLeftRight className="size-4" /> {t("actions.compare")}
-              </button>
-            </div>
-          )}
-        </div>
-
-        {config.description && (
-          <div className="mt-6 max-w-4xl space-y-4 text-[0.875rem] text-muted-foreground sm:text-[20px]">
-            {config.description.map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
-            ))}
-          </div>
-        )}
-
-        <div
-          className={
-            config.headerActions
-              ? "mt-6 flex items-center justify-between gap-3 lg:mt-8 "
-              : "mt-10 flex items-center justify-between gap-3 border-b pb-6 "
-          }
-        >
-          <FilterButton onClick={toggleFilters} />
+    <div className="min-h-screen bg-background ">
+      <main className="flex flex-col w-full  px-5 pt-10 pb-16 ">
+        <div className="flex flex-col gap-4">
           {config.headerActions ? (
-            <SortButton compact />
-          ) : (
-            <div className="flex items-center gap-3 ">
+            <div className="flex items-center justify-between">
+              <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px]">
+                {config.title}
+              </h1>
               <SortButton />
-              {/* COMPARE BUTTON STYLES IF NEEDED:className="w-7.5 h-7.5 sm:h-auto sm:min-h-[48px] sm:max-w-[239px] sm:w-full flex gap-2 border text-xs font-semibold uppercase transition-colors hover:border-primary hover:text-primary sm:px-[37.5px] sm:py-3 rounded-full items-center justify-center md:w-[239px]  EXTRA CODE 
-               " */}
-              <CompareButton />
+            </div>
+          ) : (
+            <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px]">
+              {config.title}
+            </h1>
+          )}
+
+          {config.description && (
+            <div className="mt-6 w-full space-y-4 text-[0.875rem] text-muted-foreground sm:text-[20px]">
+              {config.description.map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
             </div>
           )}
+
+          <FilterToolbar haveFilterToolbarOnTop={config.headerActions} />
         </div>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8">
-          <aside className={`${filtersOpen ? "block" : "hidden"} lg:block`}>
-            <FilterPanel groups={config.filterGroups} />
-          </aside>
+          <FilterPanel groups={config.filterGroups} />
 
           <div className="">
             <div className={config.gridClassName}>
