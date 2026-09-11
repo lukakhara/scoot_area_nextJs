@@ -1,19 +1,13 @@
 // ProductListingPage.tsx
-
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FilterPanel, PART_GROUPS } from "./FilterPanel";
 import { ProductCard } from "../ProductCard";
-import {
-  SCOOTER_ITEMS,
-  PARTS_ITEMS,
-  ACCESSORY_ITEMS,
-} from "../../data/products";
+import { PARTS_ITEMS, ACCESSORY_ITEMS } from "../../data/products";
 import { type Product } from "../../types/product";
-import { useTranslations } from "next-intl";
-
-import { SortButton } from "./SortButton";
-
-import FilterToolbar from "./FilterToolbar";
+import { getTranslations } from "next-intl/server";
+import { SortButton } from "@/components/product-listing/SortButton";
+import FilterToolbar from "@/components/product-listing/FilterToolbar";
+import Pagination from "@/components/ui/Pagination";
+import { object, q } from "framer-motion/client";
 
 type PageType = "scooters" | "parts" | "accessories";
 
@@ -26,12 +20,38 @@ type PageConfig = {
   headerActions: boolean;
 };
 
-export default function ProductListingPage({
+export default async function ProductListingPage({
   pageType,
+  searchParams,
 }: {
   pageType: PageType;
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const t = useTranslations("ProductListingPage");
+  const t = await getTranslations("ProductListingPage");
+
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(searchParams)) {
+    if (value !== undefined) {
+      query.set(key, Array.isArray(value) ? value[0] : value);
+    }
+  }
+
+  const queryString = query.toString(); // "sort=price" or "" if empty
+
+  const url = queryString
+    ? `${process.env.NEXT_PUBLIC_API_URL}/scooters?${queryString}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/scooters`;
+
+  const res = await fetch(url, {
+    next: { revalidate: 60 },
+  });
+
+  console.log('url PRODUCT LISTING PAGE',url); // clean, no need for the dash-padding trick
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch scooters: ${res.status}`);
+  }
+  const { data: SCOOTER_ITEMS } = await res.json();
 
   const PAGE_CONFIG: Record<PageType, PageConfig> = {
     scooters: {
@@ -64,7 +84,7 @@ export default function ProductListingPage({
 
   return (
     <div className="min-h-screen bg-background ">
-      <main className="flex flex-col w-full  px-5 pt-10 pb-16 ">
+      <main className="flex flex-col w-full pr-3.75 pl-4 pt-10 pb-20 md:pt-20  md:px-18 md:pb-30">
         <div className="flex flex-col gap-4">
           {config.headerActions ? (
             <div className="flex items-center justify-between">
@@ -93,38 +113,18 @@ export default function ProductListingPage({
         <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8">
           <FilterPanel groups={config.filterGroups} />
 
-          <div className="">
+          {/* PRODUCTS  */}
+          <div>
             <div className={config.gridClassName}>
               {config.items.map((item, i) => (
-                <ProductCard key={item.title + i} item={item} />
+                <ProductCard
+                  key={item.id ?? item.name + i}
+                  item={item}
+                  productType={pageType}
+                />
               ))}
             </div>
-
-            <nav
-              className="mt-12 flex items-center justify-center gap-2 md:mt-20"
-              aria-label={t("pagination.pages")}
-            >
-              <button
-                aria-label={t("pagination.previous")}
-                className="flex size-[18.4px] md:size-8 items-center justify-center rounded-full border border-main hover:border-primary"
-              >
-                <ChevronLeft className="size-3 sm:size-4" />
-              </button>
-              {PAGES.map((p) => (
-                <button
-                  key={p}
-                  className="flex size-[18.4px] md:size-8 items-center justify-center rounded-full border text-sm sm:text-[16px] hover:border-primary hover:text-primary text-[9.2px]"
-                >
-                  {p}
-                </button>
-              ))}
-              <button
-                aria-label={t("pagination.next")}
-                className="flex size-[18.4px] md:size-8 items-center justify-center rounded-full border hover:border-primary"
-              >
-                <ChevronRight className="size-3 sm:size-4" />
-              </button>
-            </nav>
+            <Pagination PAGES={PAGES} />
           </div>
         </div>
       </main>

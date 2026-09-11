@@ -1,13 +1,14 @@
 type BaseProduct = {
  id: string;
   productType: "scooter" | "accessory" | "parts";
-  title: string;
+  name: string;
   price: string;
   oldPrice?: string;
   discount?: string;
   year?: string;
   installment?: string;
   imagePath: { mobile: string; desktop: string };
+  images: string;
   imageLabel?: string;
   // Filter fields
   brand?: string;

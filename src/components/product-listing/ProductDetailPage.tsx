@@ -422,7 +422,7 @@ export default function ProductDetailPage({
             }
           >
             {similar.map((item, i) => (
-              <ProductCard key={item.title + i} item={item} />
+              <ProductCard key={item.name + i} item={item} />
             ))}
           </div>
         </section>

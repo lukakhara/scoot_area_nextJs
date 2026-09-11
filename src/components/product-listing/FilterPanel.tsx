@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export type Group = {
   titleKey: string;
@@ -142,8 +143,51 @@ function FilterGroup({ group }: { group: Group }) {
   const [open, setOpen] = useState(true);
   const t = useTranslations("FilterPanel");
 
+  const pathname = usePathname(); // for /en/scooters?sort=price&page=2 we get /scooters
+  const searchParams = useSearchParams();  // ?sort=price&page=2  const sort = searchParams.get("sort");
+  const router = useRouter(); // moves us to url router.push("/scooters?sort=rating");
+
+  useEffect(() => {
+    setTimeout(updateFilter,3000)
+  },[updateFilter])
+
+  function updateFilter(
+    property: string,
+    value: string,
+    type: "checkbox" | "radio",
+  ) {
+    const params = new URLSearchParams(searchParams.toString()); // clone, don't mutate
+
+    if (type === "radio") {
+      // single-select: always replace
+      params.set(property, value);
+    } else {
+      // multi-select: comma-separated list under one key
+      const existing = params.get(property);
+      const values = existing ? existing.split(",") : [];
+
+      if (values.includes(value)) {
+        // already selected -> remove (toggle off)
+        const next = values.filter((v) => v !== value);
+        next.length > 0
+          ? params.set(property, next.join(","))
+          : params.delete(property);
+      } else {
+        // not selected -> add
+        params.set(property, [...values, value].join(","));
+      }
+    }
+
+    params.set("page", "1"); // reset pagination whenever a filter changes
+    router.push(`${pathname}?${params.toString()}`);
+  }
+
+  const currentValues = (searchParams.get(group.titleKey) ?? "")
+    .split(",")
+    .filter(Boolean);
+
   return (
-    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121] p-5 ">
+    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121]  p-4 ">
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-3 border-b-[0.5px] border-[#606060] pb-4 text-left text-base font-normal uppercase text-[20px] text-[#212121] "
@@ -154,23 +198,31 @@ function FilterGroup({ group }: { group: Group }) {
         />
       </button>
       {open && (
-        <ul className="mt-4 space-y-3 text-[18px]">
-          {group.optionKeys.map((opt, i) => (
-            <li key={`${opt}-${i}`}>
-              <label className="flex cursor-pointer items-center gap-3">
-                <input
-                  type={group.type}
-                  name={group.titleKey}
-                  className={`size-4 shrink-0 appearance-none border border-muted-foreground/60 ${
-                    group.type === "radio" ? "rounded-full" : "rounded-[3px]"
-                  } checked:border-primary checked:bg-primary`}
-                />
-                {group.optionNamespace
-                  ? t(`${group.optionNamespace}.${opt}`)
-                  : opt}
-              </label>
-            </li>
-          ))}
+        <ul className="mt-4 space-y-3 text-[18px] ">
+          {group.optionKeys.map((opt, i) => {
+            const isChecked = currentValues.includes(opt); // ← per-option, inside map
+
+            return (
+              <li key={`${opt}-${i}`}>
+                <label className="flex cursor-pointer items-center gap-3 ">
+                  <input
+                    type={group.type}
+                    name={group.titleKey}
+                    checked={isChecked}
+                    onChange={() =>
+                      updateFilter(group.titleKey, opt, group.type)
+                    }
+                    className={`size-4 shrink-0 appearance-none border border-muted-foreground/60 test ${
+                      group.type === "radio" ? "rounded-full" : "rounded-[3px]"
+                    } checked:border-primary checked:bg-primary`}
+                  />
+                  {group.optionNamespace
+                    ? t(`${group.optionNamespace}.${opt}`)
+                    : opt}
+                </label>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
@@ -181,9 +233,10 @@ export function FilterPanel({ groups = GROUPS }: { groups?: Group[] }) {
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const toggleFilters = () => setFiltersOpen((v) => !v);
+
   return (
     <aside
-      className={`${filtersOpen ? "block" : "hidden"} lg:flex  flex-col gap-4`}
+      className={`${filtersOpen ? "block" : "hidden"} lg:flex   flex-col gap-4 `}
     >
       {groups.map((g) => (
         <FilterGroup key={g.titleKey} group={g} />

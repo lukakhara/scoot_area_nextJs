@@ -1,7 +1,7 @@
 import React from "react";
 import { FilterButton } from "./FilterButton";
 import { SortButton } from "./SortButton";
-import { CompareButton } from "./CompareButton";
+import { CompareButton } from "../ui/CompareButton";
 import { cn } from "@/lib/utils";
 
 const FilterToolbar = ({
