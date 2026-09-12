@@ -1,7 +1,7 @@
 import React from "react";
 import { FilterButton } from "./FilterButton";
 import { SortButton } from "./SortButton";
-import { CompareButton } from "../ui/CompareButton";
+import { CompareButton } from "./CompareButton";
 import { cn } from "@/lib/utils";
 
 const FilterToolbar = ({
@@ -13,7 +13,7 @@ const FilterToolbar = ({
     <div
       className={cn(
         "flex items-center justify-between gap-3 w-full",
-        haveFilterToolbarOnTop ? "mt-6 lg:mt-8" : "mt-10 pb-2"
+        haveFilterToolbarOnTop ? "mt-6 lg:mt-8" : "mt-10 pb-2",
       )}
     >
       {haveFilterToolbarOnTop ? (
@@ -34,5 +34,3 @@ const FilterToolbar = ({
 };
 
 export default FilterToolbar;
-
-

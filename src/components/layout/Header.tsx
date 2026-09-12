@@ -30,7 +30,6 @@ export default function Header({
   const isHomePage = pathname === "/";
   const solid = isHomePage ? false : true;
 
-
   const t = useTranslations("Header");
 
   const NAV: { label: string; to: string }[] = [
@@ -78,16 +77,18 @@ export default function Header({
           </picture>
         </Link>
 
-        <nav className=" flex-1 items-center justify-center gap-6 text-[14px] font-medium hidden xl:flex">
+        <nav className=" flex-1 items-center justify-center gap-6 text-[14px] font-medium hidden xl:flex ">
           {NAV.map((item) => {
-            const isActive = routing.locales.some(
-              (loc) => pathname === `/${loc}${item.to}`,
-            );
+            const isActive =
+              pathname === item.to || pathname.startsWith(`${item.to}/`);
             return (
               <Link
                 key={item.to}
                 href={item.to}
-                className={cn(isActive && "text-[#EA6200]")}
+                className={cn(
+                  "",
+                  isActive ? "text-[#EA6200]" : "hover:text-[#20c997]",
+                )}
               >
                 {item.label}
               </Link>

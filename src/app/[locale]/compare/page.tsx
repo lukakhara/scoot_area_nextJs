@@ -10,7 +10,7 @@ const CANDIDATES = Array.from({ length: 7 }, (_, i) => ({
   price: "750.00₾",
 }));
 
-export default function ComparePage() {
+export default function page() {
   const [selected, setSelected] = useState(1);
 
   return (

@@ -9,6 +9,7 @@ export type Group = {
   type: "checkbox" | "radio";
   optionKeys: string[];
   optionNamespace?: "categoryOptions" | "genderOptions"; // omit if options are raw (brands, numbers)
+  unit?: string;
 };
 
 export const ACCESSORY_GROUPS: Group[] = [
@@ -109,16 +110,25 @@ const GROUPS: Group[] = [
     titleKey: "enginePower",
     type: "radio",
     optionKeys: ["125", "200", "250", "300"],
+    unit: "w",
+  },
+  {
+    titleKey: "maxSpeed",
+    type: "radio",
+    optionKeys: ["125", "200", "250", "300"],
+    unit: "km/h",
   },
   {
     titleKey: "releaseDate",
     type: "radio",
     optionKeys: ["2020", "2021", "2022", "2023", "2024", "2025"],
+    unit: "y",
   },
   {
     titleKey: "chargingTime",
     type: "radio",
     optionKeys: ["90", "120", "150", "180", "200", "220", "320"],
+    unit: "hours",
   },
   {
     titleKey: "weight",
@@ -136,6 +146,7 @@ const GROUPS: Group[] = [
       "120",
       "130",
     ],
+    unit: "kg",
   },
 ];
 
@@ -144,12 +155,8 @@ function FilterGroup({ group }: { group: Group }) {
   const t = useTranslations("FilterPanel");
 
   const pathname = usePathname(); // for /en/scooters?sort=price&page=2 we get /scooters
-  const searchParams = useSearchParams();  // ?sort=price&page=2  const sort = searchParams.get("sort");
+  const searchParams = useSearchParams(); // ?sort=price&page=2  const sort = searchParams.get("sort");
   const router = useRouter(); // moves us to url router.push("/scooters?sort=rating");
-
-  useEffect(() => {
-    setTimeout(updateFilter,3000)
-  },[updateFilter])
 
   function updateFilter(
     property: string,
@@ -203,8 +210,8 @@ function FilterGroup({ group }: { group: Group }) {
             const isChecked = currentValues.includes(opt); // ← per-option, inside map
 
             return (
-              <li key={`${opt}-${i}`}>
-                <label className="flex cursor-pointer items-center gap-3 ">
+              <li key={`${opt}-${i}`} >
+                <label className="flex cursor-pointer items-center gap-3 hover:text-orange-400 ">
                   <input
                     type={group.type}
                     name={group.titleKey}
@@ -212,13 +219,17 @@ function FilterGroup({ group }: { group: Group }) {
                     onChange={() =>
                       updateFilter(group.titleKey, opt, group.type)
                     }
-                    className={`size-4 shrink-0 appearance-none border border-muted-foreground/60 test ${
+                    className={`size-4 shrink-0 appearance-none border border-muted-foreground/60  hover:opacity-90 ${
                       group.type === "radio" ? "rounded-full" : "rounded-[3px]"
                     } checked:border-primary checked:bg-primary`}
                   />
                   {group.optionNamespace
-                    ? t(`${group.optionNamespace}.${opt}`)
-                    : opt}
+                    ? group.unit
+                      ? `${t(`${group.optionNamespace}.${opt}`)} ${t(`units.${group.unit}`)}`
+                      : t(`${group.optionNamespace}.${opt}`)
+                    : group.unit
+                      ? `${opt} ${t(`units.${group.unit}`)}`
+                      : opt}
                 </label>
               </li>
             );

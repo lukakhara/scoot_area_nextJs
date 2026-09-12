@@ -10,42 +10,69 @@ import {
   Zap,
 } from "lucide-react";
 import { Placeholder } from "./ui/Placeholder";
-import { type Product } from "../types/product";
+import {
+  ProductUnits,
+  type Product,
+  type ScooterCardProduct,
+} from "../types/product";
 import ProductCardImage from "./ui/ProductCardImage";
-import { CompareButton } from "./ui/CompareButton";
+import { CompareButton } from "./product-listing/CompareButton";
 import { ActionButton } from "./ui/ActionButton";
+import { getTranslations } from "next-intl/server";
 
-type PageType = "scooters" | "parts" | "accessories";
-
-const SCOOTER_SPECS = [
-  { Icon: Repeat, label: "ძრავი ", propertyName: "brand" },
-  { Icon: Gauge, label: "სიჩქარე", propertyName: "brand" },
-  { Icon: Zap, label: "მაქსიმალური მანძილი", propertyName: "brand" },
-  { Icon: Weight, label: "წონა", propertyName: "brand" },
-  { Icon: CircleCheck, label: "გარანტია", propertyName: "brand" },
-];
-
-const DETAIL_ROUTES: Record<PageType, string> = {
-  scooters: "/scooters",
-  accessories: "/equiment-accessories",
+const DETAIL_ROUTES: Record<Product["productType"], string> = {
+  scooter: "/scooters",
+  accessory: "/equiment-accessories",
   parts: "/parts",
 };
 
-export function ProductCard({
+export async function ProductCard({
   item,
-  productType,
+  units,
 }: {
   item: Product;
-  productType: PageType;
+  units: ProductUnits;
 }) {
-  const isScooter = productType === "scooters";
+  const SCOOTER_SPECS: {
+    Icon: typeof Repeat;
+    label: string;
+    propertyName: keyof ScooterCardProduct;
+    unit?: string;
+  }[] = [
+    { Icon: Repeat, label: "ძრავი", propertyName: "engine", unit: units.w },
+    {
+      Icon: Gauge,
+      label: "სიჩქარე",
+      propertyName: "maxSpeed",
+      unit: units.kmH,
+    },
+    {
+      Icon: Zap,
+      label: "მაქსიმალური მანძილი",
+      propertyName: "maxRange",
+      unit: units.km,
+    },
+    { Icon: Weight, label: "წონა", propertyName: "weight", unit: units.kg },
+    {
+      Icon: CircleCheck,
+      label: "გარანტია",
+      propertyName: "warranty",
+      unit: units.y,
+    },
+  ];
+
+  const isScooter = item.productType === "scooter";
+  const detailHref = `${DETAIL_ROUTES[item.productType]}/${item.id}`;
+  const releaseYear = isScooter
+    ? new Date(item.releaseDate).getFullYear()
+    : undefined;
 
   return (
     <article className="flex h-full flex-col rounded-2xl bg-secondary p-4">
       <div className="relative overflow-hidden rounded-xl bg-card">
         {item.images && item.images.length > 0 ? (
           <Link
-            href={item.id ? `${DETAIL_ROUTES[productType]}/${item.id}` : "#"}
+            href={detailHref}
             className="transition-colors hover:text-primary cursor-pointer group"
           >
             <ProductCardImage src={item.images[0]} alt={item.name} />
@@ -60,9 +87,9 @@ export function ProductCard({
           </span>
         )}
 
-        {isScooter && item.year && (
+        {isScooter && releaseYear && (
           <span className="absolute top-3 right-3 rounded-full border px-3 py-1 text-[9.8px] sm:text-[11.85px]">
-            {item.year}
+            {releaseYear}
           </span>
         )}
 
@@ -78,7 +105,7 @@ export function ProductCard({
 
       <h3 className="mt-4 text-[13px] sm:text-[15.8px] font-bold tracking-wide uppercase">
         <Link
-          href={item.id ? `${DETAIL_ROUTES[productType]}/${item.id}` : "#"}
+          href={detailHref}
           className="transition-colors hover:text-primary"
         >
           {item.name}
@@ -113,17 +140,17 @@ export function ProductCard({
 
       {isScooter && (
         <ul className="mt-3 space-y-1.5 text-[10.89px] sm:text-[13.6px] text-[#606060]">
-          {SCOOTER_SPECS.map(({ Icon, label, propertyName }) => (
-            <li
-              key={label}
-              className="flex items-center gap-2 test justify-between"
-            >
+          {SCOOTER_SPECS.map(({ Icon, label, propertyName, unit }) => (
+            <li key={label} className="flex items-center gap-2 justify-between">
               <div className="flex gap-2 items-center">
                 <Icon className="size-3 shrink-0" />
                 {label}
               </div>
 
-              <div className="text-black bg-red-600">{item.brand}</div>
+              <div className="text-black">
+                {item[propertyName]}
+                {unit ? ` ${unit}` : ""}
+              </div>
             </li>
           ))}
         </ul>
@@ -146,7 +173,7 @@ export function ProductCard({
           <ShoppingBasket className="size-[8.78px] sm:size-6" /> კალათაში
           დამატება
         </button>
-        <ActionButton icon={ShoppingBasket} label=" კალათაში დამატება"  />
+        <ActionButton icon={ShoppingBasket} label=" კალათაში დამატება" />
       </div>
     </article>
   );

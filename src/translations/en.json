@@ -52,10 +52,26 @@
       "pages": "Pages",
       "previous": "Previous",
       "next": "Next"
+    },
+    "units": {
+      "w": "W",
+      "kmH": "km/h",
+      "y": "y",
+      "km": "km",
+      "kg": "kg"
     }
   },
 
   "FilterPanel": {
+      "units": {
+      "w": "W",
+      "km/h": "km/h",
+      "y": "y",
+      "km": "km",
+      "kg": "kg",
+      "hours":"h"
+
+    },
     "titles": {
       "brand": "Brand",
       "category": "Category",
@@ -65,6 +81,7 @@
       "enginePower": "Motor Power",
       "chargingTime": "Charging Time",
       "weight": "Weight",
+      "maxSpeed": "Max Speed",
 
       "drivetrainPower": "Drivetrain & Power",
       "wheelsTires": "Wheels & Tires",
@@ -126,5 +143,15 @@
       "male": "Male",
       "unisex": "Unisex"
     }
+  },
+  "sortButton": {
+    "sort": "sort",
+    "priceLowToHigh": "Price: Low To High",
+    "priceHighToLow": "Price: High To Low",
+    "nameLowToHigh": "Name: A to Z",
+    "nameHighToLow": "Name: Z to A",
+    "dateLowToHigh": "Date: Oldest to Newest",
+    "dateHighToLow": "Date: Newest to Oldest"
   }
+  
 }
