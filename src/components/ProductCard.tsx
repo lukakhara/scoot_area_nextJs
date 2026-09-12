@@ -38,8 +38,8 @@ export async function ProductCard({
     label: string;
     propertyName: keyof ScooterCardProduct;
     unit?: string;
-  }[] = [
-    { Icon: Repeat, label: "ძრავი", propertyName: "engine", unit: units.w },
+  }[]= [
+    { Icon: Repeat, label: "ძრავი", propertyName: "engine",  unit: units.w, },
     {
       Icon: Gauge,
       label: "სიჩქარე",

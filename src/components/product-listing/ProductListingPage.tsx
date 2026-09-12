@@ -2,13 +2,25 @@
 import { FilterPanel, PART_GROUPS } from "./FilterPanel";
 import { ProductCard } from "../ProductCard";
 import { PARTS_ITEMS } from "../../data/products";
-import type { Product, Scooter, Accessory, ProductUnits } from "../../types/product";
+import type {
+  Product,
+  Scooter,
+  Accessory,
+  ProductUnits,
+} from "../../types/product";
 import { getTranslations } from "next-intl/server";
 import { SortButton } from "@/components/product-listing/SortButton";
 import FilterToolbar from "@/components/product-listing/FilterToolbar";
 import Pagination from "@/components/ui/Pagination";
 
 type PageType = "scooters" | "parts" | "accessories";
+
+type PageMeta = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
 
 type PageConfig = {
   title: string;
@@ -77,11 +89,11 @@ export default async function ProductListingPage({
   const unitsT = await getTranslations("ProductListingPage.units");
 
   const units: ProductUnits = {
-    w: unitsT('w'),
-    kmH: unitsT('kmH'),
-    y: unitsT('y'),
-    km: unitsT('km'),
-    kg: unitsT('kg'),
+    w: unitsT("w"),
+    kmH: unitsT("kmH"),
+    y: unitsT("y"),
+    km: unitsT("km"),
+    kg: unitsT("kg"),
   };
 
   const query = new URLSearchParams();
@@ -95,6 +107,7 @@ export default async function ProductListingPage({
   const fetchConfig = FETCH_CONFIG[pageType];
 
   let items: Product[];
+  let meta: PageMeta;
 
   if (fetchConfig) {
     const url = queryString
@@ -107,10 +120,12 @@ export default async function ProductListingPage({
       throw new Error(`Failed to fetch ${fetchConfig.endpoint}: ${res.status}`);
     }
 
-    const { data: rawItems } = (await res.json()) as { data: any[] };
+    const { data: rawItems, meta:rawMeta } = (await res.json()) as { data: any[],meta:PageMeta };
     items = rawItems.map(fetchConfig.map);
+    meta = rawMeta
   } else {
     items = PARTS_ITEMS; // static fallback until the parts endpoint exists
+      meta = { page: 1, limit: PARTS_ITEMS.length, total: PARTS_ITEMS.length, totalPages: 1 };
   }
 
   const PAGE_CONFIG: Record<PageType, Omit<PageConfig, "items">> = {
@@ -135,7 +150,8 @@ export default async function ProductListingPage({
 
   const config: PageConfig = { ...PAGE_CONFIG[pageType], items };
 
-  const PAGES = ["1", "2", "3", "4", "…"];
+  
+  console.log(meta);
 
   return (
     <div className="min-h-screen bg-background ">
@@ -178,7 +194,7 @@ export default async function ProductListingPage({
                 />
               ))}
             </div>
-            <Pagination PAGES={PAGES} />
+            <Pagination currentPage={meta.page} totalPages={meta.totalPages} />
           </div>
         </div>
       </main>
