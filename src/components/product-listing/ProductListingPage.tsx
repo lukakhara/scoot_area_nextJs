@@ -120,12 +120,20 @@ export default async function ProductListingPage({
       throw new Error(`Failed to fetch ${fetchConfig.endpoint}: ${res.status}`);
     }
 
-    const { data: rawItems, meta:rawMeta } = (await res.json()) as { data: any[],meta:PageMeta };
+    const { data: rawItems, meta: rawMeta } = (await res.json()) as {
+      data: any[];
+      meta: PageMeta;
+    };
     items = rawItems.map(fetchConfig.map);
-    meta = rawMeta
+    meta = rawMeta;
   } else {
     items = PARTS_ITEMS; // static fallback until the parts endpoint exists
-      meta = { page: 1, limit: PARTS_ITEMS.length, total: PARTS_ITEMS.length, totalPages: 1 };
+    meta = {
+      page: 1,
+      limit: PARTS_ITEMS.length,
+      total: PARTS_ITEMS.length,
+      totalPages: 1,
+    };
   }
 
   const PAGE_CONFIG: Record<PageType, Omit<PageConfig, "items">> = {
@@ -150,7 +158,6 @@ export default async function ProductListingPage({
 
   const config: PageConfig = { ...PAGE_CONFIG[pageType], items };
 
-  
   console.log(meta);
 
   return (
@@ -184,17 +191,28 @@ export default async function ProductListingPage({
         <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8">
           <FilterPanel groups={config.filterGroups} />
 
-          <div>
+          <div >
             <div className={config.gridClassName}>
-              {config.items.map((item, i) => (
-                <ProductCard
-                  key={item.id ?? `${item.name}-${i}`}
-                  item={item}
-                  units={units}
-                />
-              ))}
+              {items.length === 0 ? (
+                <div className="col-span-full text-center text-5xl text-red-500">Sorry, there isn't any items</div>
+              ) : (
+                config.items.map((item, i) => (
+                  <ProductCard
+                    key={item.id ?? `${item.name}-${i}`}
+                    item={item}
+                    units={units}
+                  />
+                ))
+              )}
             </div>
-            <Pagination currentPage={meta.page} totalPages={meta.totalPages} />
+            {items.length === 0 ? (
+              ""
+            ) : (
+              <Pagination
+                currentPage={meta.page}
+                totalPages={meta.totalPages}
+              />
+            )}
           </div>
         </div>
       </main>

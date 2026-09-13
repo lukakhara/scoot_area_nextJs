@@ -32,7 +32,7 @@ export function ActionButton({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold uppercase cursor-pointer hover:bg-[#EAEAEA]",
+        "flex items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold uppercase cursor-pointer hover:bg-[#EAEAEA]",
         variantStyles[variant],
         compact ? "lg:hidden" : "lg:bg-transparent lg:px-0 lg:text-lg",
         active && "border-primary text-primary bg-primary/10",
@@ -40,7 +40,7 @@ export function ActionButton({
     >
       <Icon
         className={cn(
-          "size-[13.06px] sm:size-[15.08px]",
+          "size-[13.06px] sm:size-[15.08px] shrink-0",
            variant !== "notHeader" && "size-4! sm:size-6!",
         )}
       />

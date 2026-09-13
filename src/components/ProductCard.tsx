@@ -156,7 +156,7 @@ export async function ProductCard({
         </ul>
       )}
 
-      <div className="grid grid-cols-2   gap-2 pt-4  ">
+      <div className={`grid grid-cols-2  gap-2 pt-4 ${isScooter ? '' : 'grid-cols-1! '}  `}>
         {isScooter && <CompareButton variant="notHeader" />}
         <ActionButton
           icon={ShoppingBasket}

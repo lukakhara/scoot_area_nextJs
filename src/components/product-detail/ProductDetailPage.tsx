@@ -1,6 +1,4 @@
-// ProductDetailPage.tsx
-"use client";
-import { useState } from "react";
+// ProductDetailPage.tsx — no "use client", Server Component
 import {
   Battery,
   CalendarDays,
@@ -13,20 +11,19 @@ import {
   Users,
   Weight,
   Zap,
-  Minus,
-  Plus,
   Shuffle,
   ShoppingBasket,
   type LucideIcon,
 } from "lucide-react";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { ProductCard } from "@/components/ProductCard";
-import { type Product } from "@/types/product";
+import { QuantitySelector } from "@/components/product-detail/QuantitySelector";
+import { ImageThumbnailGallery } from "@/components/product-detail/ImageThumbnailGallery";
+import { type Product, type ProductUnits, type Scooter } from "@/types/product";
 import Image from "next/image";
+import ProductCardImage from "../ui/ProductCardImage";
 
 type PageType = "scooter" | "accessory" | "parts";
-
-export type SpecItem = { Icon: LucideIcon; label: string };
 
 export type DetailProduct = {
   title: string;
@@ -38,63 +35,102 @@ export type DetailProduct = {
   configurations?: string[];
 };
 
-type PageConfig = {
-  product: DetailProduct;
-  similar: Product[];
-  specs?: SpecItem[];
-  sectionTitle?: string;
-  showPhotoGrid?: boolean;
-};
-
-const SCOOTER_SPECS: SpecItem[] = [
-  { Icon: Repeat, label: "ძრავი - 125 კუბი" },
-  { Icon: Gauge, label: "სიჩქარე" },
-  { Icon: Zap, label: "მაქსიმალური მანძილი" },
-  { Icon: Weight, label: "წონა" },
-  { Icon: CalendarDays, label: "გამოშვების თარიღი" },
-  { Icon: CircleCheck, label: "გარანტია" },
-  { Icon: Mountain, label: "აღმართი" },
-  { Icon: Timer, label: "დატენვის დრო" },
-  { Icon: Package, label: "მგზავრის დასაშვები წონა" },
-  { Icon: Users, label: "მგზავრის რეკომენდირებული წონა" },
-  { Icon: Battery, label: "ძრავების რაოდენობა" },
-  { Icon: CircleCheck, label: "ბორბლის ზომა" },
-];
-
-const PAGE_CONFIG: Record<PageType, PageConfig> = {
-  scooter: {
-    product: {
-      title: "Ninebot by Segway - F30 Plus",
-      price: "750.00₾",
-      oldPrice: "900.00₾",
-      discount: "10% ფასდაკლება",
-      imagePath: {
-        mobile: "/scooterMobile.png",
-        desktop: "/scooterDesktop.png",
-      },
-      description: [
-        "სეგვეის ნაინბოტ სი20 არის ელექტრო ქიმიკატების სერიის ნაწილი, რომელიც შექმნილია ექსკლუზიურად მოხმარებისთვის. დამატებითი კურვადობა დაეთმო უსაფრთხოების მახასიათებლებს, როგორიცაა ელასტიური რეზინის საბურავები.",
-        "აღმოსაჩენად განკუთვნილი გამძლეობის სავალფურის ქვედა ნაწილში და არის 3 სხვადასხვა ფერში, ტარების რეჟიმის მიხედვით. ბატარეა მოთავსებულია სავალფურში, რომელიც ინარჩუნებს სიმძიმის ცენტრს დაბალ დონეზე და ადვილად სამართავს.",
-        "გარდა ამისა ქიმიკატები აღჭურვილია ხელით მოძებავ უკანა მუხრუჭით, რაც ყოველთვის უზრუნველყოფს დამუხრუჭების უსაფრთხო მანძილს. სკუტერის სრული დატენვა შესაძლებელია სულ რაღაც 5 საათში.",
-      ],
+function getScooterSpecs(
+  scooter: Scooter,
+  units: ProductUnits,
+): { Icon: LucideIcon; label: string; value: string }[] {
+  return [
+    { Icon: Repeat, label: "ძრავი", value: scooter.engine },
+    {
+      Icon: Gauge,
+      label: "სიჩქარე",
+      value: `${scooter.maxSpeed} ${units.kmH}`,
     },
-    similar: Array.from({ length: 3 }, () => ({
-      id: `scooter${Math.random().toString(36).substr(2, 9)}`,
-      productType: "scooter",
-      title: "Ninebot by Segway - F30 Plus",
-      price: "750.00₾",
-      year: "2025",
-      installment: "თვეში 55 ლარიდან",
-      oldPrice: "900.00₾",
-      imagePath: {
-        mobile: "/scooterMobile.png",
-        desktop: "/scooterDesktop.png",
-      },
-    })),
-    specs: SCOOTER_SPECS,
-    sectionTitle: "რატომ ნაინბოტ სი20?",
-    showPhotoGrid: true,
-  },
+    {
+      Icon: Zap,
+      label: "მაქსიმალური მანძილი",
+      value: `${scooter.maxRange} ${units.km}`,
+    },
+    { Icon: Weight, label: "წონა", value: `${scooter.weight} ${units.kg}` },
+    {
+      Icon: CalendarDays,
+      label: "გამოშვების თარიღი",
+      value: String(new Date(scooter.releaseDate).getFullYear()),
+    },
+    { Icon: CircleCheck, label: "გარანტია", value: scooter.warranty },
+    { Icon: Mountain, label: "აღმართი", value: scooter.inclineAngle },
+    { Icon: Timer, label: "დატენვის დრო", value: scooter.chargingTime },
+    {
+      Icon: Package,
+      label: "მგზავრის დასაშვები წონა",
+      value: `${scooter.maxRiderWeight} ${units.kg}`,
+    },
+    {
+      Icon: Users,
+      label: "მგზავრის რეკომენდირებული წონა",
+      value: `${scooter.recommendedRiderWeight} ${units.kg}`,
+    },
+    {
+      Icon: Battery,
+      label: "ძრავების რაოდენობა",
+      value: String(scooter.motorCount),
+    },
+    { Icon: CircleCheck, label: "ბორბლის ზომა", value: scooter.wheelSize },
+  ];
+}
+
+function scooterToDetailProduct(s: Scooter): DetailProduct {
+  return {
+    title: s.name,
+    price: `${s.price}₾`,
+    imagePath: { mobile: s.images[0] ?? "", desktop: s.images[0] ?? "" },
+  };
+}
+
+// Mocks — still used for accessory/parts until those detail endpoints exist
+function mockAccessory(): Product {
+  const id = `accessory${Math.random().toString(36).slice(2, 11)}`;
+  return {
+    productType: "accessory",
+    id,
+    name: "Ninebot by Segway - F30 Plus",
+    brand: "Ninebot",
+    price: "750.00",
+    images: ["/helmetMobile.png"],
+    category: "SAFETY_GEAR",
+    size: "M",
+    sex: "UNISEX",
+    imagePath: { mobile: "/helmetMobile.png", desktop: "/helmetDesktop.png" },
+  };
+}
+
+function mockPart(): Product {
+  const id = `parts${Math.random().toString(36).slice(2, 11)}`;
+  return {
+    productType: "parts",
+    id,
+    name: "Ninebot by Segway - F30 Plus",
+    price: "750.00",
+    images: ["/productBatteryMobile.png"],
+    category: "BATTERY_CELLS",
+    imagePath: {
+      mobile: "/productBatteryMobile.png",
+      desktop: "/productBatteryDesktop.png",
+    },
+  };
+}
+
+const STATIC_CONFIG: Partial<
+  Record<
+    PageType,
+    {
+      product: DetailProduct;
+      similar: Product[];
+      sectionTitle?: string;
+      showPhotoGrid?: boolean;
+    }
+  >
+> = {
   accessory: {
     product: {
       title: "Ninebot by Segway - F30 Plus",
@@ -110,13 +146,7 @@ const PAGE_CONFIG: Record<PageType, PageConfig> = {
         "ვენტილაციის სისტემა – სუნთქვისუნარიანი მასალა, რომელიც ხელს უშლის გადახურებას",
       ],
     },
-    similar: Array.from({ length: 3 }, () => ({
-      id: `accessory${Math.random().toString(36).substr(2, 9)}`,
-      productType: "accessory",
-      title: "Ninebot by Segway - F30 Plus",
-      price: "750.00₾",
-      imagePath: { mobile: "/helmetMobile.png", desktop: "/helmetDesktop.png" },
-    })),
+    similar: Array.from({ length: 3 }, mockAccessory),
   },
   parts: {
     product: {
@@ -131,29 +161,35 @@ const PAGE_CONFIG: Record<PageType, PageConfig> = {
       description:
         "ელექტრო სკუტერი ხშირად აღწევს 25-დან 50 კმ/სთ-მდე სიჩქარეს. წაქცევის ან შეჯახების შემთხვევაში, ჩაფხუტი მნიშვნელოვნად ამცირებს თავის ტრავმის რისკს. ეს არ არის არჩევანი — ეს აუცილებლობაა.",
     },
-    similar: Array.from({ length: 6 }, () => ({
-      id: `parts${Math.random().toString(36).substr(2, 9)}`,
-      productType: "parts",
-      title: "Ninebot by Segway - F30 Plus",
-      price: "750.00₾",
-      imagePath: {
-        mobile: "/productBatteryMobile.png",
-        desktop: "/productBatteryDesktop.png",
-      },
-    })),
+    similar: Array.from({ length: 6 }, mockPart),
   },
 };
 
 export default function ProductDetailPage({
   pageType,
+  scooterDetail,
+  similar: similarProp,
+  units,
 }: {
   pageType: PageType;
+  scooterDetail?: Scooter; // real fetched data, only for pageType === "scooter"
+  similar?: Product[]; // real fetched data, only for pageType === "scooter"
+  units: ProductUnits;
 }) {
-  const [qty, setQty] = useState(1);
-  const [active, setActive] = useState(0);
   const isScooter = pageType === "scooter";
-  const { product, similar, specs, sectionTitle, showPhotoGrid } =
-    PAGE_CONFIG[pageType];
+
+  const product: DetailProduct =
+    isScooter && scooterDetail
+      ? scooterToDetailProduct(scooterDetail)
+      : STATIC_CONFIG[pageType]!.product;
+
+  const similar: Product[] =
+    isScooter && similarProp
+      ? similarProp
+      : (STATIC_CONFIG[pageType]?.similar ?? []);
+
+  const sectionTitle = isScooter ? "რატომ ეს სკუტერი?" : undefined;
+  const showPhotoGrid = isScooter;
 
   const descriptionParagraphs = Array.isArray(product.description)
     ? product.description
@@ -181,19 +217,7 @@ export default function ProductDetailPage({
             <div>
               <div className="relative overflow-hidden rounded-2xl border bg-card">
                 {product.imagePath ? (
-                  <picture>
-                    <source
-                      media="(min-width: 768px)"
-                      srcSet={product.imagePath.desktop}
-                    />
-                    <Image
-                      src={product.imagePath.mobile}
-                      className="aspect-[4/3] w-full object-cover"
-                      alt="product image"
-                      height={634}
-                      width={600}
-                    />
-                  </picture>
+                  <ProductCardImage src={product.imagePath.desktop} alt={product.title} />
                 ) : (
                   <Placeholder
                     className="aspect-[4/3] w-full"
@@ -210,34 +234,7 @@ export default function ProductDetailPage({
                 </button>
               </div>
 
-              <div className="mt-4 grid grid-cols-3 gap-4">
-                {[0, 1, 2].map((i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActive(i)}
-                    aria-label={`სურათი ${i + 1}`}
-                    className={`overflow-hidden rounded-xl border bg-card transition-colors ${
-                      active === i
-                        ? "border-primary"
-                        : "hover:border-primary/50"
-                    }`}
-                  >
-                    <picture>
-                      <source
-                        media="(min-width: 768px)"
-                        srcSet={product.imagePath.desktop}
-                      />
-                      <Image
-                        src={product.imagePath.mobile}
-                        className="aspect-[4/3] w-full object-cover"
-                        alt="product image"
-                        height={189}
-                        width={189}
-                      />
-                    </picture>
-                  </button>
-                ))}
-              </div>
+              <ImageThumbnailGallery imagePath={product.imagePath} />
             </div>
           ) : (
             <div className="relative overflow-hidden rounded-2xl bg-secondary p-4">
@@ -303,31 +300,7 @@ export default function ProductDetailPage({
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <div
-                className={
-                  isScooter
-                    ? "flex items-center gap-3 rounded-full border px-3 py-2"
-                    : "flex items-center gap-3 rounded-full border px-4 py-2.5"
-                }
-              >
-                <button
-                  aria-label="შემცირება"
-                  onClick={() => setQty((v) => Math.max(1, v - 1))}
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  <Minus className="size-3.5" />
-                </button>
-                <span className="w-5 text-center text-sm font-semibold">
-                  {qty}
-                </span>
-                <button
-                  aria-label="გაზრდა"
-                  onClick={() => setQty((v) => v + 1)}
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  <Plus className="size-3.5" />
-                </button>
-              </div>
+              <QuantitySelector isScooter={isScooter} />
 
               <button
                 className={
@@ -350,14 +323,24 @@ export default function ProductDetailPage({
               </button>
             </div>
 
-            {isScooter && specs ? (
+            {isScooter && scooterDetail ? (
               <ul className="mt-8 space-y-3 rounded-2xl bg-secondary p-6 text-sm text-muted-foreground">
-                {specs.map(({ Icon, label }) => (
-                  <li key={label} className="flex items-center gap-3">
-                    <Icon className="size-4 shrink-0 text-foreground/70" />
-                    {label}
-                  </li>
-                ))}
+                {getScooterSpecs(scooterDetail, units).map(
+                  ({ Icon, label, value }) => (
+                    <li
+                      key={label}
+                      className="flex items-center justify-between gap-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className="size-4 shrink-0 text-foreground/70" />
+                        {label}
+                      </div>
+                      <span className="font-medium text-foreground">
+                        {value}
+                      </span>
+                    </li>
+                  ),
+                )}
               </ul>
             ) : (
               <>
@@ -421,8 +404,8 @@ export default function ProductDetailPage({
                 : "grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3"
             }
           >
-            {similar.map((item, i) => (
-              <ProductCard key={item.name + i} item={item} />
+            {similar.map((item) => (
+              <ProductCard key={item.id} item={item} units={units} />
             ))}
           </div>
         </section>
