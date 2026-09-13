@@ -16,7 +16,7 @@ import {
   type ScooterCardProduct,
 } from "../types/product";
 import ProductCardImage from "./ui/ProductCardImage";
-import { CompareButton } from "./product-listing/CompareButton";
+import { CompareButton } from "./ui/CompareButton";
 import { ActionButton } from "./ui/ActionButton";
 import { getTranslations } from "next-intl/server";
 
@@ -38,8 +38,8 @@ export async function ProductCard({
     label: string;
     propertyName: keyof ScooterCardProduct;
     unit?: string;
-  }[]= [
-    { Icon: Repeat, label: "ძრავი", propertyName: "engine",  unit: units.w, },
+  }[] = [
+    { Icon: Repeat, label: "ძრავი", propertyName: "engine", unit: units.w },
     {
       Icon: Gauge,
       label: "სიჩქარე",
@@ -69,7 +69,7 @@ export async function ProductCard({
 
   return (
     <article className="flex h-full flex-col rounded-2xl bg-secondary p-4">
-      <div className="relative overflow-hidden rounded-xl bg-card">
+      <div className="relative overflow-hidden rounded-xl bg-card flex-1">
         {item.images && item.images.length > 0 ? (
           <Link
             href={detailHref}
@@ -156,24 +156,13 @@ export async function ProductCard({
         </ul>
       )}
 
-      <div className="flex flex-row w-full gap-2 pt-4 items-center">
-        {isScooter && (
-          <button className="inline-flex items-center gap-2 rounded-full border border-[#212121] px-4 py-2 text-[10.89px] sm:text-[13.16px] uppercase transition-colors hover:border-primary hover:text-primary text-[#212121] sm:max-w-[157.3px] justify-center">
-            <Shuffle className="size-3.5" /> შედარება
-          </button>
-        )}
-
-        <button
-          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10.89px] uppercase transition-colors hover:border-primary hover:text-primary border-[#212121]  ${
-            isScooter
-              ? "text-[#212121]"
-              : "flex-1 py-2.5 sm:text-[20px] w-full justify-center"
-          }`}
-        >
-          <ShoppingBasket className="size-[8.78px] sm:size-6" /> კალათაში
-          დამატება
-        </button>
-        <ActionButton icon={ShoppingBasket} label=" კალათაში დამატება" />
+      <div className="grid grid-cols-2   gap-2 pt-4  ">
+        {isScooter && <CompareButton variant="notHeader" />}
+        <ActionButton
+          icon={ShoppingBasket}
+          variant="notHeader"
+          label=" კალათაში დამატება"
+        />
       </div>
     </article>
   );

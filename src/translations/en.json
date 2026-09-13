@@ -152,6 +152,12 @@
     "nameHighToLow": "Name: Z to A",
     "dateLowToHigh": "Date: Oldest to Newest",
     "dateHighToLow": "Date: Newest to Oldest"
+  },
+  "actions":{
+      "filter": "Filter",
+      "sort": "Sort",
+      "compare": "Compare",
+      "addToCart":"Add to cart"
   }
   
 }
