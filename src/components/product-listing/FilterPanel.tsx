@@ -116,7 +116,7 @@ const GROUPS: Group[] = [
     titleKey: "maxSpeed",
     type: "radio",
     optionKeys: ["125", "200", "250", "300"],
-    unit: "km/h",
+    unit: "kmH",
   },
   {
     titleKey: "releaseDate",
@@ -128,7 +128,7 @@ const GROUPS: Group[] = [
     titleKey: "chargingTime",
     type: "radio",
     optionKeys: ["90", "120", "150", "180", "200", "220", "320"],
-    unit: "hours",
+    unit: "h",
   },
   {
     titleKey: "weight",

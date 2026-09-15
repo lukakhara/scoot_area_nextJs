@@ -26,9 +26,9 @@ const DETAIL_ROUTES: Record<Product["productType"], string> = {
   parts: "/parts",
 };
 
-export async function ProductCard({
+export function ProductCard({
   item,
-  units,
+  units = {} as ProductUnits,
 }: {
   item: Product;
   units: ProductUnits;
@@ -156,7 +156,9 @@ export async function ProductCard({
         </ul>
       )}
 
-      <div className={`grid grid-cols-2  gap-2 pt-4 ${isScooter ? '' : 'grid-cols-1! '}  `}>
+      <div
+        className={`grid grid-cols-2  gap-2 pt-4 ${isScooter ? "" : "grid-cols-1! "}  `}
+      >
         {isScooter && <CompareButton variant="notHeader" />}
         <ActionButton
           icon={ShoppingBasket}

@@ -104,12 +104,12 @@ export default function Header({
           ></button>
           <Link
             href="/cart"
-            className="relative flex items-center gap-2 text-xs font-semibold"
+            className="relative flex items-center gap-2 text-xs font-semibold hover:scale-110"
           >
             <button
               onClick={() => setCartOpen((v) => !v)}
               aria-expanded={cartOpen}
-              className="relative flex items-center gap-2 text-xs  text-[14px] font-medium"
+              className="relative flex items-center gap-2 text-xs  text-[14px] font-medium cursor-pointer"
             >
               <ShoppingCart className="size-5" />
               <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
@@ -122,7 +122,7 @@ export default function Header({
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
           <div
             className={cn(
-              "flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px]",
+              "flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px] hover:scale-110",
               solid ? "border-black" : "border-white",
             )}
           >
@@ -130,7 +130,7 @@ export default function Header({
               src={flag}
               onClick={toggleLocale}
               className={cn(
-                " size-[13.25px] sm:size-[22.07px] rounded-full border-white ",
+                " size-[13.25px] sm:size-[22.07px] rounded-full border-white cursor-pointer ",
                 solid ? "bg-foregrhound/15" : "bg-primary-foreground/20",
               )}
               alt="flag icon"

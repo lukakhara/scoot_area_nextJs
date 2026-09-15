@@ -37,6 +37,13 @@
     }
   },
   "ProductListingPage": {
+    "units": {
+      "w": "W",
+      "kmH": "km/h",
+      "y": "y",
+      "km": "km",
+      "kg": "kg"
+    },
     "titles": {
       "scooters": "სკუტერები",
       "spareParts": "სათადარიგო ნაწილები",
@@ -52,36 +59,28 @@
       "pages": "გვერდები",
       "previous": "წინა",
       "next": "შემდეგი"
-    },
-     "units": {
-      "w": "ვ",
-      "kmH": "კმ/ს",
-      "y": "წ",
-      "km": "კმ",
-      "kg": "კგ"
     }
   },
 
   "FilterPanel": {
-     "units": {
+    "units": {
       "w": "ვ",
-      "km/h": "კმ/ს",
+      "kmH": "კმ/ს",
       "y": "წ",
       "km": "კმ",
       "kg": "კგ",
-      "hours":"სთ"
+      "h":"სთ"
     },
     "titles": {
       "brand": "ბრენდი",
       "category": "კატეგორია",
-      "maxSpeed": "მაქსიმალური სიჩქარე",
       "size": "ზომა",
       "releaseDate": "გამოშვების წელი",
       "gender": "სქესი",
       "enginePower": "ძრავის სიმძლავრე",
       "chargingTime": "დატენვის დრო",
       "weight": "წონა",
-
+      "maxSpeed": "Max Speed",
       "drivetrainPower": "ამძრავი და კვება",
       "wheelsTires": "თვლები და საბურავები",
       "brakes": "მუხრუჭები",
@@ -152,10 +151,10 @@
     "dateLowToHigh": "თარიღი: ძველიდან ახლისკენ",
     "dateHighToLow": "თარიღი: ახლიდან ძველისკენ"
   },
-   "actions":{
-      "filter": "გაფილტრვა",
-      "sort": "სორტირება",
-      "compare": "შედარება",
-      "addToCart":"კალათაში დამატება"
+  "actions": {
+    "filter": "გაფილტრვა",
+    "sort": "სორტირება",
+    "compare": "შედარება",
+    "addToCart": "კალათაში დამატება"
   }
 }

@@ -114,7 +114,9 @@ export default async function ProductListingPage({
       ? `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}?${queryString}`
       : `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}`;
 
+    console.log('url ---------------------',url);
     const res = await fetch(url, { next: { revalidate: 60 } });
+    console.log('res ---------------------', res);
 
     if (!res.ok) {
       throw new Error(`Failed to fetch ${fetchConfig.endpoint}: ${res.status}`);
@@ -126,6 +128,7 @@ export default async function ProductListingPage({
     };
     items = rawItems.map(fetchConfig.map);
     meta = rawMeta;
+     console.log('items ---------------------', items);
   } else {
     items = PARTS_ITEMS; // static fallback until the parts endpoint exists
     meta = {
@@ -135,6 +138,7 @@ export default async function ProductListingPage({
       totalPages: 1,
     };
   }
+
 
   const PAGE_CONFIG: Record<PageType, Omit<PageConfig, "items">> = {
     scooters: {
@@ -191,10 +195,12 @@ export default async function ProductListingPage({
         <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8">
           <FilterPanel groups={config.filterGroups} />
 
-          <div >
+          <div>
             <div className={config.gridClassName}>
               {items.length === 0 ? (
-                <div className="col-span-full text-center text-5xl text-red-500">Sorry, there isn't any items</div>
+                <div className="col-span-full text-center text-5xl text-red-500">
+                  Sorry, there isn't any items
+                </div>
               ) : (
                 config.items.map((item, i) => (
                   <ProductCard

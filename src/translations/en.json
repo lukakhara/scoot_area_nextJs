@@ -37,6 +37,13 @@
     }
   },
   "ProductListingPage": {
+    "units": {
+      "w": "W",
+      "kmH": "km/h",
+      "y": "y",
+      "km": "km",
+      "kg": "kg"
+    },
     "titles": {
       "scooters": "Scooters",
       "spareParts": "Spare Parts",
@@ -52,25 +59,17 @@
       "pages": "Pages",
       "previous": "Previous",
       "next": "Next"
-    },
+    }
+  },
+
+  "FilterPanel": {
     "units": {
       "w": "W",
       "kmH": "km/h",
       "y": "y",
       "km": "km",
-      "kg": "kg"
-    }
-  },
-
-  "FilterPanel": {
-      "units": {
-      "w": "W",
-      "km/h": "km/h",
-      "y": "y",
-      "km": "km",
       "kg": "kg",
-      "hours":"h"
-
+      "h":"hours"
     },
     "titles": {
       "brand": "Brand",
@@ -82,7 +81,6 @@
       "chargingTime": "Charging Time",
       "weight": "Weight",
       "maxSpeed": "Max Speed",
-
       "drivetrainPower": "Drivetrain & Power",
       "wheelsTires": "Wheels & Tires",
       "brakes": "Brakes",
