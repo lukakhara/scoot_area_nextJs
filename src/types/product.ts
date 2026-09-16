@@ -76,6 +76,7 @@ export interface Accessory {
 export interface SparePart {
   id: string;
   name: string;
+   brand: string;
   sku: string;
   category: SparePartCategory;
   price: string;
@@ -135,7 +136,7 @@ export interface AccessoryCardProduct
 export interface PartsCardProduct
   extends
     BaseCardFields,
-    Pick<SparePart, "id" | "name" | "price" | "images" | "category"> {
+    Pick<SparePart, "id" | "name" | "price" | "images" | "category" | "brand" > {
   productType: "parts";
 }
 

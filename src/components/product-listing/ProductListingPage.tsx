@@ -1,12 +1,12 @@
 // ProductListingPage.tsx
-import { FilterPanel, PART_GROUPS } from "./FilterPanel";
+import { ACCESSORY_GROUPS, FilterPanel, PART_GROUPS, SCOOTER_GROUPS } from "./FilterPanel";
 import { ProductCard } from "../ProductCard";
-import { PARTS_ITEMS } from "../../data/products";
 import type {
   Product,
   Scooter,
   Accessory,
   ProductUnits,
+  SparePart,
 } from "../../types/product";
 import { getTranslations } from "next-intl/server";
 import { SortButton } from "@/components/product-listing/SortButton";
@@ -26,7 +26,7 @@ type PageConfig = {
   title: string;
   description?: string[];
   items: Product[];
-  filterGroups?: React.ComponentProps<typeof FilterPanel>["groups"];
+  filterGroups: React.ComponentProps<typeof FilterPanel>["groups"];
   gridClassName: string;
   headerActions: boolean;
 };
@@ -67,14 +67,27 @@ function toAccessoryCardProduct(a: Accessory): Product {
   };
 }
 
+function toSparePartCardProduct(p: SparePart): Product {
+  return {
+    productType: "parts",
+    id: p.id,
+    name: p.name,
+    brand: p.manufacturer ?? "",
+    price: p.price,
+    images: p.images,
+    category: p.category,
+    imagePath: { mobile: p.images[0] ?? "", desktop: p.images[0] ?? "" },
+  };
+}
+
 // Endpoint + mapper live together, keyed off the same pageType the route already uses
 const FETCH_CONFIG: Record<
   PageType,
-  { endpoint: string; map: (raw: any) => Product } | null
+  { endpoint: string; map: (raw: any) => Product }
 > = {
   scooters: { endpoint: "scooters", map: toScooterCardProduct },
   accessories: { endpoint: "accessories", map: toAccessoryCardProduct },
-  parts: null, // still static mock data — no endpoint yet
+  parts: { endpoint: "parts", map: toSparePartCardProduct }, // was `null`
 };
 
 export default async function ProductListingPage({
@@ -104,46 +117,38 @@ export default async function ProductListingPage({
   }
   const queryString = query.toString();
 
-  const fetchConfig = FETCH_CONFIG[pageType];
-
   let items: Product[];
   let meta: PageMeta;
 
-  if (fetchConfig) {
-    const url = queryString
-      ? `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}?${queryString}`
-      : `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}`;
+  const fetchConfig = FETCH_CONFIG[pageType];
 
-    console.log('url ---------------------',url);
-    const res = await fetch(url, { next: { revalidate: 60 } });
-    console.log('res ---------------------', res);
+  const url = queryString
+    ? `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}?${queryString}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}`;
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch ${fetchConfig.endpoint}: ${res.status}`);
-    }
+  console.log("url=", url);
+  const res = await fetch(url, { next: { revalidate: 60 } });
 
-    const { data: rawItems, meta: rawMeta } = (await res.json()) as {
-      data: any[];
-      meta: PageMeta;
-    };
-    items = rawItems.map(fetchConfig.map);
-    meta = rawMeta;
-     console.log('items ---------------------', items);
-  } else {
-    items = PARTS_ITEMS; // static fallback until the parts endpoint exists
-    meta = {
-      page: 1,
-      limit: PARTS_ITEMS.length,
-      total: PARTS_ITEMS.length,
-      totalPages: 1,
-    };
+  console.log("res=", res);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${fetchConfig.endpoint}: ${res.status}`);
   }
 
+  const { data: rawItems, meta: rawMeta } = (await res.json()) as {
+    data: any[];
+    meta: PageMeta;
+  };
+
+  items = rawItems.map(fetchConfig.map);
+  meta = rawMeta;
+  console.log("items=", items);
+  console.log("meta=", meta);
 
   const PAGE_CONFIG: Record<PageType, Omit<PageConfig, "items">> = {
     scooters: {
       title: t("titles.scooters"),
       description: [t("description"), t("description")],
+      filterGroups: SCOOTER_GROUPS,
       gridClassName: "grid gap-6 sm:grid-cols-2",
       headerActions: false,
     },
@@ -155,6 +160,7 @@ export default async function ProductListingPage({
     },
     accessories: {
       title: t("titles.accessories"),
+      filterGroups: ACCESSORY_GROUPS,
       gridClassName: "grid grid-cols-2 gap-4 sm:gap-6",
       headerActions: true,
     },

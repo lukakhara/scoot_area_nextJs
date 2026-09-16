@@ -29,6 +29,7 @@ export const ACCESSORY_GROUPS: Group[] = [
     titleKey: "releaseDate",
     type: "radio",
     optionKeys: ["2020", "2021", "2022", "2023", "2024", "2025"],
+    unit: "y"
   },
   {
     titleKey: "gender",
@@ -100,7 +101,7 @@ export const PART_GROUPS: Group[] = [
   },
 ];
 
-const GROUPS: Group[] = [
+export const SCOOTER_GROUPS: Group[] = [
   {
     titleKey: "brand",
     type: "checkbox",
@@ -194,7 +195,7 @@ function FilterGroup({ group }: { group: Group }) {
     .filter(Boolean);
 
   return (
-    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121]  p-4 ">
+    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121]  p-4  ">
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-3 border-b-[0.5px] border-[#606060] pb-4 text-left text-base font-normal uppercase text-[20px] text-[#212121] "
@@ -240,7 +241,7 @@ function FilterGroup({ group }: { group: Group }) {
   );
 }
 
-export function FilterPanel({ groups = GROUPS }: { groups?: Group[] }) {
+export function FilterPanel({ groups }: { groups: Group[] }) {
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const toggleFilters = () => setFiltersOpen((v) => !v);
