@@ -1,7 +1,9 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Brackets, ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 interface CarouselSectionHeaderProps {
   title: string;
+  href: string;
   onPrev: () => void;
   onNext: () => void;
   canGoPrev: boolean;
@@ -12,6 +14,7 @@ interface CarouselSectionHeaderProps {
 
 export default function CarouselSectionHeader({
   title,
+  href,
   onPrev,
   onNext,
   canGoPrev,
@@ -23,12 +26,12 @@ export default function CarouselSectionHeader({
         {title}
       </h2>
       <div className="flex items-center gap-3">
-        <a
-          href="#"
+        <Link
+          href={href}
           className="text-[12px] md:text-[16px] text-[#888888] hover:text-primary"
         >
           ყველას ნახვა
-        </a>
+        </Link>
         <div className="flex gap-1.5 border-[#888888]">
           <button
             aria-label="წინა"

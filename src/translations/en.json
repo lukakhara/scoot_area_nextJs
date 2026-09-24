@@ -34,7 +34,9 @@
     },
     "Blog": {
       "header": "Blog"
-    }
+    },
+    "scooters":"Scooters",
+    "accessories":"Accessories"
   },
   "ProductListingPage": {
     "units": {
@@ -157,5 +159,5 @@
       "compare": "Compare",
       "addToCart":"Add to cart"
   }
-  
+
 }

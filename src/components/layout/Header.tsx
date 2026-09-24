@@ -15,7 +15,7 @@ export default function Header({
 }) {
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [langEnglish, setLangEnglish] = useState(false);
+
 
   const pathname = usePathname();
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function Header({
     router.replace(pathname, { locale: nextLocale });
   }
 
-  const flag = langEnglish ? "/gb-flag.png" : "/georgia.png";
+  const flag = locale === 'en' ? "/gb-flag.png" : "/georgia.png";
   const isHomePage = pathname === "/";
   const solid = isHomePage ? false : true;
 

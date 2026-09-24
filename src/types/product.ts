@@ -119,6 +119,7 @@ export interface ScooterCardProduct
       | "maxSpeed"
       | "maxRange"
       | "warranty"
+
     > {
   productType: "scooter";
 }

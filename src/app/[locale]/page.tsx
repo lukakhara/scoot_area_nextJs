@@ -1,42 +1,38 @@
-import {  Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
-import { type Product } from "@/types/product";
+import { Scooter, type Product } from "@/types/product";
 import PaginatedGridSection from "@/components/PaginatedGridSection";
 import Image from "next/image";
 import HeroSection from "@/components/HeroSection";
+import type { ScooterCardProduct, AccessoryCardProduct } from "@/types/product";
+import { getTranslations } from "next-intl/server";
 
-const SCOOTERS: Product[] = Array.from({ length: 15 }, (_, i) => ({
-  id: `scoteer${i}`,
-  productType: "scooter",
-  title: "Ninebot by Segway - F30 Plus",
-  price: "750.00₾",
-  oldPrice: "990.00₾",
-  discount: "10% ფასდაკლება",
-  year: "2025",
-  installment: "თვეში 55 ლარიდან",
-  specs: ["ინდი - 125 კმ/სთ", "სიმძლავრე 350W", "წონა 15 კგ", "გარბენი 65 კმ"],
-  imagePath: {
-    mobile: "/scooterMobile.png",
-    desktop: "/scooterDesktop.png",
-  },
-}));
+async function getScooters(): Promise<ScooterCardProduct[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch scooters");
+  const json = await res.json();
+  return json.data;
+}
 
-const ACCESSORIES: Product[] = Array.from({ length: 15 }, (_, i) => ({
-  id: `accessory${i}`,
-  productType: "accessory",
-  title: "Ninebot by Segway - F30 Plus",
-  price: "750.00₾",
-  oldPrice: "900.00₾",
-  discount: "10% ფასდაკლება",
-  imagePath: {
-    mobile: "/helmetMobile.png",
-    desktop: "/helmetDesktop.png",
-  },
-}));
+async function getAccessories(): Promise<AccessoryCardProduct[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accessories`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch accessories");
+  const json = await res.json();
+  return json.data;
+}
 
+//
 
-
-function Home() {
+async function Home() {
+  const t =  await getTranslations('HomePage');
+  const [scooters, accessories] = await Promise.all([
+    getScooters(),
+    getAccessories(),
+  ]);
   return (
     <div className=" min-w-screen bg-background">
       <HeroSection />
@@ -70,8 +66,9 @@ function Home() {
 
       {/* Scooters */}
       <PaginatedGridSection
-        title="სკუტერები"
-        items={SCOOTERS.map((item) => (
+        title={t('scooters')}
+        href='/scooters'
+        items={scooters.map((item) => (
           <ProductCard key={item.id} item={item} />
         ))}
       />
@@ -162,8 +159,9 @@ function Home() {
       </div>
 
       <PaginatedGridSection
-        title="აქსესუარები"
-        items={ACCESSORIES.map((item) => (
+        title={t('accessories')}
+        href='/equiment-accessories'
+        items={accessories.map((item) => (
           <ProductCard key={item.id} item={item} />
         ))}
       />

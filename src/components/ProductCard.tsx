@@ -18,7 +18,6 @@ import {
 import ProductCardImage from "./ui/ProductCardImage";
 import { CompareButton } from "./ui/CompareButton";
 import { ActionButton } from "./ui/ActionButton";
-import { getTranslations } from "next-intl/server";
 
 const DETAIL_ROUTES: Record<Product["productType"], string> = {
   scooter: "/scooters",
@@ -26,42 +25,55 @@ const DETAIL_ROUTES: Record<Product["productType"], string> = {
   parts: "/parts",
 };
 
+type ScooterCardProps = {
+  item: ScooterCardProduct;
+  units: ProductUnits;
+};
+
+type OtherCardProps = {
+  item: Exclude<Product, ScooterCardProduct>;
+  units?: ProductUnits;
+};
+
+type ProductCardProps = ScooterCardProps | OtherCardProps;
+
 export function ProductCard({
   item,
   units = {} as ProductUnits,
-}: {
-  item: Product;
-  units: ProductUnits;
-}) {
+}: ProductCardProps) {
+
+  const isScooter = item.productType === "scooter";
+  // if passed item is scooter we create scooter specs in other situation we have empty scooter specs
   const SCOOTER_SPECS: {
     Icon: typeof Repeat;
     label: string;
     propertyName: keyof ScooterCardProduct;
     unit?: string;
-  }[] = [
-    { Icon: Repeat, label: "ძრავი", propertyName: "engine", unit: units.w },
-    {
-      Icon: Gauge,
-      label: "სიჩქარე",
-      propertyName: "maxSpeed",
-      unit: units.kmH,
-    },
-    {
-      Icon: Zap,
-      label: "მაქსიმალური მანძილი",
-      propertyName: "maxRange",
-      unit: units.km,
-    },
-    { Icon: Weight, label: "წონა", propertyName: "weight", unit: units.kg },
-    {
-      Icon: CircleCheck,
-      label: "გარანტია",
-      propertyName: "warranty",
-      unit: units.y,
-    },
-  ];
+  }[] = isScooter
+    ? [
+        { Icon: Repeat, label: "ძრავი", propertyName: "engine", unit: units.w },
+        {
+          Icon: Gauge,
+          label: "სიჩქარე",
+          propertyName: "maxSpeed",
+          unit: units.kmH,
+        },
+        {
+          Icon: Zap,
+          label: "მაქსიმალური მანძილი",
+          propertyName: "maxRange",
+          unit: units.km,
+        },
+        { Icon: Weight, label: "წონა", propertyName: "weight", unit: units.kg },
+        {
+          Icon: CircleCheck,
+          label: "გარანტია",
+          propertyName: "warranty",
+          unit: units.y,
+        },
+      ]
+    : [];
 
-  const isScooter = item.productType === "scooter";
   const detailHref = `${DETAIL_ROUTES[item.productType]}/${item.id}`;
   const releaseYear = isScooter
     ? new Date(item.releaseDate).getFullYear()

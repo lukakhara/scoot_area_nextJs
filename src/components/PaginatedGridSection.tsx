@@ -6,6 +6,7 @@ import CarouselSectionHeader from "@/components/CarouselSectionHeader";
 
 interface PaginatedGridSectionProps<T extends { id: string | number }> {
   title: string;
+  href: string;
   items: React.ReactNode[];
   visibleCount?: number; // used for lg/xl and above
 }
@@ -36,7 +37,7 @@ function useResponsiveVisibleCount(desktopCount: number) {
 
 export default function PaginatedGridSection<
   T extends { id: string | number },
->({ title, items, visibleCount = 3 }: PaginatedGridSectionProps<T>) {
+>({ title,href, items, visibleCount = 3 }: PaginatedGridSectionProps<T>) {
   const responsiveVisibleCount = useResponsiveVisibleCount(visibleCount);
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -67,6 +68,7 @@ export default function PaginatedGridSection<
     <section className="w-full px-[15px] md:px-18 pt-20 relative z-100">
       <CarouselSectionHeader
         title={title}
+        href={href}
         onPrev={() => setCurrentPage(Math.max(0, currentPage - 1))}
         onNext={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))}
         canGoPrev={currentPage > 0}
