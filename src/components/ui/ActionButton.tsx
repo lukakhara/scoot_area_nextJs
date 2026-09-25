@@ -32,8 +32,9 @@ export function ActionButton({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "flex items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold uppercase cursor-pointer hover:bg-[#EAEAEA]",
+        "flex items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold uppercase ",
         variantStyles[variant],
+        onClick ? "hover:bg-[#EAEAEA] cursor-pointer " : "",
         compact ? "lg:hidden" : "lg:bg-transparent lg:px-0 lg:text-lg",
         active && "border-primary text-primary bg-primary/10",
       )}

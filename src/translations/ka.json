@@ -101,42 +101,18 @@
       "CHARGING_POWER": "დამუხტვა და კვება",
       "SPARE_PARTS": "სათადარიგო ნაწილები",
 
-      "motors": "ძრავები",
-      "batteries": "ელემენტები / აკუმულატორები",
-      "chargers": "დამტენები",
-      "controllers": "კონტროლერები",
-      "throttles": "ამაჩქარებლები (Aქსელერატორი)",
-
-      "tires": "საბურავები",
-      "innerTubes": "კამერები",
-      "rimsHubs": "დისკები და მორგვები",
-      "bearings": "საკისრები (პოდშიპნიკები)",
-
-      "brakePads": "სამუხრუჭე ხუნდები",
-      "brakeDiscs": "სამუხრუჭე დისკები",
-      "brakeLevers": "მუხრუჭის სახელურები",
-      "brakeCables": "მუხრუჭის ტროსები",
-
-      "foldingMechanisms": "კეცვის მექანიზმები",
-      "kickstands": "საყრდენი ფეხები",
-      "fenders": "ფრთები (ტალახდამცავები)",
-      "deckGrips": "დეკის დასაკრობი (გრიპი)",
-
-      "headlightsTaillights": "წინა და უკანა განათება",
-      "turnSignals": "მოხვევის მაჩვენებლები",
-      "wiringHarnesses": "სადენების შეკვრა",
-      "displays": "დისპლეები / ეკრანები",
-      "hornsBells": "საყვირები და ზარები",
-
-      "handlebarGrips": "საჭის სახელურები (გრიპსები)",
-      "stems": "საჭის ღერძი (ღერო)",
-      "handlebarClamps": "საჭის დამჭერები",
-
-      "shocks": "ამორტიზატორები",
-      "suspensionSprings": "ამორტიზატორის ზამბარები",
-
-      "screwsBolts": "ჭანჭიკები და ხრახნები",
-      "rubberGrommets": "რეზინის დამჭერები / ბალიშები"
+      "BRAKE_PADS": "სამუხრუჭე ხუნდები",
+      "TIRES_TUBES": "საბურავები და კამერები",
+      "MOTOR_PARTS": "ძრავის ნაწილები",
+      "BATTERY_CELLS": "ელემენტის უჯრედები",
+      "WHEELS": "ბორბლები",
+      "BEARINGS": "საკისრები",
+      "CABLES_WIRING": "კაბელები და გაყვანილობა",
+      "CONTROLLER": "კონტროლერი",
+      "DISPLAY_PANEL": "დისპლეის პანელი",
+      "SUSPENSION_PARTS": "ამორტიზატორის / ამორტიზაციის ნაწილები",
+      "SCREWS_BOLTS": "ჭანჭიკები და ხრახნები",
+      "OTHER": "სხვა"
     },
     "genderOptions": {
       "female": "ქალი",

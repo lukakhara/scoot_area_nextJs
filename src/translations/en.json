@@ -101,42 +101,18 @@
       "CHARGING_POWER": "Charging & Power",
       "SPARE_PARTS": "Spare Parts",
 
-      "motors": "Motors",
-      "batteries": "Batteries",
-      "chargers": "Chargers",
-      "controllers": "Controllers",
-      "throttles": "Throttles",
-
-      "tires": "Tires",
-      "innerTubes": "Inner Tubes",
-      "rimsHubs": "Rims & Hubs",
-      "bearings": "Bearings",
-
-      "brakePads": "Brake Pads",
-      "brakeDiscs": "Brake Discs",
-      "brakeLevers": "Brake Levers",
-      "brakeCables": "Brake Cables",
-
-      "foldingMechanisms": "Folding Mechanisms",
-      "kickstands": "Kickstands",
-      "fenders": "Fenders",
-      "deckGrips": "Deck Grips",
-
-      "headlightsTaillights": "Headlights & Taillights",
-      "turnSignals": "Turn Signals",
-      "wiringHarnesses": "Wiring Harnesses",
-      "displays": "Displays",
-      "hornsBells": "Horns & Bells",
-
-      "handlebarGrips": "Handlebar Grips",
-      "stems": "Stems",
-      "handlebarClamps": "Handlebar Clamps",
-
-      "shocks": "Shocks",
-      "suspensionSprings": "Suspension Springs",
-
-      "screwsBolts": "Screws & Bolts",
-      "rubberGrommets": "Rubber Grommets"
+      "BRAKE_PADS": "სამუხრუჭე ხუნდები",
+      "TIRES_TUBES": "საბურავები და კამერები",
+      "MOTOR_PARTS": "ძრავის ნაწილები",
+      "BATTERY_CELLS": "ელემენტის უჯრედები",
+      "WHEELS": "ბორბლები",
+      "BEARINGS": "საკისრები",
+      "CABLES_WIRING": "კაბელები და გაყვანილობა",
+      "CONTROLLER": "კონტროლერი",
+      "DISPLAY_PANEL": "დისპლეის პანელი",
+      "SUSPENSION_PARTS": "ამორტიზატორის / ამორტიზაციის ნაწილები",
+      "SCREWS_BOLTS": "ჭანჭიკები და ხრახნები",
+      "OTHER": "სხვა"
     },
     "genderOptions": {
       "female": "Female",

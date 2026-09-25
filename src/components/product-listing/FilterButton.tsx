@@ -5,5 +5,5 @@ import { ActionButton } from "@/components/ui/ActionButton";
 
 export function FilterButton({ onClick }: { onClick?: () => void }) {
   const t = useTranslations("ProductListingPage.actions");
-  return <ActionButton icon={Funnel} label={t("filter")} onClick={onClick} />;
+  return <ActionButton icon={Funnel} label={t("filter")}  />;
 }
