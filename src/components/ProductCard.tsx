@@ -18,6 +18,7 @@ import {
 import ProductCardImage from "./ui/ProductCardImage";
 import { CompareButton } from "./ui/CompareButton";
 import { ActionButton } from "./ui/ActionButton";
+import AddToCartButton from "./ui/AddToCartButton";
 
 const DETAIL_ROUTES: Record<Product["productType"], string> = {
   scooter: "/scooters",
@@ -41,7 +42,6 @@ export function ProductCard({
   item,
   units = {} as ProductUnits,
 }: ProductCardProps) {
-
   const isScooter = item.productType === "scooter";
   // if passed item is scooter we create scooter specs in other situation we have empty scooter specs
   const SCOOTER_SPECS: {
@@ -172,10 +172,16 @@ export function ProductCard({
         className={`grid grid-cols-2  gap-2 pt-4 ${isScooter ? "" : "grid-cols-1! "}  `}
       >
         {isScooter && <CompareButton variant="notHeader" />}
-        <ActionButton
-          icon={ShoppingBasket}
-          variant="notHeader"
-          label=" კალათაში დამატება"
+        <AddToCartButton
+          item={{
+            productId: item.id,
+            productType: item.productType,
+            title: item.name,
+            image: item.images?.[0],
+            price: Number(item.price),
+            oldPrice: Number(item.oldPrice),
+            quantity: 1,
+          }}
         />
       </div>
     </article>
