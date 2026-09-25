@@ -93,13 +93,13 @@
       "fastenersSmallParts": "სამაგრები და წვრილი ნაწილები"
     },
     "categoryOptions": {
-      "helmets": "ჩაფხუტები",
-      "gloves": "ხელთათმანები",
-      "vests": "ჟილეტები",
-      "locks": "საკეტები",
-      "bags": "ჩანთები",
-      "glasses": "საინფორმაციო სათვალეები",
-      "lorem": "Lorem ipsum",
+      "SAFETY_GEAR": "უსაფრთხოების აღჭურვილობა",
+      "PROTECTION_MAINTENANCE": "დაცვა და მოვლა",
+      "STORAGE_CARRYING": "შენახვა და ტარება",
+      "LIGHTING": "განათება",
+      "COMFORT_UPGRADES": "კომფორტის გაუმჯობესება",
+      "CHARGING_POWER": "დამუხტვა და კვება",
+      "SPARE_PARTS": "სათადარიგო ნაწილები",
 
       "motors": "ძრავები",
       "batteries": "ელემენტები / აკუმულატორები",

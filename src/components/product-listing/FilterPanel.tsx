@@ -21,7 +21,14 @@ export const ACCESSORY_GROUPS: Group[] = [
   {
     titleKey: "category",
     type: "radio",
-    optionKeys: ["helmets", "gloves", "vests", "locks", "bags", "glasses"],
+    optionKeys: [
+      "SAFETY_GEAR",
+      "PROTECTION_MAINTENANCE",
+      "STORAGE_CARRYING",
+      "LIGHTING",
+      "COMFORT_UPGRADES",
+      "CHARGING_POWER",
+    ],
     optionNamespace: "categoryOptions",
   },
   { titleKey: "size", type: "radio", optionKeys: ["125", "200", "250", "300"] },
@@ -29,7 +36,7 @@ export const ACCESSORY_GROUPS: Group[] = [
     titleKey: "releaseDate",
     type: "radio",
     optionKeys: ["2020", "2021", "2022", "2023", "2024", "2025"],
-    unit: "y"
+    unit: "y",
   },
   {
     titleKey: "gender",
@@ -167,8 +174,13 @@ function FilterGroup({ group }: { group: Group }) {
     const params = new URLSearchParams(searchParams.toString()); // clone, don't mutate
 
     if (type === "radio") {
-      // single-select: always replace
-      params.set(property, value);
+      // single-select: clicking the active option clears it, clicking a different one replaces it
+      const existing = params.get(property);
+      if (existing === value) {
+        params.delete(property);
+      } else {
+        params.set(property, value);
+      }
     } else {
       // multi-select: comma-separated list under one key
       const existing = params.get(property);
@@ -198,7 +210,7 @@ function FilterGroup({ group }: { group: Group }) {
     <div className="rounded-2xl bg-[#F5F5F5] text-[#212121]  p-4  ">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-3 border-b-[0.5px] border-[#606060] pb-4 text-left text-base font-normal uppercase text-[20px] text-[#212121] "
+        className="flex w-full items-center justify-between gap-3 border-b-[0.5px] border-[#606060] pb-2 text-left text-base font-normal uppercase text-[20px] text-[#212121] "
       >
         {t(`titles.${group.titleKey}`)}
         <ChevronUp
@@ -211,17 +223,18 @@ function FilterGroup({ group }: { group: Group }) {
             const isChecked = currentValues.includes(opt); // ← per-option, inside map
 
             return (
-              <li key={`${opt}-${i}`} >
-                <label className="flex cursor-pointer items-center gap-3 hover:text-orange-400 ">
+              <li key={`${opt}-${i}`} className=" shadow-4xl">
+                <label className="flex cursor-pointer items-center gap-3 hover:text-orange-300 ">
                   <input
                     type={group.type}
                     name={group.titleKey}
                     checked={isChecked}
-                    onChange={() =>
+                    onChange={() => {}}
+                    onClick={() =>
                       updateFilter(group.titleKey, opt, group.type)
                     }
-                    className={`size-4 shrink-0 appearance-none border border-muted-foreground/60  hover:opacity-90 ${
-                      group.type === "radio" ? "rounded-full" : "rounded-[3px]"
+                    className={`size-4 shrink-0 appearance-none border border-muted-foreground/60  hover:opacity-90 hover:cursor-pointer  ${
+                      group.type === "radio" ? "rounded-full" : "rounded-[3px] "
                     } checked:border-primary checked:bg-primary`}
                   />
                   {group.optionNamespace

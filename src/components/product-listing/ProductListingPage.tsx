@@ -1,5 +1,10 @@
 // ProductListingPage.tsx
-import { ACCESSORY_GROUPS, FilterPanel, PART_GROUPS, SCOOTER_GROUPS } from "./FilterPanel";
+import {
+  ACCESSORY_GROUPS,
+  FilterPanel,
+  PART_GROUPS,
+  SCOOTER_GROUPS,
+} from "./FilterPanel";
 import { ProductCard } from "../ProductCard";
 import type {
   Product,
@@ -93,9 +98,11 @@ const FETCH_CONFIG: Record<
 export default async function ProductListingPage({
   pageType,
   searchParams,
+  locale,
 }: {
   pageType: PageType;
   searchParams: { [key: string]: string | string[] | undefined };
+  locale: string;
 }) {
   const t = await getTranslations("ProductListingPage");
 
@@ -111,16 +118,23 @@ export default async function ProductListingPage({
 
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(searchParams)) {
-    if (value !== undefined) {
-      query.set(key, Array.isArray(value) ? value[0] : value);
+    const v = Array.isArray(value) ? value[0] : value;
+    if (v !== undefined && v !== "") {
+      query.set(key, v);
     }
   }
+  console.log("raw query:", query);
+
+  query.set("locale", locale);
   const queryString = query.toString();
+
+  console.log("queryString:", queryString);
 
   let items: Product[];
   let meta: PageMeta;
 
   const fetchConfig = FETCH_CONFIG[pageType];
+  console.log("fetchConfig", fetchConfig);
 
   const url = queryString
     ? `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}?${queryString}`

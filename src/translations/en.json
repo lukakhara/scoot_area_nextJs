@@ -35,8 +35,8 @@
     "Blog": {
       "header": "Blog"
     },
-    "scooters":"Scooters",
-    "accessories":"Accessories"
+    "scooters": "Scooters",
+    "accessories": "Accessories"
   },
   "ProductListingPage": {
     "units": {
@@ -71,7 +71,7 @@
       "y": "y",
       "km": "km",
       "kg": "kg",
-      "h":"hours"
+      "h": "hours"
     },
     "titles": {
       "brand": "Brand",
@@ -93,13 +93,13 @@
       "fastenersSmallParts": "Fasteners & Small Parts"
     },
     "categoryOptions": {
-      "helmets": "Helmets",
-      "gloves": "Gloves",
-      "vests": "Vests",
-      "locks": "Locks",
-      "bags": "Bags",
-      "glasses": "Glasses",
-      "lorem": "Lorem ipsum",
+      "SAFETY_GEAR": "Safety Gear",
+      "PROTECTION_MAINTENANCE": "Protection & Maintenance",
+      "STORAGE_CARRYING": "Storage & Carrying",
+      "LIGHTING": "Lighting",
+      "COMFORT_UPGRADES": "Comfort Upgrades",
+      "CHARGING_POWER": "Charging & Power",
+      "SPARE_PARTS": "Spare Parts",
 
       "motors": "Motors",
       "batteries": "Batteries",
@@ -153,11 +153,10 @@
     "dateLowToHigh": "Date: Oldest to Newest",
     "dateHighToLow": "Date: Newest to Oldest"
   },
-  "actions":{
-      "filter": "Filter",
-      "sort": "Sort",
-      "compare": "Compare",
-      "addToCart":"Add to cart"
+  "actions": {
+    "filter": "Filter",
+    "sort": "Sort",
+    "compare": "Compare",
+    "addToCart": "Add to cart"
   }
-
 }
