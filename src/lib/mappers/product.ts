@@ -1,5 +1,10 @@
 // lib/mappers/product.ts
-import type { Scooter, Product } from "@/types/product";
+import type {
+  Scooter,
+  Product,
+  AccessoryCardProduct,
+  Accessory,
+} from "@/types/product";
 
 export function toScooterCardProduct(s: Scooter): Product {
   return {
@@ -19,5 +24,23 @@ export function toScooterCardProduct(s: Scooter): Product {
     maxRange: s.maxRange,
     warranty: s.warranty,
     imagePath: { mobile: s.images[0] ?? "", desktop: s.images[0] ?? "" },
+  };
+}
+
+// lib/mappers/product.ts
+
+export function toAccessoryCardProduct(
+  accessory: Accessory,
+): AccessoryCardProduct {
+  return {
+    id: accessory.id,
+    name: accessory.name,
+    brand: accessory.brand,
+    price: accessory.price,
+    images: accessory.images,
+    category: accessory.category,
+    size: accessory.size,
+    sex: accessory.sex,
+    productType: "accessory",
   };
 }

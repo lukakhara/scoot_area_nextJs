@@ -37,8 +37,7 @@ function BlogPage() {
               className="uppercase transition-opacity hover:opacity-70"
               // activeProps={{ className: "text-primary" }}
             >
-              {post.title}
-
+          
               <article key={i} className="rounded-3xl bg-secondary p-5 sm:p-6 ">
                 <div className="relative">
                   <picture>

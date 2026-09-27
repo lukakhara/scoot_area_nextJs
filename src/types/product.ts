@@ -93,7 +93,7 @@ export interface SparePart {
 }
 
 interface BaseCardFields {
-  imagePath: { mobile: string; desktop: string };
+  imagePath?: { mobile: string; desktop: string };
   imageLabel?: string;
   oldPrice?: string;
   discount?: string;
