@@ -102,7 +102,7 @@ function mockAccessory(): Product {
     category: "SAFETY_GEAR",
     size: "M",
     sex: "UNISEX",
-    imagePath: { mobile: "/helmetMobile.png", desktop: "/helmetDesktop.png" },
+    imagePath: "/helmetMobile.png",
   };
 }
 
@@ -115,11 +115,8 @@ function mockPart(): Product {
     price: "750.00",
     images: ["/productBatteryMobile.png"],
     category: "BATTERY_CELLS",
-    imagePath: {
-      mobile: "/productBatteryMobile.png",
-      desktop: "/productBatteryDesktop.png",
-    },
-  };
+    imagePath: "/productBatteryMobile.png",
+       };
 }
 
 const STATIC_CONFIG: Partial<
@@ -139,7 +136,7 @@ const STATIC_CONFIG: Partial<
       price: "250.00₾",
       oldPrice: "400.00₾",
       discount: "10%",
-      imagePath: { mobile: "/helmetMobile.png", desktop: "/helmetDesktop.png" },
+      imagePath: "/helmetMobile.png",
       description:
         "ელექტრო სკუტერი ხშირად აღწევს 25-დან 50 კმ/სთ-მდე სიჩქარეს. წაქცევის ან შეჯახების შემთხვევაში, ჩაფხუტი მნიშვნელოვნად ამცირებს თავის ტრავმის რისკს. ეს არ არის არჩევანი — ეს აუცილებლობაა.",
       configurations: [
@@ -156,10 +153,7 @@ const STATIC_CONFIG: Partial<
       price: "250.00₾",
       oldPrice: "400.00₾",
       discount: "5%",
-      imagePath: {
-        mobile: "/productBatteryMobile.png",
-        desktop: "/productBatteryDesktop.png",
-      },
+      imagePath: "/productBatteryMobile.png",
       description:
         "ელექტრო სკუტერი ხშირად აღწევს 25-დან 50 კმ/სთ-მდე სიჩქარეს. წაქცევის ან შეჯახების შემთხვევაში, ჩაფხუტი მნიშვნელოვნად ამცირებს თავის ტრავმის რისკს. ეს არ არის არჩევანი — ეს აუცილებლობაა.",
     },
@@ -247,7 +241,7 @@ export default function ProductDetailPage({
                   srcSet={product.imagePath}
                 />
                 <Image
-                  src={product.imagePath}
+                  src={product.images[0]}
                   className="aspect-[4/3] w-full object-cover"
                   alt="product image"
                   height={634}
@@ -315,7 +309,7 @@ export default function ProductDetailPage({
 
             {isScooter && product ? (
               <ul className="mt-8 space-y-3 rounded-2xl bg-secondary p-6 text-sm text-muted-foreground">
-                {getScooterSpecs(scooterDetail, units).map(
+                {getScooterSpecs(scooter, units).map(
                   ({ Icon, label, value }) => (
                     <li
                       key={label}
@@ -367,7 +361,7 @@ export default function ProductDetailPage({
             }
           >
             {similar.map((item) => (
-              <ProductCard key={item.id} item={item} units={units} />
+              <ProductCard key={item.id} item={item} units={units}  />
             ))}
           </div>
         </section>

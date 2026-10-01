@@ -93,7 +93,11 @@ export interface SparePart {
 }
 
 interface BaseCardFields {
+<<<<<<< HEAD
   imagePath?: string;
+=======
+  imagePath: { mobile: string; desktop: string };
+>>>>>>> parent of 2f56eca (modifyied accessories detail page(need more work) modified also popoveer cart component)
   imageLabel?: string;
   oldPrice?: string;
   discount?: string;

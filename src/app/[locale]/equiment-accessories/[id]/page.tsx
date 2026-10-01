@@ -1,6 +1,5 @@
-// app/[locale]/accessories/[id]/page.tsx
-import { getTranslations } from "next-intl/server";
 import ProductDetailPage from "@/components/product-detail/ProductDetailPage";
+<<<<<<< HEAD
 import type { Accessory, ProductUnits } from "@/types/product";
 import { toAccessoryCardProduct } from "@/lib/mappers/product";
 import { notFound } from "next/navigation";
@@ -42,13 +41,25 @@ if (res.status === 404) {
 
   const unitsT = await getTranslations("ProductListingPage.units");
 
+=======
+import React from "react";
+>>>>>>> parent of 2f56eca (modifyied accessories detail page(need more work) modified also popoveer cart component)
 
+const page = () => {
   return (
+<<<<<<< HEAD
     <ProductDetailPage
       pageType="accessory"
       productDetailData={accessoryDetail}
       similar={similar}
       units={units}
     />
+=======
+    <div>
+      <ProductDetailPage pageType="accessory" />
+    </div>
+>>>>>>> parent of 2f56eca (modifyied accessories detail page(need more work) modified also popoveer cart component)
   );
-}
+};
+
+export default page;

@@ -7,7 +7,6 @@ import CartPopover from "@/components/CartPopover";
 import Image from "next/image";
 import { routing } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
-import {useCartStore} from '@/store/cartStore'
 
 export default function Header({
   variant = "overlay",
@@ -16,10 +15,7 @@ export default function Header({
 }) {
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const itemsInCart = useCartStore((state) => state.items);
-  const itemsAmountInCard = useCartStore((state) => state.items.length);
-  const itemsSummaryPrice = itemsInCart.reduce((sum,item) => sum + item.price * item.quantity,0);
- 
+
 
   const pathname = usePathname();
   const router = useRouter();
@@ -117,16 +113,16 @@ export default function Header({
             >
               <ShoppingCart className="size-5" />
               <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
-                {itemsAmountInCard}
+                3
               </span>
-              {itemsSummaryPrice.toFixed(2)}₾
+              450.00₾
             </button>
           </Link>
 
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
           <div
             className={cn(
-              "flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px] hover:scale-110 ",
+              "flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px] hover:scale-110",
               solid ? "border-black" : "border-white",
             )}
           >

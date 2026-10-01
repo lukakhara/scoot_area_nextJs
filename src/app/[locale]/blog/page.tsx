@@ -37,6 +37,7 @@ export default async function BlogPage({
               className="uppercase transition-opacity hover:opacity-70"
               // activeProps={{ className: "text-primary" }}
             >
+<<<<<<< HEAD
               <article
                 key={i}
                 className="rounded-3xl bg-secondary p-5 sm:p-6 min-h-[679px] flex flex-col "
@@ -46,6 +47,16 @@ export default async function BlogPage({
                     <ProductCardImage
                       src={post.coverImage}
                       alt={`${post.title} cover image `}
+=======
+              {post.title}
+
+              <article key={i} className="rounded-3xl bg-secondary p-5 sm:p-6 ">
+                <div className="relative">
+                  <picture>
+                    <source
+                      media="(min-width: 768px)"
+                      srcSet='/blogDesk.png'
+>>>>>>> parent of 2f56eca (modifyied accessories detail page(need more work) modified also popoveer cart component)
                     />
                   ) : (
                     <picture>
