@@ -20,7 +20,7 @@ import Pagination from "@/components/ui/Pagination";
 
 type PageType = "scooters" | "parts" | "accessories";
 
-type PageMeta = {
+export type PageMeta = {
   page: number;
   limit: number;
   total: number;

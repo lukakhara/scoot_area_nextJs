@@ -5,7 +5,7 @@ import Image from "next/image";
 export function ImageThumbnailGallery({
   imagePath,
 }: {
-  imagePath: { mobile: string; desktop: string };
+  imagePath: string;
 }) {
   const [active, setActive] = useState(0);
 
@@ -21,9 +21,9 @@ export function ImageThumbnailGallery({
           }`}
         >
           <picture>
-            <source media="(min-width: 768px)" srcSet={imagePath.desktop} />
+            <source media="(min-width: 768px)" srcSet={imagePath} />
             <Image
-              src={imagePath.mobile}
+              src={imagePath}
               className="aspect-[4/3] w-full object-cover"
               alt="product image"
               height={189}

@@ -41,18 +41,12 @@ if (res.status === 404) {
     .map(toAccessoryCardProduct);
 
   const unitsT = await getTranslations("ProductListingPage.units");
-  const units: ProductUnits = {
-    w: unitsT("w"),
-    kmH: unitsT("kmH"),
-    y: unitsT("y"),
-    km: unitsT("km"),
-    kg: unitsT("kg"),
-  };
+
 
   return (
     <ProductDetailPage
       pageType="accessory"
-      accessoryDetail={accessoryDetail}
+      productDetailData={accessoryDetail}
       similar={similar}
       units={units}
     />

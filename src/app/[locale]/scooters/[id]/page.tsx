@@ -22,7 +22,7 @@ export default async function ScooterDetailRoute({
     throw new Error(`Failed to fetch scooter ${id}: ${res.status}`);
   }
 
-  const { data: scooterDetail } = (await res.json()) as { data: Scooter };
+  const { data: scooterData } = (await res.json()) as { data: Scooter };
 
   // Similar scooters — simple approach: fetch a small page, exclude current id
   const similarRes = await fetch(
@@ -49,8 +49,8 @@ export default async function ScooterDetailRoute({
 
   return (
     <ProductDetailPage
-      pageType="scooter"
-      scooterDetail={scooterDetail}
+      product={scooterData}
+      productType="scooter"
       similar={similar}
       units={units}
     />

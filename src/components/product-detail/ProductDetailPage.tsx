@@ -32,7 +32,7 @@ export type DetailProduct = {
   price: string;
   oldPrice?: string;
   discount?: string;
-  imagePath: { mobile: string; desktop: string };
+  imagePath: string;
   description?: string | string[];
   configurations?: string[];
 };
@@ -169,21 +169,17 @@ const STATIC_CONFIG: Partial<
 
 export default function ProductDetailPage({
   pageType,
-  scooterDetail,
+  product,
   similar: similarProp,
   units,
 }: {
   pageType: PageType;
-  scooterDetail?: Scooter;
+  product: Product;
   similar?: Product[];
   units: ProductUnits;
 }) {
   const isScooter = pageType === "scooter";
 
-  const product: DetailProduct =
-    isScooter && scooterDetail
-      ? scooterToDetailProduct(scooterDetail)
-      : STATIC_CONFIG[pageType]!.product;
 
   const similar: Product[] =
     isScooter && similarProp
@@ -193,18 +189,15 @@ export default function ProductDetailPage({
   const sectionTitle = isScooter ? "რატომ ეს სკუტერი?" : undefined;
   const showPhotoGrid = isScooter;
 
-  const descriptionParagraphs = Array.isArray(product.description)
-    ? product.description
-    : product.description
-      ? [product.description]
-      : [];
+
+  console.log(product);
 
   return (
     <div className="min-h-screen bg-background pt-20">
       <main className="mx-auto max-w-[1400px] px-5 pt-8 pb-16">
         {!isScooter && (
           <h1 className="text-3xl font-extrabold tracking-tight uppercase lg:hidden">
-            {product.title}
+            {product.name}
           </h1>
         )}
 
@@ -220,13 +213,13 @@ export default function ProductDetailPage({
               <div className="relative overflow-hidden rounded-2xl border bg-card">
                 {product.imagePath ? (
                   <ProductCardImage
-                    src={product.imagePath.desktop}
-                    alt={product.title}
+                    src={product.imagePath}
+                    alt={product.name}
                   />
                 ) : (
                   <Placeholder
                     className="aspect-[4/3] w-full"
-                    label={product.title}
+                    label={product.name}
                   />
                 )}
                 {product.discount && (
@@ -239,7 +232,7 @@ export default function ProductDetailPage({
                 </div>
               </div>
 
-              <ImageThumbnailGallery imagePath={product.imagePath} />
+              {product.imagePath && <ImageThumbnailGallery imagePath={product.imagePath} />}
             </div>
           ) : (
             <div className="relative overflow-hidden rounded-2xl bg-secondary p-4">
@@ -251,10 +244,10 @@ export default function ProductDetailPage({
               <picture>
                 <source
                   media="(min-width: 768px)"
-                  srcSet={product.imagePath.desktop}
+                  srcSet={product.imagePath}
                 />
                 <Image
-                  src={product.imagePath.mobile}
+                  src={product.imagePath}
                   className="aspect-[4/3] w-full object-cover"
                   alt="product image"
                   height={634}
@@ -267,11 +260,11 @@ export default function ProductDetailPage({
           <div>
             {isScooter ? (
               <h1 className="text-3xl leading-tight font-extrabold tracking-tight uppercase sm:text-4xl">
-                {product.title}
+                {product.name}
               </h1>
             ) : (
               <h1 className="hidden text-4xl font-extrabold tracking-tight uppercase lg:block">
-                {product.title}
+                {product.name}
               </h1>
             )}
 
@@ -320,7 +313,7 @@ export default function ProductDetailPage({
               />
             </div>
 
-            {isScooter && scooterDetail ? (
+            {isScooter && product ? (
               <ul className="mt-8 space-y-3 rounded-2xl bg-secondary p-6 text-sm text-muted-foreground">
                 {getScooterSpecs(scooterDetail, units).map(
                   ({ Icon, label, value }) => (
@@ -341,42 +334,14 @@ export default function ProductDetailPage({
               </ul>
             ) : (
               <>
-                {descriptionParagraphs.length > 0 && (
-                  <p className="mt-8 text-sm leading-relaxed text-foreground/80">
-                    {descriptionParagraphs[0]}
-                  </p>
-                )}
-                {product.configurations && (
-                  <>
-                    <p className="mt-5 text-sm font-medium">
-                      ძირითადი მახასიათებლები:
-                    </p>
-                    <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-foreground/80">
-                      {product.configurations.map((b) => (
-                        <li key={b}>{b}</li>
-                      ))}
-                    </ul>
-                  </>
-                )}
+                
+        
               </>
             )}
           </div>
         </div>
 
-        {isScooter && descriptionParagraphs.length > 0 && (
-          <section className="mt-16">
-            {sectionTitle && (
-              <h2 className="text-2xl font-extrabold tracking-tight uppercase sm:text-3xl">
-                {sectionTitle}
-              </h2>
-            )}
-            <div className="mt-6 max-w-5xl space-y-5 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {descriptionParagraphs.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-          </section>
-        )}
+        
 
         {isScooter && showPhotoGrid && (
           <section className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

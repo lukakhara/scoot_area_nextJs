@@ -1,27 +1,27 @@
+import Pagination from "@/components/ui/Pagination";
+import ProductCardImage from "@/components/ui/ProductCardImage";
+import { formatDate } from "@/lib/formatDate";
+import { BlogListResponse } from "@/types/blog";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-// import { Placeholder } from "@/components/Placeholder";
-// import blogDesk from '../../public/blogDesk.png'
-// import blogMob from '../../public/blogMob.png'
-// import Link from 'next/link'
 import Image from "next/image";
 import Link from "next/link";
 
-interface postTypes {
-  id: string;
-  date: string;
-  title: string;
-  excerpt: string;
-}
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  console.log("locale", locale);
+  const queryString = `locale=${locale}`;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/blog?${queryString}`,
+  );
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${res.status}`);
+  }
+  const { data: posts, meta }: BlogListResponse = await res.json();
 
-const POSTS: postTypes[] = Array.from({ length: 6 }, (_, i) => ({
-  id: `post${i}`,
-  date: "30/05/2025",
-  title: "ელექტრო სკუტერები — მომავლის გადაადგილება უკვე დღეს",
-  excerpt:
-    "ელექტრო სკუტერები აღარ არის მხოლოდ ტრენდი — ისინი თანამედროვე ურბანული ცხოვრების აუცილებელი ნაწილი გახდა. მწვანე ტექნოლოგიებზე ორიენტირებული მსოფლიო სულ უფრო მეტად ირჩევს ეკო-მეგობრულ გადაადგილებას, და სწორედ ამ საჭიროებას პასუხობს ScootArea თავისი ხარისხიანი, სანდო და სტილური მოდელებით.",
-}));
-
-function BlogPage() {
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1400px] px-5 pt-8 pb-16 lg:pt-12">
@@ -29,40 +29,49 @@ function BlogPage() {
           ბლოგი
         </h1>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-8h">
-          {POSTS.map((post, i) => (
+        <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-8 ">
+          {posts.map((post, i) => (
             <Link
               key={post.id}
               href={"/blog/:id"}
               className="uppercase transition-opacity hover:opacity-70"
               // activeProps={{ className: "text-primary" }}
             >
-          
-              <article key={i} className="rounded-3xl bg-secondary p-5 sm:p-6 ">
-                <div className="relative">
-                  <picture>
-                    <source
-                      media="(min-width: 768px)"
-                      srcSet='/blogDesk.png'
+              <article
+                key={i}
+                className="rounded-3xl bg-secondary p-5 sm:p-6 min-h-[679px] flex flex-col "
+              >
+                <div className="relative  flex-1">
+                  {post.coverImage ? (
+                    <ProductCardImage
+                      src={post.coverImage}
+                      alt={`${post.title} cover image `}
                     />
-                    <Image
-                      src='/blogMob.png'
-                      className="aspect-[4/3] w-full object-cover"
-                      alt="item image"
-                      width={584}
-                      height={312}
-                    />
-                  </picture>
+                  ) : (
+                    <picture>
+                      <source
+                        media="(min-width: 768px)"
+                        srcSet="/blogDesk.png"
+                      />
+                      <Image
+                        src="/blogMob.png"
+                        className="aspect-[4/3] w-full object-cover"
+                        alt="item image"
+                        width={584}
+                        height={312}
+                      />
+                    </picture>
+                  )}
                   <span className="absolute bottom-0 left-0 rounded-tr-2xl bg-secondary py-2 pr-4 text-lg font-medium text-foreground/80">
-                    {post.date}
+                    {formatDate(post.publishedAt)}
                   </span>
                 </div>
 
-                <h2 className="mt-5 text-lg font-extrabold tracking-tight uppercase sm:text-xl">
+                <h2 className="mt-5 text-lg font-extrabold tracking-tight  sm:text-xl capitalize span-1">
                   {post.title}
                 </h2>
 
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base capitalize">
                   {post.excerpt}
                 </p>
               </article>
@@ -70,34 +79,8 @@ function BlogPage() {
           ))}
         </div>
 
-        <nav
-          className="mt-12 flex items-center justify-center gap-2"
-          aria-label="გვერდები"
-        >
-          <button
-            aria-label="წინა"
-            className="flex size-9 items-center justify-center rounded-full border hover:border-primary"
-          >
-            <ChevronLeft className="size-4" />
-          </button>
-          {["1", "2", "3", "4", "…"].map((p) => (
-            <button
-              key={p}
-              className="flex size-9 items-center justify-center rounded-full border text-sm hover:border-primary hover:text-primary"
-            >
-              {p}
-            </button>
-          ))}
-          <button
-            aria-label="შემდეგი"
-            className="flex size-9 items-center justify-center rounded-full border hover:border-primary"
-          >
-            <ChevronRight className="size-4" />
-          </button>
-        </nav>
+        <Pagination currentPage={meta.page} totalPages={meta.totalPages} />
       </main>
     </div>
   );
 }
-
-export default BlogPage;
