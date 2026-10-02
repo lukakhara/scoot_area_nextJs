@@ -32,9 +32,7 @@
       "description": "SCOOTAREA offers fast and professional repair services for scooters.",
       "details": "Certified specialists, fast service, and high-quality parts—everything to get you back on the road with peace of mind."
     },
-    "Blog": {
-      "header": "Blog"
-    },
+    "Blog": "Blog",
     "scooters": "Scooters",
     "accessories": "Accessories"
   },

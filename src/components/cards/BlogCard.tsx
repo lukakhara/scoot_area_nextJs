@@ -1,12 +1,12 @@
 import { BlogCardProduct } from "@/types/product";
 import Image from "next/image";
 import ProductCardImage from "../ui/ProductCardImage";
-import { formatDate, formatDate } from "@/lib/formatDate";
+import {formatDate } from "@/lib/formatDate";
 
-const BlogCard = (post:BlogCardProduct) => {
+const BlogCard = ({post}:{post:BlogCardProduct}) => {
   return (
     <article
-      key={i}
+      key={post.id}
       className="rounded-3xl bg-secondary p-5 sm:p-6 min-h-[679px] flex flex-col "
     >
       <div className="relative  flex-1">

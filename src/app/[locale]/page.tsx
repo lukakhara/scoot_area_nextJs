@@ -11,6 +11,7 @@ import type {
   BlogCardProduct,
 } from "@/types/product";
 import { getTranslations } from "next-intl/server";
+import BlogCard from "@/components/cards/BlogCard";
 
 type HomePageProductSections = "scooters" | "accessories" | "blog";
 
@@ -91,13 +92,25 @@ async function getAccessories(): Promise<AccessoryCardProduct[]> {
   return json.data;
 }
 
+async function getBlogPosts(): Promise<BlogCardProduct[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch blog posts");
+  const json = await res.json();
+  return json.data;
+}
+
 async function Home() {
   const t = await getTranslations("HomePage");
-  const [scooters, accessories] = await Promise.all([
+  const [scooters, accessories, blogPosts] = await Promise.all([
     getScooters(),
     getAccessories(),
+    getBlogPosts(),
   ]);
+
   console.log("scooters", scooters);
+  console.log("blogPosts", blogPosts);
 
   return (
     <div className=" min-w-screen bg-background">
@@ -232,54 +245,14 @@ async function Home() {
         ))}
       />
       {/* Blog */}
-      <section className="flex justify-center flex-col 2xl:w-full px-4 md:px-18 pb-16 gap-[23px]">
-        <h2 className="mb-6 text-xl font-bold tracking-wide uppercase sm:text-2xl text-[#212121] md:text-[40px]">
-          ბლოგი
-        </h2>
-        <div className="grid gap-8 lg:grid-cols-2">
-          {[0, 1].map((i) => (
-            <article
-              key={i}
-              className="overflow-hidden rounded-xl     bg-[#F5F5F5]"
-            >
-              <div className="relative ">
-                <picture className=" block w-full h-full">
-                  <source
-                    media="(min-width: 768px)"
-                    srcSet="/blogDesktop.png"
-                  />
-                  <Image
-                    src="/blogMobile.png"
-                    className=" w-full h-auto object-cover rounded-[20px] border-black border"
-                    alt="product image"
-                    width={583.5}
-                    height={411}
-                  />
-                </picture>
-                <div className="absolute left-6 bottom-3 flex items-center gap-3 whitespace-nowrap">
-                  30/05/2025
-                </div>
-              </div>
 
-              {/* <Placeholder className="aspect-[16/9] w-full" label="blog" /> */}
-
-              <div className="px- md:py-3 p-5 ">
-                <span className="text-xs text-muted-foreground">
-                  30/05/2025
-                </span>
-                <h3 className="text-base font-bold uppercase">
-                  ელექტრო სკუტერები — მოგზაურობა ყოველდღიურად
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  ელექტრო სკუტერები აღარ არის მხოლოდ ტრენდი — ისინი თანამედროვე
-                  ქალაქის ყოველდღიური გადაადგილების ნაწილია. ისწავლე როგორ
-                  მოუაროთ სკუტერს და გაზარდოთ მისი რესურსი.
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      <PaginatedGridSection
+        title={t("Blog")}
+        href="/blog"
+        items={blogPosts.map((post) => (
+          <BlogCard key={post.id} post={post} />
+        ))}
+      />
     </div>
   );
 }
