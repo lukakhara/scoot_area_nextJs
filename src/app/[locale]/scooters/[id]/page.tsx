@@ -11,12 +11,11 @@ export default async function ScooterDetailRoute({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  console.log("params id ------------------------------", id);
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters/${id}`, {
     next: { revalidate: 60 },
   });
-  console.log("params id ------------------------------", id);
+
   if (res.status === 404) {
     notFound();
   }

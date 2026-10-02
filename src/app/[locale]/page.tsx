@@ -4,8 +4,74 @@ import { Scooter, type Product } from "@/types/product";
 import PaginatedGridSection from "@/components/PaginatedGridSection";
 import Image from "next/image";
 import HeroSection from "@/components/HeroSection";
-import type { ScooterCardProduct, AccessoryCardProduct } from "@/types/product";
+import type {
+  ScooterCardProduct,
+  AccessoryCardProduct,
+  Accessory,
+  BlogCardProduct,
+} from "@/types/product";
 import { getTranslations } from "next-intl/server";
+
+type HomePageProductSections = "scooters" | "accessories" | "blog";
+
+function toScooterCardProduct(s: Scooter): Product {
+  return {
+    productType: "scooter",
+    id: s.id,
+    name: s.name,
+    brand: s.brand,
+    price: s.price,
+    images: s.images,
+    releaseDate: s.releaseDate,
+    weight: s.weight,
+    chargingTime: s.chargingTime,
+    driveType: s.driveType,
+    antiSlipSystem: s.antiSlipSystem,
+    engine: s.engine,
+    maxSpeed: s.maxSpeed,
+    maxRange: s.maxRange,
+    warranty: s.warranty,
+    imagePath: { mobile: s.images[0] ?? "", desktop: s.images[0] ?? "" },
+  };
+}
+
+function toAccessoryCardProduct(a: Accessory): Product {
+  return {
+    productType: "accessory",
+    id: a.id,
+    name: a.name,
+    brand: a.brand,
+    price: a.price,
+    images: a.images,
+    category: a.category,
+    size: a.size ?? undefined,
+    sex: a.sex,
+    imagePath: { mobile: a.images[0] ?? "", desktop: a.images[0] ?? "" },
+  };
+}
+
+function toSparePartCardProduct(p: BlogCardProduct): Product {
+  return {
+    productType: "blog",
+    id: p.id,
+    title: p.title,
+    slug: p.slug,
+    excerpt: p.excerpt,
+    publishedAt: p.publishedAt,
+    imagePath: p.imagePath,
+    imageLabel: p.imageLabel,
+  };
+}
+
+// Endpoint + mapper live together, keyed off the same pageType the route already uses
+const FETCH_CONFIG: Record<
+  PageType,
+  { endpoint: string; map: (raw: any) => Product }
+> = {
+  scooters: { endpoint: "scooters", map: toScooterCardProduct },
+  accessories: { endpoint: "accessories", map: toAccessoryCardProduct },
+  parts: { endpoint: "parts", map: toSparePartCardProduct }, // was `null`
+};
 
 async function getScooters(): Promise<ScooterCardProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters`, {
@@ -25,14 +91,14 @@ async function getAccessories(): Promise<AccessoryCardProduct[]> {
   return json.data;
 }
 
-//
-
 async function Home() {
-  const t =  await getTranslations('HomePage');
+  const t = await getTranslations("HomePage");
   const [scooters, accessories] = await Promise.all([
     getScooters(),
     getAccessories(),
   ]);
+  console.log("scooters", scooters);
+
   return (
     <div className=" min-w-screen bg-background">
       <HeroSection />
@@ -66,8 +132,8 @@ async function Home() {
 
       {/* Scooters */}
       <PaginatedGridSection
-        title={t('scooters')}
-        href='/scooters'
+        title={t("scooters")}
+        href="/scooters"
         items={scooters.map((item) => (
           <ProductCard key={item.id} item={item} />
         ))}
@@ -159,8 +225,8 @@ async function Home() {
       </div>
 
       <PaginatedGridSection
-        title={t('accessories')}
-        href='/equiment-accessories'
+        title={t("accessories")}
+        href="/equiment-accessories"
         items={accessories.map((item) => (
           <ProductCard key={item.id} item={item} />
         ))}

@@ -13,10 +13,11 @@ import type {
   ProductUnits,
   SparePart,
 } from "../../types/product";
-import { getTranslations } from "next-intl/server";
+
 import { SortButton } from "@/components/product-listing/SortButton";
 import FilterToolbar from "@/components/product-listing/FilterToolbar";
 import Pagination from "@/components/ui/Pagination";
+import { getTranslations } from "next-intl/server";
 
 type PageType = "scooters" | "parts" | "accessories";
 
@@ -106,15 +107,9 @@ export default async function ProductListingPage({
 }) {
   const t = await getTranslations("ProductListingPage");
 
-  const unitsT = await getTranslations("ProductListingPage.units");
 
-  const units: ProductUnits = {
-    w: unitsT("w"),
-    kmH: unitsT("kmH"),
-    y: unitsT("y"),
-    km: unitsT("km"),
-    kg: unitsT("kg"),
-  };
+
+
 
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(searchParams)) {
@@ -123,27 +118,26 @@ export default async function ProductListingPage({
       query.set(key, v);
     }
   }
-  console.log("raw query:", query);
+  
 
   query.set("locale", locale);
   const queryString = query.toString();
 
-  console.log("queryString:", queryString);
+ 
 
   let items: Product[];
   let meta: PageMeta;
 
   const fetchConfig = FETCH_CONFIG[pageType];
-  console.log("fetchConfig", fetchConfig);
 
   const url = queryString
     ? `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}?${queryString}`
     : `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}`;
 
-  console.log("url=", url);
+
   const res = await fetch(url, { next: { revalidate: 60 } });
 
-  console.log("res=", res);
+
   if (!res.ok) {
     throw new Error(`Failed to fetch ${fetchConfig.endpoint}: ${res.status}`);
   }
@@ -155,8 +149,7 @@ export default async function ProductListingPage({
 
   items = rawItems.map(fetchConfig.map);
   meta = rawMeta;
-  console.log("items=", items);
-  console.log("meta=", meta);
+
 
   const PAGE_CONFIG: Record<PageType, Omit<PageConfig, "items">> = {
     scooters: {
@@ -181,8 +174,8 @@ export default async function ProductListingPage({
   };
 
   const config: PageConfig = { ...PAGE_CONFIG[pageType], items };
+  console.log("config", config);
 
-  console.log(meta);
 
   return (
     <div className="min-h-screen bg-background ">
@@ -212,10 +205,10 @@ export default async function ProductListingPage({
           <FilterToolbar haveFilterToolbarOnTop={config.headerActions} />
         </div>
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8 ">
           <FilterPanel groups={config.filterGroups} />
 
-          <div>
+          <div >
             <div className={config.gridClassName}>
               {items.length === 0 ? (
                 <div className="col-span-full text-center text-5xl text-red-500">
@@ -226,7 +219,6 @@ export default async function ProductListingPage({
                   <ProductCard
                     key={item.id ?? `${item.name}-${i}`}
                     item={item}
-                    units={units}
                   />
                 ))
               )}

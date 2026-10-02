@@ -37,7 +37,6 @@ export default async function BlogPage({
               className="uppercase transition-opacity hover:opacity-70"
               // activeProps={{ className: "text-primary" }}
             >
-<<<<<<< HEAD
               <article
                 key={i}
                 className="rounded-3xl bg-secondary p-5 sm:p-6 min-h-[679px] flex flex-col "
@@ -46,32 +45,25 @@ export default async function BlogPage({
                   {post.coverImage ? (
                     <ProductCardImage
                       src={post.coverImage}
-                      alt={`${post.title} cover image `}
-=======
-              {post.title}
-
-              <article key={i} className="rounded-3xl bg-secondary p-5 sm:p-6 ">
-                <div className="relative">
-                  <picture>
-                    <source
-                      media="(min-width: 768px)"
-                      srcSet='/blogDesk.png'
->>>>>>> parent of 2f56eca (modifyied accessories detail page(need more work) modified also popoveer cart component)
+                      alt={`${post.title} cover image`}
                     />
                   ) : (
-                    <picture>
-                      <source
-                        media="(min-width: 768px)"
-                        srcSet="/blogDesk.png"
+                    <div className="relative aspect-[4/3] w-full overflow-hidden">
+                      <Image
+                        src="/blogDesk.png"
+                        alt="Blog post cover image"
+                        fill
+                        className="hidden object-cover md:block"
+                        sizes="(min-width: 768px) 584px, 100vw"
                       />
                       <Image
                         src="/blogMob.png"
-                        className="aspect-[4/3] w-full object-cover"
-                        alt="item image"
-                        width={584}
-                        height={312}
+                        alt="Blog post cover image"
+                        fill
+                        className="block object-cover md:hidden"
+                        sizes="(min-width: 768px) 584px, 100vw"
                       />
-                    </picture>
+                    </div>
                   )}
                   <span className="absolute bottom-0 left-0 rounded-tr-2xl bg-secondary py-2 pr-4 text-lg font-medium text-foreground/80">
                     {formatDate(post.publishedAt)}

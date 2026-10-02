@@ -76,7 +76,7 @@ export interface Accessory {
 export interface SparePart {
   id: string;
   name: string;
-   brand: string;
+  brand: string;
   sku: string;
   category: SparePartCategory;
   price: string;
@@ -93,11 +93,7 @@ export interface SparePart {
 }
 
 interface BaseCardFields {
-<<<<<<< HEAD
   imagePath?: string;
-=======
-  imagePath: { mobile: string; desktop: string };
->>>>>>> parent of 2f56eca (modifyied accessories detail page(need more work) modified also popoveer cart component)
   imageLabel?: string;
   oldPrice?: string;
   discount?: string;
@@ -123,10 +119,7 @@ export interface ScooterCardProduct
       | "maxSpeed"
       | "maxRange"
       | "warranty"
-
-    > {
-  productType: "scooter";
-}
+    > {}
 
 export interface AccessoryCardProduct
   extends
@@ -134,67 +127,36 @@ export interface AccessoryCardProduct
     Pick<
       Accessory,
       "id" | "name" | "brand" | "price" | "images" | "category" | "size" | "sex"
-    > {
-  productType: "accessory";
-}
+    > {}
 
 export interface PartsCardProduct
   extends
     BaseCardFields,
-    Pick<SparePart, "id" | "name" | "price" | "images" | "category" | "brand" > {
-  productType: "parts";
+    Pick<
+      SparePart,
+      "id" | "name" | "price" | "images" | "category" | "brand"
+    > {}
+
+export interface BlogCardProduct {
+  id: string;
+  title: string;
+  slug: String;
+  excerpt: String;
+  publishedAt: Date;
+  coverImage?: string;
 }
 
 // Discriminated union — must stay `type`, interfaces can't express `|`
 export type Product =
-  | ScooterCardProduct
-  | AccessoryCardProduct
-  | PartsCardProduct;
+  | ({ productType: "scooter" } & ScooterCardProduct)
+  | ({ productType: "accessory" } & AccessoryCardProduct)
+  | ({ productType: "blog" } & BlogCardProduct)
+  | ({ productType: "parts" } & PartsCardProduct);
 
 export interface ProductUnits {
   w: string;
   kmH: string;
   y: string;
-  km:string;
+  km: string;
   kg: string;
 }
-
-// type BaseProduct = {
-//  id: string;
-//   productType: "scooter" | "accessory" | "parts";
-//   name: string;
-//   price: string;
-//   oldPrice?: string;
-//   discount?: string;
-//   year?: string;
-//   installment?: string;
-//   imagePath: { mobile: string; desktop: string };
-//   images: string;
-//   imageLabel?: string;
-//   // Filter fields
-//   brand?: string;
-//   enginePower?: string;
-//   releaseDate?: string;
-//   chargingTime?: string;
-//   weight?: string;
-//   category?: string;
-//   size?: string;
-//   gender?: string;
-// };
-
-// export type ScooterProduct = BaseProduct & {
-//   productType: "scooter";
-//   year: string;
-//   installment: string;
-// };
-
-// export type AccessoryProduct = BaseProduct & {
-//   productType: "accessory";
-// };
-
-// export type PartsProduct = BaseProduct & {
-//   productType: "parts";
-//   partType:string;
-// };
-
-// export type Product = ScooterProduct | AccessoryProduct | PartsProduct;

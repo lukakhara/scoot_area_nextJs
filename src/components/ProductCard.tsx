@@ -19,30 +19,27 @@ import ProductCardImage from "./ui/ProductCardImage";
 import { CompareButton } from "./ui/CompareButton";
 import { ActionButton } from "./ui/ActionButton";
 import AddToCartButton from "./ui/AddToCartButton";
+import { getTranslations } from "next-intl/server";
 
 const DETAIL_ROUTES: Record<Product["productType"], string> = {
   scooter: "/scooters",
   accessory: "/equiment-accessories",
   parts: "/parts",
+  blog: "/blog",
 };
 
-type ScooterCardProps = {
-  item: ScooterCardProduct;
-  units: ProductUnits;
-};
-
-type OtherCardProps = {
-  item: Exclude<Product, ScooterCardProduct>;
-  units?: ProductUnits;
-};
-
-type ProductCardProps = ScooterCardProps | OtherCardProps;
-
-export function ProductCard({
-  item,
-  units = {} as ProductUnits,
-}: ProductCardProps) {
+export async function ProductCard({ item }: { item: Product }) {
   const isScooter = item.productType === "scooter";
+  const unitsT = await getTranslations("ProductListingPage.units");
+  console.log('isScooter?', isScooter);
+  console.log('item:', item);
+  const units: ProductUnits = {
+    w: unitsT("w"),
+    kmH: unitsT("kmH"),
+    y: unitsT("y"),
+    km: unitsT("km"),
+    kg: unitsT("kg"),
+  };
   // if passed item is scooter we create scooter specs in other situation we have empty scooter specs
   const SCOOTER_SPECS: {
     Icon: typeof Repeat;
