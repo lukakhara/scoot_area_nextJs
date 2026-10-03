@@ -171,7 +171,7 @@ export default function ProductDetailPage({
   pageType: PageType;
   product: Product;
   similar?: Product[];
-  units: ProductUnits;
+  units?: ProductUnits;
 }) {
   const isScooter = pageType === "scooter";
 

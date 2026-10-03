@@ -2,6 +2,7 @@ import ProductDetailPage from "@/components/product-detail/ProductDetailPage";
 import type { Accessory, ProductUnits } from "@/types/product";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { toAccessoryCardProduct } from "@/lib/mappers/product";
 
 export default async function AccessoryDetailRoute({
   params,
@@ -13,16 +14,16 @@ export default async function AccessoryDetailRoute({
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accessories/${id}`, {
     next: { revalidate: 60 },
   });
-  console.log('res',res);
-  console.log('id',id);
-if (res.status === 404) {
+  
+  if (res.status === 404) {
     notFound();
   }
   if (!res.ok) {
     throw new Error(`Failed to fetch accessory ${id}: ${res.status}`);
   }
 
-  const { data: accessoryDetail } = (await res.json()) as { data: Accessory };
+  const data = await res.json();
+  console.log("data", data);
 
   // Similar accessories — simple approach: fetch a small page, exclude current id
   const similarRes = await fetch(
@@ -40,15 +41,12 @@ if (res.status === 404) {
 
   const unitsT = await getTranslations("ProductListingPage.units");
 
-const page = () => {
   return (
     <ProductDetailPage
       pageType="accessory"
-      productDetailData={accessoryDetail}
+      product={data}
       similar={similar}
-      units={units}
     />
   );
-};
 }
 

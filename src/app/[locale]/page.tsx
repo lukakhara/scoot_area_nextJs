@@ -20,70 +20,7 @@ import {
   toSparePartCardProduct,
 } from "@/lib/mappers/product";
 
-// const toScooterCard = ({
-//   id,
-//   name,
-//   price,
-//   images,
-//   discountPrice,
-//   discountEndsAt,
-//   releaseDate,
-//   engine,
-//   maxSpeed,
-//   maxRange,
-//   weight,
-//   warranty,
-//   installment,
-// }: ScooterCardProduct) => ({
-//   productType: "scooter" as const,
-//   id,
-//   name,
-//   images,
-//   price,
-//   discountPrice,
-//   discountEndsAt,
-//   releaseDate,
-//   engine,
-//   maxSpeed,
-//   maxRange,
-//   weight,
-//   warranty,
-//   installment
-// });
 
-// const toAccessoryCard = ({
-//   id,
-//   name,
-//   price,
-//   discountPrice,
-//   discountEndsAt,
-//   images,
-// }: BaseCardFields) => ({
-//   productType: "accessory" as const,
-//   id,
-//   name,
-//   price,
-//   discountPrice,
-//   discountEndsAt,
-//   images,
-// });
-
-// const toBlogCard = ({
-//   id,
-//   title,
-//   slug,
-//   excerpt,
-//   publishedAt,
-//   coverImage,
-// }: BlogCardProduct) => ({
-//   productType: "blog" as const,
-//   id,
-//   title,
-//   slug,
-//   excerpt,
-//   publishedAt,
-//   coverImage,
-// });
 
 async function getScooters(): Promise<ScooterProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters`, {

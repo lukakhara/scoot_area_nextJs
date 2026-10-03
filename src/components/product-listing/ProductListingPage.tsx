@@ -42,49 +42,6 @@ type PageConfig = {
   headerActions: boolean;
 };
 
-// function toScooterCardProduct(s: ScooterProduct): Product {
-//   return {
-//     productType: "scooter",
-//     id: s.id,
-//     name: s.name,
-//     price: s.price,
-//     images: s.images,
-//     releaseDate: s.releaseDate,
-//     weight: s.weight,
-//     engine: s.engine,
-//     maxSpeed: s.maxSpeed,
-//     maxRange: s.maxRange,
-//     warranty: s.warranty,
-//     discountPrice: s.discountPrice,
-//     discountEndsAt: s.discountEndsAt,
-//     installment: s.installment,
-//   };
-// }
-
-// function toAccessoryCardProduct(a: AccessoryProduct): Product {
-//   return {
-//     id: a.id,
-//     name: a.name,
-//     price: a.price,
-//     discountPrice: a.discountPrice,
-//     discountEndsAt: a.discountEndsAt,
-//     images: a.images,
-//     productType: "accessory",
-//   };
-// }
-
-// function toSparePartCardProduct(p: BaseCardFields): Product {
-//   return {
-//     discountPrice: p.discountPrice,
-//     discountEndsAt: p.discountEndsAt,
-//     productType: "parts",
-//     id: p.id,
-//     name: p.name,
-//     price: p.price,
-//     images: p.images,
-//   };
-// }
-
 // Endpoint + mapper live together, keyed off the same pageType the route already uses
 const FETCH_CONFIG: Record<
   PageType,
@@ -206,7 +163,7 @@ export default async function ProductListingPage({
               ) : (
                 config.items.map((item, i) => (
                   <ProductCard
-                    key={item.id ?? `${item.name}-${i}`}
+                    key={item.id ?? `${item.id}-${i}`}
                     item={item}
                   />
                 ))
