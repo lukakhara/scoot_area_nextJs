@@ -42,7 +42,8 @@
       "kmH": "km/h",
       "y": "y",
       "km": "km",
-      "kg": "kg"
+      "kg": "kg",
+      "OFF":"ფასდაკლება"
     },
     "titles": {
       "scooters": "სკუტერები",

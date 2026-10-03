@@ -56,6 +56,8 @@ export interface Scooter {
   images: string[];
   createdAt: string;
   updatedAt: string;
+   discountPrice?: number | string | null;
+  discountEndsAt?: string | null;
 }
 
 export interface Accessory {
@@ -71,6 +73,8 @@ export interface Accessory {
   images: string[];
   compatibleWith: string[];
   createdAt: string;
+  discountPrice?: number | string | null;
+  discountEndsAt?: string | null;
 }
 
 export interface SparePart {
@@ -90,48 +94,37 @@ export interface SparePart {
   manufacturer?: string | null;
   createdAt: string;
   updatedAt: string;
+  discountPrice?: number | string | null;
+  discountEndsAt?: string | null;
 }
 
 interface BaseCardFields {
   imagePath?: string;
   imageLabel?: string;
   oldPrice?: string;
-  discount?: string;
   installment?: string;
+  discountPrice?: number | string | null;
+  discountEndsAt?: string | null;
 }
 
 export interface ScooterCardProduct
-  extends
-    BaseCardFields,
+  extends BaseCardFields,
     Pick<
       Scooter,
-      | "id"
-      | "name"
-      | "brand"
-      | "price"
-      | "images"
-      | "releaseDate"
-      | "weight"
-      | "chargingTime"
-      | "driveType"
-      | "antiSlipSystem"
-      | "engine"
-      | "maxSpeed"
-      | "maxRange"
-      | "warranty"
+      | "id" | "name" | "brand" | "price" | "images" | "releaseDate"
+      | "weight" | "chargingTime" | "driveType" | "antiSlipSystem"
+      | "engine" | "maxSpeed" | "maxRange" | "warranty"
     > {}
 
 export interface AccessoryCardProduct
-  extends
-    BaseCardFields,
+  extends BaseCardFields,
     Pick<
       Accessory,
       "id" | "name" | "brand" | "price" | "images" | "category" | "size" | "sex"
     > {}
 
 export interface PartsCardProduct
-  extends
-    BaseCardFields,
+  extends BaseCardFields,
     Pick<
       SparePart,
       "id" | "name" | "price" | "images" | "category" | "brand"
@@ -140,9 +133,9 @@ export interface PartsCardProduct
 export interface BlogCardProduct {
   id: string;
   title: string;
-  slug: String;
-  excerpt: String;
-  publishedAt: Date;
+  slug: string;
+  excerpt: string;
+  publishedAt: string;
   coverImage?: string;
 }
 
@@ -150,7 +143,6 @@ export interface BlogCardProduct {
 export type Product =
   | ({ productType: "scooter" } & ScooterCardProduct)
   | ({ productType: "accessory" } & AccessoryCardProduct)
-  | ({ productType: "blog" } & BlogCardProduct)
   | ({ productType: "parts" } & PartsCardProduct);
 
 export interface ProductUnits {

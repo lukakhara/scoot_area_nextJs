@@ -54,12 +54,15 @@ function toScooterCardProduct(s: Scooter): Product {
     maxSpeed: s.maxSpeed,
     maxRange: s.maxRange,
     warranty: s.warranty,
-    imagePath: { mobile: s.images[0] ?? "", desktop: s.images[0] ?? "" },
+  discountPrice: s.discountPrice,
+    discountEndsAt: s.discountEndsAt,
   };
 }
 
 function toAccessoryCardProduct(a: Accessory): Product {
   return {
+  discountPrice: a.discountPrice,
+    discountEndsAt: a.discountEndsAt,
     productType: "accessory",
     id: a.id,
     name: a.name,
@@ -69,12 +72,13 @@ function toAccessoryCardProduct(a: Accessory): Product {
     category: a.category,
     size: a.size ?? undefined,
     sex: a.sex,
-    imagePath: { mobile: a.images[0] ?? "", desktop: a.images[0] ?? "" },
   };
 }
 
 function toSparePartCardProduct(p: SparePart): Product {
   return {
+    discountPrice: p.discountPrice,
+    discountEndsAt: p.discountEndsAt, 
     productType: "parts",
     id: p.id,
     name: p.name,
@@ -82,7 +86,6 @@ function toSparePartCardProduct(p: SparePart): Product {
     price: p.price,
     images: p.images,
     category: p.category,
-    imagePath: { mobile: p.images[0] ?? "", desktop: p.images[0] ?? "" },
   };
 }
 
@@ -107,10 +110,6 @@ export default async function ProductListingPage({
 }) {
   const t = await getTranslations("ProductListingPage");
 
-
-
-
-
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(searchParams)) {
     const v = Array.isArray(value) ? value[0] : value;
@@ -118,12 +117,9 @@ export default async function ProductListingPage({
       query.set(key, v);
     }
   }
-  
 
   query.set("locale", locale);
   const queryString = query.toString();
-
- 
 
   let items: Product[];
   let meta: PageMeta;
@@ -134,9 +130,7 @@ export default async function ProductListingPage({
     ? `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}?${queryString}`
     : `${process.env.NEXT_PUBLIC_API_URL}/${fetchConfig.endpoint}`;
 
-
   const res = await fetch(url, { next: { revalidate: 60 } });
-
 
   if (!res.ok) {
     throw new Error(`Failed to fetch ${fetchConfig.endpoint}: ${res.status}`);
@@ -147,9 +141,9 @@ export default async function ProductListingPage({
     meta: PageMeta;
   };
 
+  console.log("rawItems", rawItems);
   items = rawItems.map(fetchConfig.map);
   meta = rawMeta;
-
 
   const PAGE_CONFIG: Record<PageType, Omit<PageConfig, "items">> = {
     scooters: {
@@ -173,9 +167,11 @@ export default async function ProductListingPage({
     },
   };
 
+  
   const config: PageConfig = { ...PAGE_CONFIG[pageType], items };
   console.log("config", config);
 
+  
 
   return (
     <div className="min-h-screen bg-background ">
@@ -194,6 +190,9 @@ export default async function ProductListingPage({
             </h1>
           )}
 
+          
+
+
           {config.description && (
             <div className="mt-6 w-full space-y-4 text-[0.875rem] text-muted-foreground sm:text-[20px]">
               {config.description.map((paragraph, i) => (
@@ -208,7 +207,7 @@ export default async function ProductListingPage({
         <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8 ">
           <FilterPanel groups={config.filterGroups} />
 
-          <div >
+          <div>
             <div className={config.gridClassName}>
               {items.length === 0 ? (
                 <div className="col-span-full text-center text-5xl text-red-500">

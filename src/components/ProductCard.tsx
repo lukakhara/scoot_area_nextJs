@@ -20,19 +20,19 @@ import { CompareButton } from "./ui/CompareButton";
 import { ActionButton } from "./ui/ActionButton";
 import AddToCartButton from "./ui/AddToCartButton";
 import { getTranslations } from "next-intl/server";
+import { cn } from "@/lib/utils";
+import { getDiscountInfo } from "@/lib/pricing";
+
 
 const DETAIL_ROUTES: Record<Product["productType"], string> = {
   scooter: "/scooters",
   accessory: "/equiment-accessories",
   parts: "/parts",
-  blog: "/blog",
 };
 
 export async function ProductCard({ item }: { item: Product }) {
   const isScooter = item.productType === "scooter";
   const unitsT = await getTranslations("ProductListingPage.units");
-  console.log('isScooter?', isScooter);
-  console.log('item:', item);
   const units: ProductUnits = {
     w: unitsT("w"),
     kmH: unitsT("kmH"),
@@ -76,9 +76,13 @@ export async function ProductCard({ item }: { item: Product }) {
     ? new Date(item.releaseDate).getFullYear()
     : undefined;
 
+      const { hasDiscount, finalPrice, discountPercent } = getDiscountInfo(item);
+      
+      console.log("isScooter?", isScooter);
+
   return (
     <article className="flex h-full flex-col rounded-2xl bg-secondary p-4">
-      <div className="relative overflow-hidden rounded-xl bg-card flex-1">
+      <div className="relative overflow-hidden rounded-xl bg-card flex-1 ">
         {item.images && item.images.length > 0 ? (
           <Link
             href={detailHref}
@@ -90,9 +94,9 @@ export async function ProductCard({ item }: { item: Product }) {
           <Placeholder className="" label={item.name} />
         )}
 
-        {item.discount && (
-          <span className="absolute top-3 left-3 rounded-full bg-primary px-3 py-1.5 text-[9.8px] sm:text-[11.85px] text-primary-foreground uppercase">
-            {item.discount}
+        {item.discountPrice && (
+          <span className="absolute top-3 left-3 rounded-full bg-primary px-3 py-1.5 text-[9.8px] sm:text-[11.85px] text-primary-foreground uppercase ">
+            {discountPercent}% {unitsT("OFF")}
           </span>
         )}
 
@@ -129,16 +133,17 @@ export async function ProductCard({ item }: { item: Product }) {
         }
       >
         <div className="flex items-baseline gap-2">
-          <span
-            className={`text-[13px] sm:text-[15.8px] ${item.oldPrice ? "text-[#EA2700]" : ""}`}
-          >
-            {item.price}₾
-          </span>
-          {item.oldPrice && (
-            <span className="text-[13px] sm:text-[15.8px] text-[#212121] line-through">
-              {item.oldPrice}₾
+          {item.discountPrice && (
+            <span
+              className={`text-[13px] sm:text-[15.8px] ${item.discountPrice ? "text-[#EA2700] font-medium" : ""}`}
+            >
+              {item.discountPrice}₾
             </span>
           )}
+
+          <span className={cn("text-[13px] sm:text-[15.8px] text-[#212121] ", item.discountPrice ? "line-through" : "")}>
+            {item.price}₾
+          </span>
         </div>
         {isScooter && item.installment && (
           <span className="text-[10.89px] sm:text-[13.16px] text-[#606060]">
