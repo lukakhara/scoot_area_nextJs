@@ -113,7 +113,7 @@ export interface ScooterCardProduct
     BaseCardFields,
     Pick<
       Scooter,
-      "releaseDate" | "weight" | "engine" | "maxSpeed" | "maxRange" | "warranty" | "installment"
+      "releaseDate" | "weight" | "engine" | "maxSpeed" | "maxRange" | "warranty" | "installment" 
     > {}
 
 export interface BlogCardProduct {
@@ -127,15 +127,21 @@ export interface BlogCardProduct {
 
 export type ScooterProduct = Extract<Product, { productType: "scooter" }>;
 export type AccessoryProduct = Extract<Product, { productType: "accessory" }>;
-
+export type SparePartProduct = Extract<Product, { productType: "parts" }>;
+export type BlogProduct = Extract<Product, { productType: "blog" }>;
 
 // Discriminated union — must stay `type`, interfaces can't express `|`
 export type Product =
   | ({ productType: "scooter" } & ScooterCardProduct)
   | ({ productType: "accessory" } & BaseCardFields)
-  | ({ productType: "parts" } & BaseCardFields);
+  | ({ productType: "parts" } & BaseCardFields)
+   | ({ productType: "blog" } & BlogCardProduct);
 
-export type blogProduct = { productType: "blog" } & BlogCardProduct;
+// Raw API shapes (no productType)
+export type ScooterApi = Omit<ScooterProduct, "productType">;
+export type AccessoryApi = Omit<AccessoryProduct, "productType">;
+export type SparePartApi = Omit<SparePartProduct, "productType">;
+export type BlogApi = Omit<BlogProduct, "productType">;
 
 export interface ProductUnits {
   w: string;

@@ -9,80 +9,81 @@ import type {
   BlogCardProduct,
   BaseCardFields,
   ScooterProduct,
-  AccessoryProduct
+  AccessoryProduct,
 } from "@/types/product";
 import { getTranslations } from "next-intl/server";
 import BlogCard from "@/components/cards/BlogCard";
+import {
+  toAccessoryCardProduct,
+  toBlogCardProduct,
+  toScooterCardProduct,
+  toSparePartCardProduct,
+} from "@/lib/mappers/product";
 
+// const toScooterCard = ({
+//   id,
+//   name,
+//   price,
+//   images,
+//   discountPrice,
+//   discountEndsAt,
+//   releaseDate,
+//   engine,
+//   maxSpeed,
+//   maxRange,
+//   weight,
+//   warranty,
+//   installment,
+// }: ScooterCardProduct) => ({
+//   productType: "scooter" as const,
+//   id,
+//   name,
+//   images,
+//   price,
+//   discountPrice,
+//   discountEndsAt,
+//   releaseDate,
+//   engine,
+//   maxSpeed,
+//   maxRange,
+//   weight,
+//   warranty,
+//   installment
+// });
 
+// const toAccessoryCard = ({
+//   id,
+//   name,
+//   price,
+//   discountPrice,
+//   discountEndsAt,
+//   images,
+// }: BaseCardFields) => ({
+//   productType: "accessory" as const,
+//   id,
+//   name,
+//   price,
+//   discountPrice,
+//   discountEndsAt,
+//   images,
+// });
 
-const toScooterCard = ({
-  id,
-  name,
-  price,
-  images,
-  discountPrice,
-  discountEndsAt,
-  releaseDate,
-  engine,
-  maxSpeed,
-  maxRange,
-  weight,
-  warranty,
-  installment,
-}: ScooterCardProduct) => ({
-  productType: "scooter" as const,
-  id,
-  name,
-  images,
-  price,
-  discountPrice,
-  discountEndsAt,
-  releaseDate,
-  engine,
-  maxSpeed,
-  maxRange,
-  weight,
-  warranty,
-  installment
-});
-
-
-const toAccessoryCard = ({
-  id,
-  name,
-  price,
-  discountPrice,
-  discountEndsAt,
-  images,
-}: BaseCardFields) => ({
-  productType: "accessory" as const,
-  id,
-  name,
-  price,
-  discountPrice,
-  discountEndsAt,
-  images,
-});
-
-
-const toBlogCard = ({
-  id,
-  title,
-  slug,
-  excerpt,
-  publishedAt,
-  coverImage,
-}: BlogCardProduct) => ({
-  productType: "blog" as const,
-  id,
-  title,
-  slug,
-  excerpt,
-  publishedAt,
-  coverImage,
-});
-
+// const toBlogCard = ({
+//   id,
+//   title,
+//   slug,
+//   excerpt,
+//   publishedAt,
+//   coverImage,
+// }: BlogCardProduct) => ({
+//   productType: "blog" as const,
+//   id,
+//   title,
+//   slug,
+//   excerpt,
+//   publishedAt,
+//   coverImage,
+// });
 
 async function getScooters(): Promise<ScooterProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters`, {
@@ -92,19 +93,18 @@ async function getScooters(): Promise<ScooterProduct[]> {
 
   const json = await res.json();
   const list: ScooterCardProduct[] = Array.isArray(json) ? json : json.data;
-  return list.map(toScooterCard);
+  return list.map(toScooterCardProduct);
 }
 
-async function getAccessories(): Promise<AccessoryProduct []> {
+async function getAccessories(): Promise<AccessoryProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accessories`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch accessories");
   const json = await res.json();
   const list: BaseCardFields[] = Array.isArray(json) ? json : json.data;
-  return list.map(toAccessoryCard);
+  return list.map(toAccessoryCardProduct);
 }
-
 
 async function getBlogPosts(): Promise<BlogCardProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog`, {
@@ -113,7 +113,7 @@ async function getBlogPosts(): Promise<BlogCardProduct[]> {
   if (!res.ok) throw new Error("Failed to fetch blog posts");
   const json = await res.json();
   const list: BlogCardProduct[] = Array.isArray(json) ? json : json.data;
-  return list.map(toBlogCard);
+  return list.map(toBlogCardProduct);
 }
 
 async function Home() {
