@@ -1,9 +1,9 @@
 "use client";
-
-import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { X } from "lucide-react";
 import { Placeholder } from "./ui/Placeholder";
 import Link from "next/link";
+import { useCartStore } from "@/store/cartStore";
 
 type Item = { title: string; color: string; price: string; qty: number };
 
@@ -23,14 +23,24 @@ const INITIAL: Item[] = [
 ];
 
 export default function CartPopover({ onClose }: { onClose: () => void }) {
-  const [items, setItems] = useState(INITIAL);
+  const { items, removeItem, updateQuantity, clearCart } = useCartStore(
+    useShallow((state) => ({
+      items: state.items,
+      removeItem: state.removeItem,
+      updateQuantity: state.updateQuantity,
+      clearCart: state.clearCart,
+    })),
+  );
 
-  const setQty = (i: number, d: number) =>
-    setItems((prev) =>
-      prev.map((it, idx) =>
-        idx === i ? { ...it, qty: Math.max(1, it.qty + d) } : it,
-      ),
-    );
+  const total = useCartStore((state) =>
+    state.items.reduce((n, i) => n + i.quantity * i.price, 0),
+  );
+
+  const updateQuantityOfProduct = (productId: string, delta: number) => {
+    const item = items.find((i) => i.productId === productId);
+    if (!item) return;
+    updateQuantity(item.productId, item.quantity + delta);
+  };
 
   return (
     <div className="absolute top-full right-0 z-50 mt-3 w-[min(92vw,420px)] rounded-2xl border bg-card p-5 text-foreground shadow-xl">
@@ -39,7 +49,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
           კალათა
         </h2>
         <button
-          onClick={() => setItems([])}
+          onClick={() => clearCart()}
           className="text-sm text-muted-foreground underline hover:text-primary"
         >
           გასუფთავება
@@ -64,7 +74,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
             <div className="flex flex-col items-end gap-2">
               <button
                 aria-label="წაშლა"
-                onClick={() => setItems((p) => p.filter((_, idx) => idx !== i))}
+                onClick={() => removeItem(item.productId)}
                 className="text-muted-foreground hover:text-sale"
               >
                 <X className="size-4" />
@@ -73,22 +83,22 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
                 <div className="flex items-center gap-2">
                   <button
                     aria-label="შემცირება"
-                    onClick={() => setQty(i, -1)}
+                    onClick={() => updateQuantityOfProduct(item.productId, -1)}
                     className="text-muted-foreground hover:text-primary"
                   >
                     −
                   </button>
-                  <span className="min-w-3 text-center">{item.qty}</span>
+                  <span className="min-w-3 text-center">{item.quantity}</span>
                   <button
                     aria-label="გაზრდა"
-                    onClick={() => setQty(i, 1)}
+                    onClick={() => updateQuantityOfProduct(item.productId, 1)}
                     className="text-muted-foreground hover:text-primary"
                   >
                     +
                   </button>
                 </div>
                 <span className="font-medium whitespace-nowrap">
-                  {item.price}
+                  {item.price}₾
                 </span>
               </div>
             </div>
@@ -105,7 +115,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
       <dl className="mt-5 space-y-1 border-t pt-4 text-sm">
         <div className="flex items-center justify-between">
           <dt className="text-muted-foreground">ჯამი:</dt>
-          <dd className="font-medium">9000.00₾</dd>
+          <dd className="font-medium">{total.toFixed(2)}₾</dd>
         </div>
         <div className="flex items-center justify-between">
           <dt className="text-muted-foreground">ფასდაკლება:</dt>
@@ -115,7 +125,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
 
       <div className="mt-4 flex items-center justify-between border-t pt-4 text-sm">
         <span className="text-muted-foreground">გადასახდელი თანხა:</span>
-        <span className="text-base font-extrabold">7000.00₾</span>
+        <span className="text-base font-extrabold">{total.toFixed(2)}₾</span>
       </div>
 
       <Link
