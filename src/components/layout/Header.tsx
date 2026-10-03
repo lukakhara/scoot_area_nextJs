@@ -7,6 +7,7 @@ import CartPopover from "@/components/CartPopover";
 import Image from "next/image";
 import { routing } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
+import { useCartStore } from "@/store/cartStore";
 
 export default function Header({
   variant = "overlay",
@@ -41,6 +42,10 @@ export default function Header({
     { label: t("aboutUs"), to: "/about" },
     { label: t("contact"), to: "/contact" },
   ];
+
+  const count = useCartStore((state) => state.items.reduce((n, i) => n + i.quantity, 0));
+  const total = useCartStore((state) => state.items.reduce((n, i) => n + i.quantity * i.price, 0));
+  
 
   return (
     <header
@@ -113,9 +118,9 @@ export default function Header({
             >
               <ShoppingCart className="size-5" />
               <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
-                3
+                {count}
               </span>
-              450.00₾
+              {total.toFixed(2)}₾
             </button>
           </Link>
 
