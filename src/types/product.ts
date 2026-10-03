@@ -53,10 +53,10 @@ export interface Scooter {
   ipRating: string;
 
   stock: number;
-  images: string[];
+  imagesPath: string[];
   createdAt: string;
   updatedAt: string;
-   discountPrice?: number | string | null;
+  discountPrice?: number | string | null;
   discountEndsAt?: string | null;
 }
 
@@ -98,36 +98,21 @@ export interface SparePart {
   discountEndsAt?: string | null;
 }
 
-interface BaseCardFields {
-  imagePath?: string;
-  imageLabel?: string;
-  oldPrice?: string;
-  installment?: string;
+export interface BaseCardFields {
+  id: string;
+  name: string;
+  price: string;
+  images: string[];
   discountPrice?: number | string | null;
   discountEndsAt?: string | null;
 }
 
 export interface ScooterCardProduct
-  extends BaseCardFields,
+  extends
+    BaseCardFields,
     Pick<
       Scooter,
-      | "id" | "name" | "brand" | "price" | "images" | "releaseDate"
-      | "weight" | "chargingTime" | "driveType" | "antiSlipSystem"
-      | "engine" | "maxSpeed" | "maxRange" | "warranty"
-    > {}
-
-export interface AccessoryCardProduct
-  extends BaseCardFields,
-    Pick<
-      Accessory,
-      "id" | "name" | "brand" | "price" | "images" | "category" | "size" | "sex"
-    > {}
-
-export interface PartsCardProduct
-  extends BaseCardFields,
-    Pick<
-      SparePart,
-      "id" | "name" | "price" | "images" | "category" | "brand"
+      "releaseDate" | "weight" | "engine" | "maxSpeed" | "maxRange" | "warranty"
     > {}
 
 export interface BlogCardProduct {
@@ -136,14 +121,16 @@ export interface BlogCardProduct {
   slug: string;
   excerpt: string;
   publishedAt: string;
-  coverImage?: string;
+  coverImage: string;
 }
 
 // Discriminated union — must stay `type`, interfaces can't express `|`
 export type Product =
   | ({ productType: "scooter" } & ScooterCardProduct)
-  | ({ productType: "accessory" } & AccessoryCardProduct)
-  | ({ productType: "parts" } & PartsCardProduct);
+  | ({ productType: "accessory" } & BaseCardFields)
+  | ({ productType: "parts" } & BaseCardFields);
+
+export type blogProduct = { productType: "blog" } & BlogCardProduct;
 
 export interface ProductUnits {
   w: string;

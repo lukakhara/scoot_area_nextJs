@@ -6,91 +6,104 @@ import Image from "next/image";
 import HeroSection from "@/components/HeroSection";
 import type {
   ScooterCardProduct,
-  AccessoryCardProduct,
   Accessory,
   BlogCardProduct,
+  blogProduct,
+  BaseCardFields
 } from "@/types/product";
 import { getTranslations } from "next-intl/server";
 import BlogCard from "@/components/cards/BlogCard";
 
 type HomePageProductSections = "scooters" | "accessories" | "blog";
 
-function toScooterCardProduct(s: Scooter): Product {
-  return {
-    productType: "scooter",
-    id: s.id,
-    name: s.name,
-    brand: s.brand,
-    price: s.price,
-    images: s.images,
-    releaseDate: s.releaseDate,
-    weight: s.weight,
-    chargingTime: s.chargingTime,
-    driveType: s.driveType,
-    antiSlipSystem: s.antiSlipSystem,
-    engine: s.engine,
-    maxSpeed: s.maxSpeed,
-    maxRange: s.maxRange,
-    warranty: s.warranty,
-    imagePath: { mobile: s.images[0] ?? "", desktop: s.images[0] ?? "" },
-  };
-}
+const toScooterCard = ({
+  id,
+  name,
+  price,
+  images,
+  discountPrice,
+  discountEndsAt,
+  releaseDate,
+  engine,
+  maxSpeed,
+  maxRange,
+  weight,
+  warranty,
+}: ScooterCardProduct) => ({
+  productType: "scooter" as const,
+  id,
+  name,
+  images,
+  price,
+  discountPrice,
+  discountEndsAt,
+  releaseDate,
+  engine,
+  maxSpeed,
+  maxRange,
+  weight,
+  warranty,
+});
 
-function toAccessoryCardProduct(a: Accessory): Product {
-  return {
-    productType: "accessory",
-    id: a.id,
-    name: a.name,
-    brand: a.brand,
-    price: a.price,
-    images: a.images,
-    category: a.category,
-    size: a.size ?? undefined,
-    sex: a.sex,
-    imagePath: { mobile: a.images[0] ?? "", desktop: a.images[0] ?? "" },
-  };
-}
 
-function toSparePartCardProduct(p: BlogCardProduct): Product {
-  return {
-    productType: "blog",
-    id: p.id,
-    title: p.title,
-    slug: p.slug,
-    excerpt: p.excerpt,
-    publishedAt: p.publishedAt,
-    imagePath: p.imagePath,
-    imageLabel: p.imageLabel,
-  };
-}
+const toAccessoryCard = ({
+  id,
+  name,
+  price,
+  discountPrice,
+  discountEndsAt,
+  images,
+}: BaseCardFields) => ({
+  productType: "accessory" as const,
+  id,
+  name,
+  price,
+  discountPrice,
+  discountEndsAt,
+  images,
+});
 
-// Endpoint + mapper live together, keyed off the same pageType the route already uses
-const FETCH_CONFIG: Record<
-  PageType,
-  { endpoint: string; map: (raw: any) => Product }
-> = {
-  scooters: { endpoint: "scooters", map: toScooterCardProduct },
-  accessories: { endpoint: "accessories", map: toAccessoryCardProduct },
-  parts: { endpoint: "parts", map: toSparePartCardProduct }, // was `null`
-};
+
+const toBlogCard = ({
+  id,
+  title,
+  slug,
+  excerpt,
+  publishedAt,
+  coverImage,
+}: BlogCardProduct) => ({
+  productType: "blog" as const,
+  id,
+  title,
+  slug,
+  excerpt,
+  publishedAt,
+  coverImage,
+});
+
 
 async function getScooters(): Promise<ScooterCardProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch scooters");
+
   const json = await res.json();
-  return json.data;
+  const list: Scooter[] = Array.isArray(json) ? json : json.data;
+
+  return list.map(toScooterCard);
 }
 
-async function getAccessories(): Promise<AccessoryCardProduct[]> {
+async function getAccessories(): Promise<BaseCardFields[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accessories`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch accessories");
   const json = await res.json();
-  return json.data;
+  const list: BaseCardFields[] = Array.isArray(json) ? json : json.data;
+  return list.map(toAccessoryCard);
 }
+
 
 async function getBlogPosts(): Promise<BlogCardProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog`, {
@@ -98,7 +111,8 @@ async function getBlogPosts(): Promise<BlogCardProduct[]> {
   });
   if (!res.ok) throw new Error("Failed to fetch blog posts");
   const json = await res.json();
-  return json.data;
+  const list: BlogCardProduct[] = Array.isArray(json) ? json : json.data;
+  return list.map(toBlogCard);
 }
 
 async function Home() {
@@ -110,6 +124,7 @@ async function Home() {
   ]);
 
   console.log("scooters", scooters);
+  console.log("accessories", accessories);
   console.log("blogPosts", blogPosts);
 
   return (
