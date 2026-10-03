@@ -51,7 +51,7 @@ export default async function ScooterDetailRoute({
   return (
     <ProductDetailPage
       product={scooterData}
-      productType="scooter"
+      pageType="scooter"
       similar={similar}
       units={units}
     />

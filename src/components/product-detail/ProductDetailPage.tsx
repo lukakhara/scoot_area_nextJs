@@ -24,6 +24,7 @@ import { ActionButton } from "@/components/ui/ActionButton";
 import { type Product, type ProductUnits, type Scooter } from "@/types/product";
 import Image from "next/image";
 import ProductCardImage from "../ui/ProductCardImage";
+import { getDiscountInfo } from "@/lib/pricing";
 
 type PageType = "scooter" | "accessory" | "parts";
 
@@ -116,7 +117,7 @@ function mockPart(): Product {
     images: ["/productBatteryMobile.png"],
     category: "BATTERY_CELLS",
     imagePath: "/productBatteryMobile.png",
-       };
+  };
 }
 
 const STATIC_CONFIG: Partial<
@@ -174,7 +175,6 @@ export default function ProductDetailPage({
 }) {
   const isScooter = pageType === "scooter";
 
-
   const similar: Product[] =
     isScooter && similarProp
       ? similarProp
@@ -183,8 +183,10 @@ export default function ProductDetailPage({
   const sectionTitle = isScooter ? "რატომ ეს სკუტერი?" : undefined;
   const showPhotoGrid = isScooter;
 
-
-  console.log(product);
+  console.log("isScooter", isScooter);
+  console.log("product", product);
+  console.log("page type", pageType);
+  const { discountPercent } = getDiscountInfo(product);
 
   return (
     <div className="min-h-screen bg-background pt-20">
@@ -205,9 +207,9 @@ export default function ProductDetailPage({
           {isScooter ? (
             <div>
               <div className="relative overflow-hidden rounded-2xl border bg-card">
-                {product.imagePath ? (
+                {product.images ? (
                   <ProductCardImage
-                    src={product.imagePath}
+                    src={product.images[0]}
                     alt={product.name}
                   />
                 ) : (
@@ -216,9 +218,9 @@ export default function ProductDetailPage({
                     label={product.name}
                   />
                 )}
-                {product.discount && (
+                {product.discountPrice && (
                   <span className="absolute top-4 left-4 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground uppercase">
-                    {product.discount}
+                    {discountPercent}% ფასდაკლება
                   </span>
                 )}
                 <div className="absolute right-4 bottom-4">
@@ -226,20 +228,19 @@ export default function ProductDetailPage({
                 </div>
               </div>
 
-              {product.imagePath && <ImageThumbnailGallery imagePath={product.imagePath} />}
+              {product.images && (
+                <ImageThumbnailGallery imagePath={product.images[0]} />
+              )}
             </div>
           ) : (
             <div className="relative overflow-hidden rounded-2xl bg-secondary p-4">
-              {product.discount && (
+              {product.discountPrice && (
                 <span className="absolute top-6 left-6 z-10 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground uppercase">
-                  {product.discount} ფასდაკლება
+                  {product.discountPrice} ფასდაკლება
                 </span>
               )}
               <picture>
-                <source
-                  media="(min-width: 768px)"
-                  srcSet={product.imagePath}
-                />
+                <source media="(min-width: 768px)" srcSet={product.images[0]} />
                 <Image
                   src={product.images[0]}
                   className="aspect-[4/3] w-full object-cover"
@@ -278,7 +279,7 @@ export default function ProductDetailPage({
               >
                 {product.price}
               </span>
-              {product.oldPrice && (
+              {product.price && (
                 <span
                   className={
                     isScooter
@@ -286,7 +287,7 @@ export default function ProductDetailPage({
                       : "text-xl text-muted-foreground line-through lg:text-2xl"
                   }
                 >
-                  {product.oldPrice}
+                  {product.price}
                 </span>
               )}
             </div>
@@ -307,9 +308,10 @@ export default function ProductDetailPage({
               />
             </div>
 
+            {/* detail of Scooters or description of Accessory or Parts */}
             {isScooter && product ? (
-              <ul className="mt-8 space-y-3 rounded-2xl bg-secondary p-6 text-sm text-muted-foreground">
-                {getScooterSpecs(scooter, units).map(
+              <ul className="mt-8 space-y-3 rounded-2xl bg-secondary p-6 text-sm text-muted-foreground test">
+                {getScooterSpecs(product, units).map(
                   ({ Icon, label, value }) => (
                     <li
                       key={label}
@@ -328,14 +330,40 @@ export default function ProductDetailPage({
               </ul>
             ) : (
               <>
-                
-        
+                <div>
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Explicabo ipsa dolore, mollitia dolorum architecto ea
+                  delectus, quam saepe voluptate ratione et eaque temporibus
+                  deserunt quisquam reiciendis repellat blanditiis at a!
+                </div>
+                <ul>
+                  <li>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Exercitationem itaque quis odio harum q
+                  </li>
+                  <li>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Exercitationem itaque quis odio harum q
+                  </li>
+                  <li>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Exercitationem itaque quis odio harum q
+                  </li>
+                </ul>
               </>
             )}
           </div>
         </div>
 
-        
+        <div>
+          <h1>why this scooter?</h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut rem unde
+            ratione soluta autem pariatur voluptate magni quia, corporis
+            repellendus, voluptatum quos? Debitis enim vitae corporis voluptatem
+            voluptatibus possimus in!
+          </p>
+        </div>
 
         {isScooter && showPhotoGrid && (
           <section className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -361,7 +389,7 @@ export default function ProductDetailPage({
             }
           >
             {similar.map((item) => (
-              <ProductCard key={item.id} item={item} units={units}  />
+              <ProductCard key={item.id} item={item} units={units} />
             ))}
           </div>
         </section>
