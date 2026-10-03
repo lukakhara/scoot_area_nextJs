@@ -12,6 +12,10 @@ import type {
   Accessory,
   ProductUnits,
   SparePart,
+  ScooterProduct,
+  BlogCardProduct,
+  AccessoryProduct,
+  BaseCardFields,
 } from "../../types/product";
 
 import { SortButton } from "@/components/product-listing/SortButton";
@@ -37,55 +41,46 @@ type PageConfig = {
   headerActions: boolean;
 };
 
-function toScooterCardProduct(s: Scooter): Product {
+function toScooterCardProduct(s: ScooterProduct): Product {
   return {
     productType: "scooter",
     id: s.id,
     name: s.name,
-    brand: s.brand,
     price: s.price,
     images: s.images,
     releaseDate: s.releaseDate,
     weight: s.weight,
-    chargingTime: s.chargingTime,
-    driveType: s.driveType,
-    antiSlipSystem: s.antiSlipSystem,
     engine: s.engine,
     maxSpeed: s.maxSpeed,
     maxRange: s.maxRange,
     warranty: s.warranty,
-  discountPrice: s.discountPrice,
+    discountPrice: s.discountPrice,
     discountEndsAt: s.discountEndsAt,
+    installment: s.installment,
   };
 }
 
-function toAccessoryCardProduct(a: Accessory): Product {
+function toAccessoryCardProduct(a: AccessoryProduct): Product {
   return {
-  discountPrice: a.discountPrice,
-    discountEndsAt: a.discountEndsAt,
-    productType: "accessory",
     id: a.id,
     name: a.name,
-    brand: a.brand,
     price: a.price,
+    discountPrice: a.discountPrice,
+    discountEndsAt: a.discountEndsAt,
     images: a.images,
-    category: a.category,
-    size: a.size ?? undefined,
-    sex: a.sex,
+    productType: "accessory",
   };
 }
 
-function toSparePartCardProduct(p: SparePart): Product {
+function toSparePartCardProduct(p: BaseCardFields): Product {
   return {
     discountPrice: p.discountPrice,
-    discountEndsAt: p.discountEndsAt, 
+    discountEndsAt: p.discountEndsAt,
     productType: "parts",
     id: p.id,
     name: p.name,
-    brand: p.manufacturer ?? "",
     price: p.price,
     images: p.images,
-    category: p.category,
   };
 }
 
@@ -96,7 +91,7 @@ const FETCH_CONFIG: Record<
 > = {
   scooters: { endpoint: "scooters", map: toScooterCardProduct },
   accessories: { endpoint: "accessories", map: toAccessoryCardProduct },
-  parts: { endpoint: "parts", map: toSparePartCardProduct }, // was `null`
+  parts: { endpoint: "parts", map: toSparePartCardProduct }, 
 };
 
 export default async function ProductListingPage({
@@ -167,11 +162,8 @@ export default async function ProductListingPage({
     },
   };
 
-  
   const config: PageConfig = { ...PAGE_CONFIG[pageType], items };
   console.log("config", config);
-
-  
 
   return (
     <div className="min-h-screen bg-background ">
@@ -189,9 +181,6 @@ export default async function ProductListingPage({
               {config.title}
             </h1>
           )}
-
-          
-
 
           {config.description && (
             <div className="mt-6 w-full space-y-4 text-[0.875rem] text-muted-foreground sm:text-[20px]">

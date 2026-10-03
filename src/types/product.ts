@@ -58,6 +58,7 @@ export interface Scooter {
   updatedAt: string;
   discountPrice?: number | string | null;
   discountEndsAt?: string | null;
+  installment: string
 }
 
 export interface Accessory {
@@ -112,7 +113,7 @@ export interface ScooterCardProduct
     BaseCardFields,
     Pick<
       Scooter,
-      "releaseDate" | "weight" | "engine" | "maxSpeed" | "maxRange" | "warranty"
+      "releaseDate" | "weight" | "engine" | "maxSpeed" | "maxRange" | "warranty" | "installment"
     > {}
 
 export interface BlogCardProduct {
@@ -123,6 +124,10 @@ export interface BlogCardProduct {
   publishedAt: string;
   coverImage: string;
 }
+
+export type ScooterProduct = Extract<Product, { productType: "scooter" }>;
+export type AccessoryProduct = Extract<Product, { productType: "accessory" }>;
+
 
 // Discriminated union — must stay `type`, interfaces can't express `|`
 export type Product =

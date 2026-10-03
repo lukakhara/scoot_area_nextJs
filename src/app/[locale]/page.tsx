@@ -6,15 +6,15 @@ import Image from "next/image";
 import HeroSection from "@/components/HeroSection";
 import type {
   ScooterCardProduct,
-  Accessory,
   BlogCardProduct,
-  blogProduct,
-  BaseCardFields
+  BaseCardFields,
+  ScooterProduct,
+  AccessoryProduct
 } from "@/types/product";
 import { getTranslations } from "next-intl/server";
 import BlogCard from "@/components/cards/BlogCard";
 
-type HomePageProductSections = "scooters" | "accessories" | "blog";
+
 
 const toScooterCard = ({
   id,
@@ -29,6 +29,7 @@ const toScooterCard = ({
   maxRange,
   weight,
   warranty,
+  installment,
 }: ScooterCardProduct) => ({
   productType: "scooter" as const,
   id,
@@ -43,6 +44,7 @@ const toScooterCard = ({
   maxRange,
   weight,
   warranty,
+  installment
 });
 
 
@@ -82,19 +84,18 @@ const toBlogCard = ({
 });
 
 
-async function getScooters(): Promise<ScooterCardProduct[]> {
+async function getScooters(): Promise<ScooterProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch scooters");
 
   const json = await res.json();
-  const list: Scooter[] = Array.isArray(json) ? json : json.data;
-
+  const list: ScooterCardProduct[] = Array.isArray(json) ? json : json.data;
   return list.map(toScooterCard);
 }
 
-async function getAccessories(): Promise<BaseCardFields[]> {
+async function getAccessories(): Promise<AccessoryProduct []> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accessories`, {
     cache: "no-store",
   });
