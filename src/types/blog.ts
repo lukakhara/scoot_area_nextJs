@@ -17,6 +17,9 @@ export interface BlogPostCard {
 
 // Detail endpoint: GET /blog/:id
 export interface BlogPost extends BlogPostCard {
+  title: string;
+  coverImage: string | null;
+
   content: string;
   images: string[];
   videos: string[]; // if you add the videos column

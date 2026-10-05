@@ -9,7 +9,7 @@ import Link from "next/link";
 export default async function BlogPage({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{locale:string}>;
 }) {
   const { locale } = await params;
   console.log("locale", locale);
@@ -21,6 +21,9 @@ export default async function BlogPage({
     throw new Error(`Failed to fetch ${res.status}`);
   }
   const { data: posts, meta }: BlogListResponse = await res.json();
+  
+  const detailHref = `/blog/`
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -29,11 +32,11 @@ export default async function BlogPage({
           ბლოგი
         </h1>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-8 ">
+        <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-8 test">
           {posts.map((post, i) => (
             <Link
               key={post.id}
-              href={"/blog/:id"}
+              href={`/blog/${post.id}`}
               className="uppercase transition-opacity hover:opacity-70"
               // activeProps={{ className: "text-primary" }}
             >
