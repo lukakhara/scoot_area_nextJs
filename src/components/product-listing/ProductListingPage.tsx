@@ -135,13 +135,13 @@ export default async function ProductListingPage({
               <SortButton />
             </div>
           ) : (
-            <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px]">
+            <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px] " >
               {config.title}
             </h1>
           )}
 
           {config.description && (
-            <div className="mt-6 w-full space-y-4 text-[0.875rem] text-muted-foreground sm:text-[20px]">
+            <div className="mt-6 w-full space-y-4 text-[0.875rem] text-muted-foreground sm:text-[20px] ">
               {config.description.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}

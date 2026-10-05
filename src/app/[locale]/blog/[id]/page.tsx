@@ -29,7 +29,7 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
       <picture>
         <source media="(max-width: 767px)" srcSet="/insideBlogDesk.png" />
         <ProductCardImage src={blog.coverImage} alt={blog.title}/>
-      </picture>
+      </picture> 
 
       <h1>{blog.title}</h1>
 

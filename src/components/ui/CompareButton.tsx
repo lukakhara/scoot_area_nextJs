@@ -26,7 +26,7 @@ export function CompareButton({
   const t = useTranslations("actions");
 
   const button = (
-    <ActionButton
+    <ActionButton 
       icon={Shuffle}
       label={showLabel ? t("compare") : undefined}
       onClick={onClick}
@@ -36,5 +36,5 @@ export function CompareButton({
     />
   );
 
-  return href ? <Link href={href}>{button}</Link> : button;
+  return href ? <Link href={href} >{button}</Link> : button;
 }

@@ -12,7 +12,7 @@ const FilterToolbar = ({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-3 w-full",
+        "flex items-center justify-between gap-3 w-full ",
         haveFilterToolbarOnTop ? "mt-6 lg:mt-8" : "mt-10 pb-2",
       )}
     >
@@ -25,7 +25,7 @@ const FilterToolbar = ({
           <FilterButton />
           <div className="flex items-center gap-8">
             <SortButton />
-            <CompareButton />
+            <CompareButton href="/compare" />
           </div>
         </>
       )}
