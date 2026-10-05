@@ -58,7 +58,8 @@ export interface Scooter {
   updatedAt: string;
   discountPrice?: number | string | null;
   discountEndsAt?: string | null;
-  installment: string
+  installment: string;
+  images: string[]; // Derived field, not in API response; use `imagesPath` to construct it
 }
 
 export interface Accessory {
@@ -132,10 +133,9 @@ export type BlogProduct = Extract<Product, { productType: "blog" }>;
 
 // Discriminated union — must stay `type`, interfaces can't express `|`
 export type Product =
-  | ({ productType: "scooter" } & ScooterCardProduct)
+  | ({ productType: "scooter" } & Scooter)
   | ({ productType: "accessory" } & BaseCardFields)
-  | ({ productType: "parts" } & BaseCardFields)
-   | ({ productType: "blog" } & BlogCardProduct);
+  | ({ productType: "parts" } & BaseCardFields);
 
 // Raw API shapes (no productType)
 export type ScooterApi = Omit<ScooterProduct, "productType">;

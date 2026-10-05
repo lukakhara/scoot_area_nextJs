@@ -82,86 +82,6 @@ function getScooterSpecs(
   ];
 }
 
-function scooterToDetailProduct(s: Scooter): DetailProduct {
-  return {
-    title: s.name,
-    price: `${s.price}₾`,
-    imagePath: { mobile: s.images[0] ?? "", desktop: s.images[0] ?? "" },
-  };
-}
-
-// Mocks — still used for accessory/parts until those detail endpoints exist
-function mockAccessory(): Product {
-  const id = `accessory${Math.random().toString(36).slice(2, 11)}`;
-  return {
-    productType: "accessory",
-    id,
-    name: "Ninebot by Segway - F30 Plus",
-    brand: "Ninebot",
-    price: "750.00",
-    images: ["/helmetMobile.png"],
-    category: "SAFETY_GEAR",
-    size: "M",
-    sex: "UNISEX",
-    imagePath: "/helmetMobile.png",
-  };
-}
-
-function mockPart(): Product {
-  const id = `parts${Math.random().toString(36).slice(2, 11)}`;
-  return {
-    productType: "parts",
-    id,
-    name: "Ninebot by Segway - F30 Plus",
-    price: "750.00",
-    images: ["/productBatteryMobile.png"],
-    category: "BATTERY_CELLS",
-    imagePath: "/productBatteryMobile.png",
-  };
-}
-
-const STATIC_CONFIG: Partial<
-  Record<
-    PageType,
-    {
-      product: DetailProduct;
-      similar: Product[];
-      sectionTitle?: string;
-      showPhotoGrid?: boolean;
-    }
-  >
-> = {
-  accessory: {
-    product: {
-      title: "Ninebot by Segway - F30 Plus",
-      price: "250.00₾",
-      oldPrice: "400.00₾",
-      discount: "10%",
-      imagePath: "/helmetMobile.png",
-      description:
-        "ელექტრო სკუტერი ხშირად აღწევს 25-დან 50 კმ/სთ-მდე სიჩქარეს. წაქცევის ან შეჯახების შემთხვევაში, ჩაფხუტი მნიშვნელოვნად ამცირებს თავის ტრავმის რისკს. ეს არ არის არჩევანი — ეს აუცილებლობაა.",
-      configurations: [
-        "სერტიფიცირებული დაცვა (CE / EN 1078 / DOT) – შეესაბამება ევროპულ და საერთაშორისო სტანდარტებს",
-        "მსუბუქი კონსტრუქცია – კომფორტული ხანგრძლივი ტარებისთვის",
-        "ვენტილაციის სისტემა – სუნთქვისუნარიანი მასალა, რომელიც ხელს უშლის გადახურებას",
-      ],
-    },
-    similar: Array.from({ length: 3 }, mockAccessory),
-  },
-  parts: {
-    product: {
-      title: "ლითიუმ-იონური ბატარეა",
-      price: "250.00₾",
-      oldPrice: "400.00₾",
-      discount: "5%",
-      imagePath: "/productBatteryMobile.png",
-      description:
-        "ელექტრო სკუტერი ხშირად აღწევს 25-დან 50 კმ/სთ-მდე სიჩქარეს. წაქცევის ან შეჯახების შემთხვევაში, ჩაფხუტი მნიშვნელოვნად ამცირებს თავის ტრავმის რისკს. ეს არ არის არჩევანი — ეს აუცილებლობაა.",
-    },
-    similar: Array.from({ length: 6 }, mockPart),
-  },
-};
-
 export default function ProductDetailPage({
   pageType,
   product,
@@ -175,16 +95,13 @@ export default function ProductDetailPage({
 }) {
   const isScooter = pageType === "scooter";
 
-  const similar: Product[] =
-    isScooter && similarProp
-      ? similarProp
-      : (STATIC_CONFIG[pageType]?.similar ?? []);
+  const similar: Product[] | undefined = similarProp;
 
   const sectionTitle = isScooter ? "რატომ ეს სკუტერი?" : undefined;
   const showPhotoGrid = isScooter;
 
-  console.log("isScooter", isScooter);
-  console.log("product", product);
+  console.log("similar", similar);
+
   console.log("page type", pageType);
   const { discountPercent } = getDiscountInfo(product);
 
@@ -193,7 +110,7 @@ export default function ProductDetailPage({
       <main className="mx-auto max-w-[1400px] px-5 pt-8 pb-16">
         {!isScooter && (
           <h1 className="text-3xl font-extrabold tracking-tight uppercase lg:hidden">
-            {product.name}
+            {product.id}
           </h1>
         )}
 
@@ -253,15 +170,9 @@ export default function ProductDetailPage({
           )}
 
           <div>
-            {isScooter ? (
               <h1 className="text-3xl leading-tight font-extrabold tracking-tight uppercase sm:text-4xl">
                 {product.name}
               </h1>
-            ) : (
-              <h1 className="hidden text-4xl font-extrabold tracking-tight uppercase lg:block">
-                {product.name}
-              </h1>
-            )}
 
             <div
               className={
@@ -272,22 +183,18 @@ export default function ProductDetailPage({
             >
               <span
                 className={
-                  isScooter
-                    ? "text-2xl font-bold text-primary"
-                    : "text-2xl font-bold text-primary lg:text-3xl"
+                    "text-2xl font-bold  lg:text-[32px] text-[#EA2700]"
                 }
               >
-                {product.price}
+                {product.price}₾
               </span>
               {product.price && (
                 <span
                   className={
-                    isScooter
-                      ? "text-lg text-muted-foreground line-through"
-                      : "text-xl text-muted-foreground line-through lg:text-2xl"
+                      "text-xl lg:text-[32px] text-muted-foreground line-through lg:text-[#212121]"
                   }
                 >
-                  {product.price}
+                  {product.price}₾
                 </span>
               )}
             </div>
@@ -310,7 +217,7 @@ export default function ProductDetailPage({
 
             {/* detail of Scooters or description of Accessory or Parts */}
             {isScooter && product ? (
-              <ul className="mt-8 space-y-3 rounded-2xl bg-secondary p-6 text-sm text-muted-foreground test">
+              <ul className="mt-8 space-y-3 rounded-2xl  p-6 text-sm text-[#212121] bg-[#F5F5F5] ">
                 {getScooterSpecs(product, units).map(
                   ({ Icon, label, value }) => (
                     <li
@@ -388,9 +295,13 @@ export default function ProductDetailPage({
                 : "grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3"
             }
           >
-            {similar.map((item) => (
-              <ProductCard key={item.id} item={item} units={units} />
-            ))}
+            {!similar ? (
+              <p>Similar products could not be fetched.</p>
+            ) : similar.length === 0 ? (
+              <p>No similar products found.</p>
+            ) : (
+              similar.map((item) => <ProductCard key={item.id} item={item} />)
+            )}
           </div>
         </section>
       </main>

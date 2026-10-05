@@ -1,7 +1,7 @@
 // app/[locale]/scooters/[id]/page.tsx
 import { getTranslations } from "next-intl/server";
 import ProductDetailPage from "@/components/product-detail/ProductDetailPage";
-import type { Scooter, ProductUnits } from "@/types/product";
+import type { Scooter, ProductUnits, Product, ScooterApi } from "@/types/product";
 import { toScooterCardProduct } from "@/lib/mappers/product"; // extracted mapper, see note below
 import { notFound } from "next/navigation";
 
@@ -23,7 +23,7 @@ export default async function ScooterDetailRoute({
     throw new Error(`Failed to fetch scooter ${id}: ${res.status}`);
   }
 
-  const { data: scooterData } = (await res.json()) as { data: Scooter };
+  const { data: scooterData } = (await res.json()) as { data: ScooterApi };
 
   // Similar scooters — simple approach: fetch a small page, exclude current id
   const similarRes = await fetch(

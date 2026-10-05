@@ -23,7 +23,7 @@ export default async function AccessoryDetailRoute({
   }
 
   const data = await res.json();
-  console.log("data", data);
+ 
 
   // Similar accessories — simple approach: fetch a small page, exclude current id
   const similarRes = await fetch(
@@ -34,6 +34,7 @@ export default async function AccessoryDetailRoute({
     ? ((await similarRes.json()) as { data: Accessory[] })
     : { data: [] };
 
+     console.log("data=", data);
   const similar = rawSimilar
     .filter((a) => a.id !== id)
     .slice(0, 3)
