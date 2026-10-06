@@ -150,3 +150,12 @@ export interface ProductUnits {
   km: string;
   kg: string;
 }
+
+
+export interface ScooterCompare{
+  id:string;
+  name:string;
+  color:string;
+  price:number;
+  images:string[];
+}
