@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Battery,
   Bike,
@@ -44,7 +43,14 @@ const SPEC_ROWS = [
   { Icon: Plug, label: "IP" },
 ];
 
-const page = () => {
+export default async function page(id:string) {
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters/${id}`)
+
+  const data = await res.json();
+
+  console.log(data);
+
   return (
     <div>
       {/* Comparison table */}
@@ -114,6 +120,4 @@ const page = () => {
       </section>
     </div>
   );
-};
-
-export default page;
+}

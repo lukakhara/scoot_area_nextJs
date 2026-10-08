@@ -43,7 +43,7 @@
       "y": "y",
       "km": "km",
       "kg": "kg",
-      "OFF":"OFF"
+      "OFF": "OFF"
     },
     "titles": {
       "scooters": "Scooters",
@@ -55,7 +55,7 @@
       "filter": "Filter",
       "sort": "Sort",
       "compare": "Compare",
-      "addToCart":"Add to cart"
+      "addToCart": "Add to cart"
     },
     "pagination": {
       "pages": "Pages",
@@ -134,5 +134,46 @@
     "sort": "Sort",
     "compare": "Compare",
     "addToCart": "Add to cart"
+  },
+  "compare": {
+    "title": "Compare your products",
+    "specs": "Specifications",
+    "selectScooter": "Select a scooter",
+    "swipeHint": "Swipe the table sideways to see more",
+    "add": "Add",
+    "remove": "Remove",
+    "yes": "Yes",
+    "no": "No",
+    "units": {
+      "kmh": "km/h",
+      "km": "km",
+      "kg": "kg"
+    },
+    "driveType": {
+      "front": "Front",
+      "rear": "Rear",
+      "both": "Both"
+    },
+    "spec": {
+      "engine": "Motor",
+      "speed": "Speed",
+      "maxRange": "Max range",
+      "weight": "Weight",
+      "releaseDate": "Release date",
+      "warranty": "Warranty",
+      "incline": "Max incline",
+      "chargingTime": "Charging time",
+      "maxRiderWeight": "Max rider weight",
+      "recommendedRiderWeight": "Recommended rider weight",
+      "motorCount": "Number of motors",
+      "wheelSize": "Wheel size",
+      "driveType": "Drive wheel",
+      "battery": "Battery",
+      "suspension": "Suspension",
+      "antiSlip": "Anti-slip system",
+      "brakeType": "Brakes",
+      "connectivity": "Connectivity",
+      "ipRating": "IP rating"
+    }
   }
 }
