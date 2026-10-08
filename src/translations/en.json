@@ -54,7 +54,8 @@
     "actions": {
       "filter": "Filter",
       "sort": "Sort",
-      "compare": "Compare"
+      "compare": "Compare",
+      "addToCart":"Add to cart"
     },
     "pagination": {
       "pages": "Pages",

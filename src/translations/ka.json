@@ -54,7 +54,8 @@
     "actions": {
       "filter": "ფილტრი",
       "sort": "სორტირება",
-      "compare": "შედარება"
+      "compare": "შედარება",
+      "addToCart":"კალათაში დამატება"
     },
     "pagination": {
       "pages": "გვერდები",

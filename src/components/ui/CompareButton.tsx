@@ -4,7 +4,7 @@ import { ActionButton } from "@/components/ui/ActionButton";
 import { Shuffle } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 
-type ActionButtonVariant = "ghost" | "outline" | "notHeader";
+type ActionButtonVariant = "ghost" | "outline" | "notHeader" | "addToCartCompare";
 
 interface CompareButtonProps {
   onClick?: () => void;

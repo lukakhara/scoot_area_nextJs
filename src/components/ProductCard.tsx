@@ -173,7 +173,7 @@ export async function ProductCard({ item }: { item: Product }) {
       <div
         className={`grid grid-cols-2  gap-2 pt-4 ${isScooter ? "" : "grid-cols-1! "}  `}
       >
-        {isScooter && <CompareButton variant="notHeader" />}
+        {isScooter && <CompareButton variant="addToCartCompare" />}
         <AddToCartButton
           item={{
             productId: item.id,
