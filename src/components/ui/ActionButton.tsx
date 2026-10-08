@@ -18,7 +18,7 @@ const variantStyles: Record<ActionButtonVariant, string> = {
   outline: "bg-[#F5F5F5] border border-[#1a1a1a] px-[37.5px]! py-3",
   notHeader: "text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121]" ,
   filter:"cursor-default",
-  addToCartCompare:'text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121] active:scale-95',
+  addToCartCompare:'text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121] active:scale-95  w-full',
 };
 
 export function ActionButton({
@@ -34,7 +34,7 @@ export function ActionButton({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "flex items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold capitalize cursor-pointer ",
+        "flex items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold capitalize cursor-pointer",
         variantStyles[variant],
         onClick ? "hover:bg-[#EAEAEA] cursor-pointer " : "",
         compact ? "lg:hidden" : "lg:bg-transparent lg:px-0 lg:text-lg",
