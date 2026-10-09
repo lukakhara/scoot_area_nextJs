@@ -18,6 +18,7 @@ type ComparePopoverProps = {
   products: CompareProduct[];
   selected: string[];
   onToggle: (id: string) => void;
+  maxReached?: boolean;
 };
 
 const ROW_GRID =
@@ -29,11 +30,11 @@ export default function ComparePopover({
   products,
   selected,
   onToggle,
+  maxReached = false,
 }: ComparePopoverProps) {
-  const t = useTranslations("compare")
+  const t = useTranslations("compare");
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     if (!open) return;
@@ -81,14 +82,21 @@ export default function ComparePopover({
           >
             {t("popoverTitle")}
           </h2>
+          {maxReached && (
+            <p className="px-5 pt-3 text-md text-red-500 ">
+              მაქსიმუმ 4 პროდუქტის შედარება შეგიძლიათ
+            </p>
+          )}
           <button
             type="button"
             aria-label={t("close")}
             onClick={() => onOpenChange(false)}
             className="flex size-9 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:text-neutral-900 cursor-pointer"
           >
+            
             <X className="size-7" strokeWidth={1.5} />
           </button>
+          
         </header>
 
         {/* Scrollable body */}
@@ -99,12 +107,13 @@ export default function ComparePopover({
           >
             <span>{t("product")}</span>
             <span>{t("price")}</span>
-            <span className="md:w-auto">{t('add')}</span>
+            <span className="md:w-auto">{t("add")}</span>
           </div>
 
           {/* Rows */}
           {products.map((product) => {
             const active = selected.includes(product.id);
+            const disabled = maxReached && !active;
 
             return (
               <div
@@ -135,11 +144,12 @@ export default function ComparePopover({
                   <button
                     type="button"
                     aria-pressed={active}
+                    disabled={disabled}
                     onClick={() => onToggle(product.id)}
-                    className={`inline-flex h-10 items-center gap-2 rounded-full border px-5 text-sm font-medium transition-colors md:px-6 cursor-pointer ${
+                    className={`inline-flex h-10 items-center gap-2 rounded-full border px-5 text-sm font-medium transition-colors md:px-6 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 ${
                       active
                         ? "border-[#E8610A] text-[#E8610A] hover:bg-[#E8610A] hover:text-white"
-                        : "border-[#212121] text-[#212121] hover:border-[#E8610A] hover:text-[#E8610A]"
+                        : "border-[#212121] text-[#212121] enabled:hover:border-[#E8610A] enabled:hover:text-[#E8610A]"
                     }`}
                   >
                     {active ? (

@@ -150,6 +150,8 @@ export default function CompareClient({
       image: s.images?.[0] ?? "",
     }));
 
+    const maxReached = selectedIds.length >= MAX_COLUMNS - 1;
+
   return (
     <div className="">
       {/* Comparison table */}
@@ -241,7 +243,6 @@ export default function CompareClient({
                   </div>
                 ),
               )}
-
             </div>
 
             {SPEC_ROWS.map(({ Icon, key, value }, i) => (
@@ -279,6 +280,7 @@ export default function CompareClient({
           products={popupProducts}
           selected={selectedIds}
           onToggle={toggleProduct}
+           maxReached={maxReached}
         />
       </div>
     </div>
