@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { ArrowLeftRight, Check, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export type CompareProduct = {
   id: string;
@@ -29,8 +30,10 @@ export default function ComparePopover({
   selected,
   onToggle,
 }: ComparePopoverProps) {
+  const t = useTranslations("compare")
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     if (!open) return;
@@ -76,11 +79,11 @@ export default function ComparePopover({
             id={titleId}
             className="text-lg font-bold uppercase text-[#212121] md:text-xl"
           >
-            აირჩიეთ სასურველი პროდუქცია
+            {t("popoverTitle")}
           </h2>
           <button
             type="button"
-            aria-label="დახურვა"
+            aria-label={t("close")}
             onClick={() => onOpenChange(false)}
             className="flex size-9 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:text-neutral-900 cursor-pointer"
           >
@@ -94,9 +97,9 @@ export default function ComparePopover({
           <div
             className={`${ROW_GRID} border-b border-neutral-300 px-4 py-9 text-base font-semibold uppercase text-[#212121]`}
           >
-            <span>პროდუქტი</span>
-            <span>ფასი</span>
-            <span className="md:w-auto">დამატება</span>
+            <span>{t("product")}</span>
+            <span>{t("price")}</span>
+            <span className="md:w-auto">{t('add')}</span>
           </div>
 
           {/* Rows */}
@@ -144,7 +147,7 @@ export default function ComparePopover({
                     ) : (
                       <ArrowLeftRight className="size-4" />
                     )}
-                    <span>{active ? "დამატებულია" : "შედარება"}</span>
+                    <span>{active ? t("added") : t("compare")}</span>
                   </button>
                 </div>
               </div>
@@ -159,7 +162,7 @@ export default function ComparePopover({
             onClick={() => onOpenChange(false)}
             className="rounded-md bg-[#B98A5E] px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 cursor-pointer"
           >
-            დახურვა
+            {t("close")}
           </button>
         </footer>
       </div>

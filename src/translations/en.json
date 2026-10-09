@@ -144,6 +144,14 @@
     "remove": "Remove",
     "yes": "Yes",
     "no": "No",
+
+    "popoverTitle":"Select the desired products",
+    "close":"Close",
+    "product":"Product",
+    "price":"Price",
+    "added":"Added",
+    "compare":"Compare",
+
     "units": {
       "kmh": "km/h",
       "km": "km",

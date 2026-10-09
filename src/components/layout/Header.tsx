@@ -127,15 +127,16 @@ export default function Header({
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
           <div
             className={cn(
-              "flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px] hover:scale-110",
+              "flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px] hover:scale-110 cursor-pointer ",
               solid ? "border-black" : "border-white",
             )}
+             onClick={toggleLocale}
           >
             <Image
               src={flag}
-              onClick={toggleLocale}
+             
               className={cn(
-                " size-[13.25px] sm:size-[22.07px] rounded-full border-white cursor-pointer ",
+                " size-[13.25px] sm:size-[22.07px] rounded-full border-white ",
                 solid ? "bg-foregrhound/15" : "bg-primary-foreground/20",
               )}
               alt="flag icon"
