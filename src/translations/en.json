@@ -183,5 +183,13 @@
       "connectivity": "Connectivity",
       "ipRating": "IP rating"
     }
+  },
+  "Repair":{
+    "title":"repair",
+    "aboutScootarea":"ScootArea isn't limited to just selling scooters — we make sure your scooter is always in working order.",
+    "containing":"Our services include diagnostics, fixing technical faults, replacing components and parts, resolving battery or motor issues, and more.",
+    "aboutSpecialists":"Our service is provided by certified technicians who know both our models and other popular market brands inside out. We work quickly, use standard-compliant quality parts, and are always ready to provide you with detailed consultations.If your scooter needs professional repair or a technical checkup — contact us today.",
+    "mechanicNumber":"Mechanic's number",
+    "workingHours":"Working hours: Monday-Saturday"
   }
 }
