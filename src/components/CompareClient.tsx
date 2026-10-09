@@ -112,18 +112,33 @@ export default function CompareClient({
   const t = useTranslations("compare");
   const locale = useLocale();
 
+  const MAX_COLUMNS = 4;
+
   const toggleProduct = (id: string) =>
     setSelectedIds((cur) =>
-      cur.includes(id) ? cur.filter((i) => i !== id) : [...cur, id],
+      cur.includes(id)
+        ? cur.filter((i) => i !== id)
+        : cur.length >= MAX_COLUMNS - 1 // current scooter already takes 1 slot
+          ? cur
+          : [...cur, id],
     );
+
+  // keeps selection order, supports multiple selections
+  const selectedScooters = selectedIds
+    .map((id) => allScooters.find((s) => s.id === id))
+    .filter((s): s is Scooter => Boolean(s));
+
+  const columns: (Scooter | null)[] = [scooter, ...selectedScooters];
+  if (columns.length < MAX_COLUMNS) columns.push(null); // empty "add" slot
+
+  const cols = columns.length;
+
+  const GRID =
+    "grid grid-cols-[minmax(60px,1fr)_repeat(var(--cols),minmax(120px,1fr))_190px] md:grid-cols-[minmax(180px,1fr)_repeat(var(--cols),minmax(150px,1fr))_120px] items-center";
+  console.log("selectedIds", selectedIds);
 
   const removeProduct = (id: string) =>
     setSelectedIds((cur) => cur.filter((i) => i !== id));
-
-  // derived, not stored
-  const selectedScooter =
-    allScooters.find((s) => s.id === selectedIds[0]) ?? null;
-  const columns: (Scooter | null)[] = [scooter, selectedScooter];
 
   // popup list: everything except the scooter already shown
   const popupProducts: CompareProduct[] = allScooters
@@ -142,28 +157,35 @@ export default function CompareClient({
         <div className="flex justify-between ">
           <h2 className="text-[24px] leading-[100%] font-extrabold tracking-tight uppercase sm:text-3xl text-[#212121]">
             {" "}
-          {t("title")}
-           </h2>
-          <div className="flex items-center justify-end gap-2 sm:hidden ">
+            {t("title")}
+          </h2>
+          <div className="flex items-center justify-end gap-2 ">
             <button
               aria-label={t("add")}
-              className="flex size-9 items-center justify-center rounded-lg bg-secondary text-primary transition-colors hover:bg-primary hover:text-primary-foreground cursor-pointer"
+              className="flex size-12 items-center justify-center rounded-lg bg-secondary text-primary transition-colors hover:bg-primary hover:text-primary-foreground cursor-pointer"
               onClick={() => setOpenPopover(true)}
             >
-              <Plus className="size-4" />
+              <Plus className="size-6" />
             </button>
             <button
               aria-label={t("remove")}
-              className="flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary cursor-pointer"
+              className="flex size-12 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary cursor-pointer"
             >
-              <Trash2 className="size-4" />
+              <Trash2 className="size-6" />
             </button>
           </div>
         </div>
 
         <div className="mt-6 overflow-x-auto rounded-2xl border">
-          <div className="min-w-[640px] ">
-            <div className="grid grid-cols-[minmax(60px,1fr)_repeat(2,minmax(120px,1fr))_190px] md:grid-cols-[minmax(180px,1fr)_repeat(2,minmax(150px,1fr))_120px] items-center md:gap-4 border-b p-5">
+          <div
+            style={
+              {
+                "--cols": cols,
+                minWidth: 300 + cols * 170,
+              } as React.CSSProperties
+            }
+          >
+            <div className={`${GRID} md:gap-4 border-b p-5`}>
               <span className="text-sm font-bold uppercase">{t("specs")}</span>
 
               {columns.map((s, i) =>
@@ -192,13 +214,15 @@ export default function CompareClient({
                         {s.brand}
                       </p>
                     </div>
-                    <button
-                      aria-label={t("remove")}
-                      className="flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary cursor-pointer"
-                      onClick={() => removeProduct(s.id)}
-                    >
-                      <Trash2 className="size-4" />
-                    </button>
+                    {s.id !== scooter.id && (
+                      <button
+                        aria-label={t("remove")}
+                        className="flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary cursor-pointer"
+                        onClick={() => removeProduct(s.id)}
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <div key={`empty-${i}`} className="flex items-center gap-3 ">
@@ -218,27 +242,12 @@ export default function CompareClient({
                 ),
               )}
 
-              <div className="flex items-center justify-end gap-2 test">
-                <button
-                  aria-label={t("add")}
-                  className="flex size-12 items-center justify-center rounded-lg bg-secondary text-primary transition-colors hover:bg-primary hover:text-primary-foreground cursor-pointer"
-                  onClick={() => setOpenPopover(true)}
-                >
-                  <Plus className="size-4" />
-                </button>
-                <button
-                  aria-label={t("remove")}
-                  className="flex size-12 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary cursor-pointer"
-                >
-                  <Trash2 className="size-4" />
-                </button>
-              </div>
             </div>
 
             {SPEC_ROWS.map(({ Icon, key, value }, i) => (
               <div
                 key={`${key}-${i}`}
-                className="grid grid-cols-[minmax(60px,1fr)_repeat(2,minmax(120px,1fr))_190px] md:grid-cols-[minmax(180px,1fr)_repeat(2,minmax(150px,1fr))_120px] items-center gap-4 border-b px-5 py-3.5 last:border-b-0 "
+                className={`${GRID} gap-4 border-b px-5 py-3.5 last:border-b-0`}
               >
                 <span className="flex min-w-0 items-center gap-2.5 text-xs text-muted-foreground">
                   <Icon className="size-[13.7px] md:size-4 shrink-0" />
