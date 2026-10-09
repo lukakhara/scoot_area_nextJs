@@ -101,12 +101,14 @@ const SPEC_ROWS: {
 export default function CompareClient({
   scooter,
   allScooters,
+  initialSelectedIds = [],
 }: {
   scooter: Scooter;
   allScooters: Scooter[];
+  initialSelectedIds?: string[];
 }) {
   const [openPopover, setOpenPopover] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>(initialSelectedIds);
   console.log(selectedIds);
 
   const t = useTranslations("compare");
