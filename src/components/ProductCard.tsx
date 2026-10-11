@@ -76,7 +76,7 @@ export async function ProductCard({ item }: { item: Product }) {
     ? new Date(item.releaseDate).getFullYear()
     : undefined;
 
-      const { hasDiscount, finalPrice, discountPercent } = getDiscountInfo(item);
+      const {discountPercent } = getDiscountInfo(item);
       
       console.log("isScooter?", isScooter);
 

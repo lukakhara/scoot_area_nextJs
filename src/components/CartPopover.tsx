@@ -4,23 +4,9 @@ import { X } from "lucide-react";
 import { Placeholder } from "./ui/Placeholder";
 import Link from "next/link";
 import { useCartStore } from "@/store/cartStore";
+import ProductCardImage from "./ui/ProductCardImage";
 
 type Item = { title: string; color: string; price: string; qty: number };
-
-const INITIAL: Item[] = [
-  {
-    title: "Ninebot by Segway - F30 Plus",
-    color: "შავი",
-    price: "750.00₾",
-    qty: 2,
-  },
-  {
-    title: "Ninebot by Segway - F30 Plus",
-    color: "შავი",
-    price: "750.00₾",
-    qty: 2,
-  },
-];
 
 export default function CartPopover({ onClose }: { onClose: () => void }) {
   const { items, removeItem, updateQuantity, clearCart } = useCartStore(
@@ -33,8 +19,17 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
   );
 
   const total = useCartStore((state) =>
-    state.items.reduce((n, i) => n + i.quantity * i.price, 0),
+    state.items.reduce(
+      (sum, item) => sum + item.quantity * (item.oldPrice ?? item.price),
+      0,
+    ),
   );
+
+  const priceToPay = useCartStore((state) =>
+    state.items.reduce((sum, item) => sum + item.quantity * item.price, 0),
+  );
+
+  const discountTotal = total - priceToPay;
 
   const updateQuantityOfProduct = (productId: string, delta: number) => {
     const item = items.find((i) => i.productId === productId);
@@ -43,7 +38,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="absolute top-full right-0 z-50 mt-3 w-[min(92vw,420px)] rounded-2xl border bg-card p-5 text-foreground shadow-xl">
+    <div className="absolute top-8 -right-15 z-50 mt-3 w-[min(92vw,420px)] rounded-2xl border bg-card p-5 text-foreground shadow-xl ">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-extrabold tracking-tight uppercase">
           კალათა
@@ -62,7 +57,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
             key={i}
             className="grid grid-cols-[64px_minmax(0,1fr)_auto] items-start gap-3"
           >
-            <Placeholder className="size-16 rounded-xl" label="" />
+            <ProductCardImage src={item.image} alt={`product image`}></ProductCardImage>
             <div className="min-w-0">
               <p className="text-xs leading-tight font-extrabold uppercase">
                 {item.title}
@@ -115,11 +110,11 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
       <dl className="mt-5 space-y-1 border-t pt-4 text-sm">
         <div className="flex items-center justify-between">
           <dt className="text-muted-foreground">ჯამი:</dt>
-          <dd className="font-medium">{total.toFixed(2)}₾</dd>
+          <dd className="font-medium">{priceToPay.toFixed(2)}₾</dd>
         </div>
         <div className="flex items-center justify-between">
           <dt className="text-muted-foreground">ფასდაკლება:</dt>
-          <dd className="font-medium">2000.00₾</dd>
+          <dd className="font-medium">{discountTotal.toFixed(2)}₾</dd>
         </div>
       </dl>
 

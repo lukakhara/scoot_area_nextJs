@@ -91,7 +91,7 @@ export default function PaginatedGridSection<
               className="flex-shrink-0"
               style={{ width: cardWidth }}
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              whileTap={{ scale: 0.95 }}
+            
             >
               {item}
             </motion.div>

@@ -105,16 +105,13 @@ export default function Header({
           })}
         </nav>
 
-        <div className="ml-auto flex items-center gap-4 xl:ml-0">
+        <div className="ml-auto flex items-center gap-4 xl:ml-0 relative">
           <div className="relative ml-auto flex items-center gap-4 md:gap-12 xl:ml-0"></div>
           <button
             aria-label="ძებნა"
             className="hidden transition-opacity hover:opacity-70 sm:block"
           ></button>
-          <Link
-            href="/cart"
-            className="relative flex items-center gap-2 text-xs font-semibold hover:scale-110"
-          >
+        
             <button
               onClick={() => setCartOpen((v) => !v)}
               aria-expanded={cartOpen}
@@ -126,7 +123,7 @@ export default function Header({
               </span>
               {total.toFixed(2)}₾
             </button>
-          </Link>
+         
 
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
           <div

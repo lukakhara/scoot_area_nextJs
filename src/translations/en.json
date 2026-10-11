@@ -192,5 +192,19 @@
     "mechanicNumber":"Mechanic's number",
     "workingHours":"Working hours: Monday-Saturday"
   },
-  "blog":"Blog"
+  "blog":"Blog",
+  "cart": {
+    "title": "Cart",
+    "clear": "Clear",
+    "color": "Color",
+    "remove": "Remove",
+    "decrease": "Decrease",
+    "increase": "Increase",
+    "empty": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "total": "Total",
+    "viewCart": "View Cart",
+    "productImage": "Product Image"
+  }
 }
