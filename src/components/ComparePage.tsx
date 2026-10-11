@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   Battery,
@@ -55,7 +56,7 @@ export default function ComparePage() {
   const [selected, setSelected] = useState(1);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background ">
       <main className="mx-auto max-w-[1400px] px-5 pt-8 pb-16 lg:pt-12">
         <h1 className="text-2xl font-extrabold tracking-tight uppercase sm:text-3xl">
           შეადარე სასურველი პროდუქტები

@@ -1,5 +1,6 @@
 import CompareClient from "@/components/CompareClient";
 import { Scooter } from "@/types/product";
+import { Suspense } from "react";
 
 export default async function page({
   params,
@@ -29,6 +30,9 @@ export default async function page({
   const { data: scooter } = await res.json();
   const { data: allScooters } = await listRes.json();
 
-  return <CompareClient scooter={scooter} allScooters={allScooters} />;
+  return (
+    <Suspense fallback={null}>
+      <CompareClient scooter={scooter} allScooters={allScooters} />
+    </Suspense>
+  );
 }
-  

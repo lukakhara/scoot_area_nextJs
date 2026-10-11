@@ -35,10 +35,11 @@ export default function CompareSelector({
     const query = others.length ? `?others=${others.join(",")}` : "";
     router.push(`/compare-products/${first}${query}`);
   };
+  
   return (
-    <section className="mt-6">
+    <section className="mt-6 ">
       {/* Column headings (stay fixed above the scroll area) */}
-      <div className="hidden grid-cols-[minmax(0,1fr)_140px_40px] items-center gap-4 border-b pb-3 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase sm:grid">
+      <div className="hidden grid-cols-[minmax(0,1fr)_140px_40px] items-center gap-4 border-b pb-3 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase sm:grid ">
         <span>პროდუქტი</span>
         <span>ფასი</span>
         <span />

@@ -5,7 +5,6 @@ import { Menu, ShoppingCart, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CartPopover from "@/components/CartPopover";
 import Image from "next/image";
-import { routing } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { useCartStore } from "@/store/cartStore";
 
@@ -17,17 +16,19 @@ export default function Header({
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
-
   const pathname = usePathname();
   const router = useRouter();
   const locale = useLocale(); // "en" | "ka"
 
   function toggleLocale() {
     const nextLocale = locale === "en" ? "ka" : "en";
-    router.replace(pathname, { locale: nextLocale });
+    // window.location.search always holds the current query, even after replaceState
+    router.replace(`${pathname}${window.location.search}`, {
+      locale: nextLocale,
+    });
   }
 
-  const flag = locale === 'en' ? "/gb-flag.png" : "/georgia.png";
+  const flag = locale === "en" ? "/gb-flag.png" : "/georgia.png";
   const isHomePage = pathname === "/";
   const solid = isHomePage ? false : true;
 
@@ -43,9 +44,12 @@ export default function Header({
     { label: t("contact"), to: "/contact" },
   ];
 
-  const count = useCartStore((state) => state.items.reduce((n, i) => n + i.quantity, 0));
-  const total = useCartStore((state) => state.items.reduce((n, i) => n + i.quantity * i.price, 0));
-  
+  const count = useCartStore((state) =>
+    state.items.reduce((n, i) => n + i.quantity, 0),
+  );
+  const total = useCartStore((state) =>
+    state.items.reduce((n, i) => n + i.quantity * i.price, 0),
+  );
 
   return (
     <header
@@ -130,14 +134,13 @@ export default function Header({
               "flex items-center justify-center sm:size-10 size-6 rounded-full border  p-[5.7px] hover:scale-110 cursor-pointer ",
               solid ? "border-black" : "border-white",
             )}
-             onClick={toggleLocale}
+            onClick={toggleLocale}
           >
             <Image
               src={flag}
-             
               className={cn(
                 " size-[13.25px] sm:size-[22.07px] rounded-full border-white ",
-                solid ? "bg-foregrhound/15" : "bg-primary-foreground/20",
+                solid ? "bg-foreground/15" : "bg-primary-foreground/20",
               )}
               alt="flag icon"
               width={22.08}

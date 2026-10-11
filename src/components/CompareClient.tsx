@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { useState } from "react";
-
+import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ComparePopover, { CompareProduct } from "@/components/ComparePopover";
 import { Scooter } from "@/types/product";
@@ -98,32 +98,28 @@ const SPEC_ROWS: {
   { Icon: Plug, key: "ipRating", value: (s) => s.ipRating },
 ];
 
+const MAX_COLUMNS = 4;
+
 export default function CompareClient({
   scooter,
   allScooters,
-  initialSelectedIds = [],
 }: {
   scooter: Scooter;
   allScooters: Scooter[];
-  initialSelectedIds?: string[];
 }) {
   const [openPopover, setOpenPopover] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<string[]>(initialSelectedIds);
-  console.log(selectedIds);
-
+  const searchParams = useSearchParams();
   const t = useTranslations("compare");
   const locale = useLocale();
 
-  const MAX_COLUMNS = 4;
-
-  const toggleProduct = (id: string) =>
-    setSelectedIds((cur) =>
-      cur.includes(id)
-        ? cur.filter((i) => i !== id)
-        : cur.length >= MAX_COLUMNS - 1 // current scooter already takes 1 slot
-          ? cur
-          : [...cur, id],
-    );
+  const selectedIds = Array.from(
+    new Set(
+      searchParams
+        .get("others")
+        ?.split(",")
+        .filter((x) => x && x !== scooter.id) ?? [],
+    ),
+  ).slice(0, MAX_COLUMNS - 1);
 
   // keeps selection order, supports multiple selections
   const selectedScooters = selectedIds
@@ -139,9 +135,6 @@ export default function CompareClient({
     "grid grid-cols-[minmax(60px,1fr)_repeat(var(--cols),minmax(120px,1fr))_190px] md:grid-cols-[minmax(180px,1fr)_repeat(var(--cols),minmax(150px,1fr))_120px] items-center";
   console.log("selectedIds", selectedIds);
 
-  const removeProduct = (id: string) =>
-    setSelectedIds((cur) => cur.filter((i) => i !== id));
-
   // popup list: everything except the scooter already shown
   const popupProducts: CompareProduct[] = allScooters
     .filter((s) => s.id !== scooter.id)
@@ -152,7 +145,31 @@ export default function CompareClient({
       image: s.images?.[0] ?? "",
     }));
 
-    const maxReached = selectedIds.length >= MAX_COLUMNS - 1;
+  const maxReached = selectedIds.length >= MAX_COLUMNS - 1;
+
+  const updateSelected = (ids: string[]) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (ids.length) params.set("others", ids.join(","));
+    else params.delete("others");
+    const qs = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      qs ? `${window.location.pathname}?${qs}` : window.location.pathname,
+    );
+  };
+
+  const toggleProduct = (id: string) =>
+    updateSelected(
+      selectedIds.includes(id)
+        ? selectedIds.filter((i) => i !== id)
+        : selectedIds.length >= MAX_COLUMNS - 1
+          ? selectedIds
+          : [...selectedIds, id],
+    );
+
+  const removeProduct = (id: string) =>
+    updateSelected(selectedIds.filter((i) => i !== id));
 
   return (
     <div className="">
@@ -282,7 +299,7 @@ export default function CompareClient({
           products={popupProducts}
           selected={selectedIds}
           onToggle={toggleProduct}
-           maxReached={maxReached}
+          maxReached={maxReached}
         />
       </div>
     </div>

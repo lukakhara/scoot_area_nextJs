@@ -61,7 +61,7 @@ export default function ComparePopover({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/55 px-4 pt-6 pb-6 md:pt-[38px] md:pb-[34px]"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/55 px-4 pt-6 pb-6 md:pt-[38px] md:pb-[34px]  "
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onOpenChange(false);
       }}
