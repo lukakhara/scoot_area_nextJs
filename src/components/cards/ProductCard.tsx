@@ -75,7 +75,7 @@ export async function ProductCard({ item }: { item: Product }) {
 
   const { hasDiscount, finalPrice, discountPercent } = getDiscountInfo(item);
 
-  console.log("isScooter?", isScooter);
+ 
 
   return (
     <article className="flex h-full flex-col rounded-2xl bg-secondary p-4">

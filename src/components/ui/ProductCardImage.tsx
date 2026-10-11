@@ -1,6 +1,7 @@
 // ProductCardImage.tsx
 "use client";
 
+import { toPublicId } from "@/lib/cloudinary";
 import { CldImage } from "next-cloudinary";
 
 export default function ProductCardImage({
@@ -16,7 +17,7 @@ export default function ProductCardImage({
 }) {
   return (
       <CldImage
-        src={src}
+        src={toPublicId(src)}
         className="w-full h-full object-cover group-hover:scale-105 group-hover:opacity-80 "
         alt={alt}
         width={width ?? 379.78}

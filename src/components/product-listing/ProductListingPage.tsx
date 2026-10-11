@@ -98,7 +98,7 @@ export default async function ProductListingPage({
     meta: PageMeta;
   };
 
-  console.log("rawItems", rawItems);
+ 
   items = rawItems.map(fetchConfig.map);
   meta = rawMeta;
 
@@ -125,7 +125,7 @@ export default async function ProductListingPage({
   };
 
   const config: PageConfig = { ...PAGE_CONFIG[pageType], items };
-  console.log("config", config);
+
 
   return (
     <div className="min-h-screen bg-background ">

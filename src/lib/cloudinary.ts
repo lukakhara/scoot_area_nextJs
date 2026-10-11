@@ -1,0 +1,1 @@
+export const toPublicId = (src: string) => src.replace(/^\/+/, "");

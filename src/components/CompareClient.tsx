@@ -133,7 +133,6 @@ export default function CompareClient({
 
   const GRID =
     "grid grid-cols-[minmax(60px,1fr)_repeat(var(--cols),minmax(120px,1fr))_190px] md:grid-cols-[minmax(180px,1fr)_repeat(var(--cols),minmax(150px,1fr))_120px] items-center";
-  console.log("selectedIds", selectedIds);
 
   // popup list: everything except the scooter already shown
   const popupProducts: CompareProduct[] = allScooters

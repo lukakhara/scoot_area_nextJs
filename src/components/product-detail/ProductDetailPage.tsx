@@ -100,9 +100,7 @@ export default function ProductDetailPage({
   const sectionTitle = isScooter ? "რატომ ეს სკუტერი?" : undefined;
   const showPhotoGrid = isScooter;
 
-  console.log("similar", similar);
-
-  console.log("page type", pageType);
+ 
   const { discountPercent } = getDiscountInfo(product);
 
   return (

@@ -10,11 +10,11 @@ import Link from "next/link";
 export default async function BlogPage({
   params,
 }: {
-  params: Promise<{locale:string}>;
+  params: Promise<{ locale: string }>;
 }) {
-    const t = await getTranslations("");
+  const t = await getTranslations("");
   const { locale } = await params;
-  console.log("locale", locale);
+
   const queryString = `locale=${locale}`;
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/blog?${queryString}`,
@@ -23,11 +23,9 @@ export default async function BlogPage({
     throw new Error(`Failed to fetch ${res.status}`);
   }
   const { data: posts, meta }: BlogListResponse = await res.json();
-  
-  const detailHref = `/blog/`
 
- 
-  
+  const detailHref = `/blog/`;
+
   return (
     <div className="min-h-screen bg-background">
       <main className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-12 gap-8">

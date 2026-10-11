@@ -37,13 +37,15 @@ function useResponsiveVisibleCount(desktopCount: number) {
 
 export default function PaginatedGridSection<
   T extends { id: string | number },
->({ title,href, items, visibleCount = 3 }: PaginatedGridSectionProps<T>) {
+>({ title, href, items, visibleCount = 3 }: PaginatedGridSectionProps<T>) {
   const responsiveVisibleCount = useResponsiveVisibleCount(visibleCount);
 
   const [currentPage, setCurrentPage] = useState(0);
   const [containerRef, { width }] = useMeasure();
   const effectiveWidth = width || 1200;
   const totalPages = Math.ceil(items.length / responsiveVisibleCount);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   // keep currentPage valid when responsiveVisibleCount changes (resize)
   useEffect(() => {
@@ -71,8 +73,8 @@ export default function PaginatedGridSection<
         href={href}
         onPrev={() => setCurrentPage(Math.max(0, currentPage - 1))}
         onNext={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))}
-        canGoPrev={currentPage > 0}
-        canGoNext={currentPage < totalPages - 1}
+        canGoPrev={mounted && currentPage > 0}
+        canGoNext={mounted && currentPage < totalPages - 1}
         currentPage={currentPage}
         totalPages={totalPages}
       />
@@ -91,7 +93,6 @@ export default function PaginatedGridSection<
               className="flex-shrink-0"
               style={{ width: cardWidth }}
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
-            
             >
               {item}
             </motion.div>

@@ -49,7 +49,7 @@ export default async function page(id:string) {
 
   const data = await res.json();
 
-  console.log(data);
+
 
   return (
     <div>

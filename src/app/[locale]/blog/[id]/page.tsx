@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 
 async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  console.log("BlogDetail id=", id);
+
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/${id}`);
   if (res.status === 404) {
@@ -17,7 +17,7 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
   }
 
   const blog: BlogPost = await res.json();
-  console.log("data=", blog.images);
+
 
   return (
     <div className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-12 gap-8">

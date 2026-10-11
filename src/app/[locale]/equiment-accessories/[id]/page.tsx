@@ -34,7 +34,7 @@ export default async function AccessoryDetailRoute({
     ? ((await similarRes.json()) as { data: Accessory[] })
     : { data: [] };
 
-     console.log("data=", data);
+    
   const similar = rawSimilar
     .filter((a) => a.id !== id)
     .slice(0, 3)

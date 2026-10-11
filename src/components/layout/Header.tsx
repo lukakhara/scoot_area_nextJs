@@ -7,6 +7,7 @@ import CartPopover from "@/components/CartPopover";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useCartStore } from "@/store/cartStore";
+import { useHydrated } from "@/hooks/useHydrated";
 
 export default function Header({
   variant = "overlay",
@@ -44,12 +45,15 @@ export default function Header({
     { label: t("contact"), to: "/contact" },
   ];
 
+
   const count = useCartStore((state) =>
     state.items.reduce((n, i) => n + i.quantity, 0),
   );
   const total = useCartStore((state) =>
     state.items.reduce((n, i) => n + i.quantity * i.price, 0),
   );
+    const hydrated = useHydrated();
+    
 
   return (
     <header
@@ -119,9 +123,9 @@ export default function Header({
             >
               <ShoppingCart className="size-5" />
               <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
-                {count}
+                {hydrated ? count : 0}
               </span>
-              {total.toFixed(2)}₾
+              {hydrated ? total.toFixed(2) : 0}₾
             </button>
          
 

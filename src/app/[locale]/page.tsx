@@ -20,6 +20,8 @@ import {
   toSparePartCardProduct,
 } from "@/lib/mappers/product";
 
+
+
 async function getScooters(): Promise<ScooterProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters`, {
     cache: "no-store",
@@ -59,9 +61,6 @@ async function Home() {
     getBlogPosts(),
   ]);
 
-  console.log("scooters", scooters);
-  console.log("accessories", accessories);
-  console.log("blogPosts", blogPosts);
 
   return (
     <div className=" min-w-screen bg-background">
