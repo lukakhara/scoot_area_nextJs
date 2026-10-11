@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import {
   ChevronDown,
@@ -22,27 +23,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import GalleryImage from "@/components/GalleryImage";
 
-const PARAGRAPHS = [
-  "ჩვენ გვჯერა, რომ გადაადგილება უნდა იყოს მარტივი, სწრაფი და ეკოლოგიურად სუფთა. სწორედ ამიტომ დაფუძნდა ScootArea — ბრენდი, რომელიც ქალაქურ გადაადგილებას აკავშირებს თანამედროვე ტექნოლოგიებთან, სტილთან და პასუხისმგებლობასთან.",
-  "ScootArea გთავაზობთ მრავალფეროვან არჩევანს ხარისხიან და სანდო ელექტრო სკუტერებში, ეკიპირებასა და სათადარიგო ნაწილებში. ჩვენთან დაგხვდებათ ყველაფერი, რაც სჭირდება შენს გადაადგილებას — პროდუქტი, ტექნიკური მხარდაჭერა და ცოდნა, რომელიც გზას თავდაჯერებულად გატარებს.",
-  "ჩვენი მიზანია, შევქმნათ ისეთი სივრცე, სადაც მომხმარებელი გრძნობს კომფორტს, იღებს მომსახურებას მაღალ დონეზე და ხვდება ისეთ ადამიანებს, რომლებიც მასავით ენთუზიაზმით უყურებენ მოძრაობას.",
-  "გადაადგილება მხოლოდ მოძრაობა არ არის — ეს არის თავისუფლება, დრო და არჩევანი. ScootArea გეხმარება, რომ ეს არჩევანი იყოს შენზე მორგებული.",
-  "გვჯერა, რომ მომავალი ელექტრულია — და ჩვენ მზად ვართ, შენც გაგიზიაროთ ეს მომავალი დღესვე.",
-];
-const FAQ = [
-  {
-    q: "როგორ შევიძინო ელექტრო სკუტერი?",
-    a: "აირჩიეთ სასურველი მოდელი კატალოგში, დაამატეთ კალათაში და გააფორმეთ შეკვეთა. მიტანა ხდება 1-3 სამუშაო დღეში.",
-  },
-  {
-    q: "რა უპირატესობაა ამჟამ სკუტარეაში შეძენას?",
-    a: "ოფიციალური გარანტია, ავტორიზებული სერვის-ცენტრი, სათადარიგო ნაწილების მარაგი და ტექნიკური კონსულტაცია.",
-  },
-  {
-    q: "მოქმედებს თუ არა საგარანტიო პირობები პროდუქციაზე?",
-    a: "დიახ, ყველა სკუტერს აქვს მწარმოებლის გარანტია, ხოლო აქსესუარებზე ვრცელდება ინდივიდუალური პირობები.",
-  },
-];
+const PARAGRAPH_KEYS = ["p1", "p2", "p3", "p4", "p5"] as const;
+const FAQ_KEYS = ["1", "2", "3"] as const;
 
 const CONTACTS = [
   { icon: Phone, label: "+995 55 55 55", tone: "bg-brand-ink" },
@@ -54,30 +36,23 @@ const CONTACTS = [
 const GALLERY_IMAGES = [
   { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk2.png" },
   { mobile: "/BlogImageMob3.png", desktop: "/blogImageDesk3.png" },
-  {
-    mobile: "/blogImageMob2.png",
-    desktop: "/blogImageDesk4.png",
-    desktopOnly: true,
-  },
+  { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk4.png", desktopOnly: true },
   { mobile: "/BlogImageMob3.png", desktop: "/blogImageDesk3.png" },
-  {
-    mobile: "/blogImageMob2.png",
-    desktop: "/blogImageDesk4.png",
-    desktopOnly: true,
-  },
+  { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk4.png", desktopOnly: true },
   { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk2.png" },
 ];
 
 function AboutPage() {
+  const t = useTranslations("About");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-background">
-      <main>
+    <div className="min-h-screen bg-background ">
+      <main className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-12">
         {/* Intro */}
-        <section className="mx-auto max-w-[1400px] px-5 pt-8 pb-12 lg:pt-12">
+        <section>
           <h1 className="text-2xl font-extrabold tracking-tight uppercase sm:text-3xl">
-            ჩვენს შესახებ
+            {t("title")}
           </h1>
           <picture>
             <source media="(min-width: 768px)" srcSet="/aboutUs.png" />
@@ -86,21 +61,24 @@ function AboutPage() {
               width={1296}
               height={545}
               className="w-full object-cover"
-              alt="product image"
+              alt={t("imageAlt")}
             />
           </picture>
 
           <h2 className="mt-10 text-xl leading-snug font-extrabold tracking-tight uppercase sm:text-3xl">
-            შენს გადაადგილებას ახალი მიმართულება აქვს
+            {t("heading")}
           </h2>
 
           <div className="mt-5 space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
-            {PARAGRAPHS.map((p, i) => (
-              <p key={i}>{p}</p>
+            {PARAGRAPH_KEYS.map((key) => (
+              <p key={key}>{t(key)}</p>
             ))}
             <p>
-              <strong className="text-foreground">ScootArea</strong> — ეს არის
-              გზა, რომელიც შენით იწყება, მაგრამ მარტო არასდროს გატარებ.
+              {t.rich("tagline", {
+                b: (chunks) => (
+                  <strong className="text-foreground">{chunks}</strong>
+                ),
+              })}
             </p>
           </div>
 
@@ -111,7 +89,7 @@ function AboutPage() {
                 <a
                   key={i}
                   href="#"
-                  aria-label="social"
+                  aria-label={t("socialLabel")}
                   className="hover:text-primary"
                 >
                   <Icon className="size-6 shrink-0" />
@@ -119,13 +97,13 @@ function AboutPage() {
               ))}
             </div>
             <div className="flex shrink-0 gap-3">
-              {["ლინკი 1", "ლინკი 2"].map((l) => (
+              {(["link1", "link2"] as const).map((key) => (
                 <a
-                  key={l}
+                  key={key}
                   href="#"
                   className="rounded-full border px-5 py-2 text-xs font-semibold transition-colors hover:border-primary hover:text-primary"
                 >
-                  {l}
+                  {t(key)}
                 </a>
               ))}
             </div>
@@ -133,23 +111,23 @@ function AboutPage() {
         </section>
 
         {/* Partners */}
-        <section className="mx-auto max-w-[1400px] px-5 pb-14">
+        <section>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
             <h2 className="truncate text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
-              პარტნიორები
+              {t("partners")}
             </h2>
             <div className="flex shrink-0 items-center gap-2">
               <span className="hidden text-xs text-muted-foreground sm:inline">
-                ყველას ნახვა
+                {t("seeAll")}
               </span>
               <button
-                aria-label="უკან"
+                aria-label={t("prev")}
                 className="grid size-7 place-items-center rounded-full border hover:border-primary"
               >
                 <ChevronLeft className="size-4" />
               </button>
               <button
-                aria-label="წინ"
+                aria-label={t("next")}
                 className="grid size-7 place-items-center rounded-full border hover:border-primary"
               >
                 <ChevronRight className="size-4" />
@@ -165,9 +143,9 @@ function AboutPage() {
                   label="logo"
                 />
                 <p className="mt-3 text-[11px] leading-tight font-extrabold uppercase">
-                  კომპანიის
+                  {t("companyLine1")}
                   <br />
-                  სახელი
+                  {t("companyLine2")}
                 </p>
               </div>
             ))}
@@ -176,41 +154,39 @@ function AboutPage() {
 
         {/* FAQ */}
         <section className="bg-secondary/60 py-12">
-          <div className="mx-auto max-w-[1400px] px-5">
-            <h2 className="text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
-              ხშირად დასმული კითხვები
-            </h2>
+          <h2 className="text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
+            {t("faqTitle")}
+          </h2>
 
-            <div className="mt-6 max-w-[720px] space-y-3">
-              {FAQ.map((item, i) => (
-                <div key={i} className="rounded-lg border bg-card">
-                  <button
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    aria-expanded={openFaq === i}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-xs font-medium uppercase sm:text-sm"
-                  >
-                    <span className="min-w-0 flex-1">{item.q}</span>
-                    <ChevronDown
-                      className={`size-4 shrink-0 text-muted-foreground transition-transform ${
-                        openFaq === i ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                  {openFaq === i && (
-                    <p className="border-t px-4 py-3 text-sm leading-relaxed text-muted-foreground">
-                      {item.a}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
+          <div className="mt-6 max-w-[720px] space-y-3">
+            {FAQ_KEYS.map((key, i) => (
+              <div key={key} className="rounded-lg border bg-card">
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  aria-expanded={openFaq === i}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-xs font-medium uppercase sm:text-sm"
+                >
+                  <span className="min-w-0 flex-1">{t(`faq.${key}.q`)}</span>
+                  <ChevronDown
+                    className={`size-4 shrink-0 text-muted-foreground transition-transform ${
+                      openFaq === i ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {openFaq === i && (
+                  <p className="border-t px-4 py-3 text-sm leading-relaxed text-muted-foreground">
+                    {t(`faq.${key}.a`)}
+                  </p>
+                )}
+              </div>
+            ))}
           </div>
         </section>
 
         {/* Head office */}
-        <section className="mx-auto max-w-[1400px] px-5 py-12">
+        <section>
           <h2 className="text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
-            სათაო ოფისი
+            {t("headOffice")}
           </h2>
 
           <div className="mt-5 grid gap-6 rounded-2xl bg-secondary/60 p-4 sm:p-6 lg:grid-cols-[1fr_1fr_1fr]">
@@ -227,7 +203,7 @@ function AboutPage() {
                   >
                     <Icon
                       className={cn(
-                        " size-3.5 text-primary-foreground",
+                        "size-3.5 text-primary-foreground",
                         Icon === Phone ? "rotate-270" : "",
                       )}
                     />
@@ -235,7 +211,7 @@ function AboutPage() {
                   {label}
                 </li>
               ))}
-              <li className="flex items-center gap-3  pt-4">
+              <li className="flex items-center gap-3 pt-4">
                 <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand-ink">
                   <Mail className="size-3.5 text-primary-foreground" />
                 </span>
@@ -248,19 +224,19 @@ function AboutPage() {
                 <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand-ink">
                   <Clock className="size-3.5 text-primary-foreground" />
                 </span>
-                ორშაბათი–შაბათი | 10:00 – 18:00
+                {t("hours")}
               </li>
               <li className="flex items-start gap-3">
                 <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-brand-ink">
                   <MapPin className="size-3.5 text-primary-foreground" />
                 </span>
                 <span>
-                  რუსთაველის გამზ. 10
+                  {t("addressLine1")}
                   <br />
-                  თბილისი, საქართველო
+                  {t("addressLine2")}
                 </span>
               </li>
-              <li className="flex items-center gap-3  pt-4">
+              <li className="flex items-center gap-3 pt-4">
                 <div className="flex items-center gap-3">
                   {[Facebook, Instagram, Linkedin, Send].map((Icon, i) => (
                     <Icon key={i} className="size-4" />
@@ -273,9 +249,9 @@ function AboutPage() {
         </section>
 
         {/* Gallery */}
-        <section className="mx-auto max-w-[1400px] px-5 pb-16">
+        <section>
           <h2 className="text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
-            გალერეა
+            {t("gallery")}
           </h2>
           <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-3">
             {GALLERY_IMAGES.map((img, i) => (

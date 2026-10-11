@@ -213,5 +213,36 @@
     "total": "Total",
     "viewCart": "View Cart",
     "productImage": "Product Image"
+  },
+  "About": {
+    "title": "About us",
+    "imageAlt": "Product image",
+    "heading": "Your mobility has a new direction",
+    "p1": "We believe getting around should be simple, fast and eco-friendly. That's why ScootArea was founded — a brand that connects urban mobility with modern technology, style and responsibility.",
+    "p2": "ScootArea offers a wide selection of quality, reliable electric scooters, gear and spare parts. Here you'll find everything your ride needs — the product, technical support and the knowledge to keep you confidently on the road.",
+    "p3": "Our goal is to create a space where customers feel comfortable, receive top-level service and meet people who look at mobility with the same enthusiasm.",
+    "p4": "Mobility isn't just movement — it's freedom, time and choice. ScootArea helps make that choice tailored to you.",
+    "p5": "We believe the future is electric — and we're ready to share that future with you today.",
+    "tagline": "<b>ScootArea</b> is a road that starts with you, but you'll never ride it alone.",
+    "socialLabel": "Social media",
+    "link1": "Link 1",
+    "link2": "Link 2",
+    "partners": "Partners",
+    "seeAll": "See all",
+    "prev": "Previous",
+    "next": "Next",
+    "companyLine1": "Company",
+    "companyLine2": "name",
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "1": { "q": "How do I buy an electric scooter?", "a": "Choose a model in the catalog, add it to your cart and place the order. Delivery takes 1–3 business days." },
+      "2": { "q": "What are the advantages of buying at ScootArea?", "a": "Official warranty, an authorized service center, a stock of spare parts and technical consultation." },
+      "3": { "q": "Do warranty terms apply to the products?", "a": "Yes, every scooter comes with the manufacturer's warranty, while accessories are covered by individual terms." }
+    },
+    "headOffice": "Head office",
+    "hours": "Monday–Saturday | 10:00 – 18:00",
+    "addressLine1": "10 Rustaveli Ave.",
+    "addressLine2": "Tbilisi, Georgia",
+    "gallery": "Gallery"
   }
 }
