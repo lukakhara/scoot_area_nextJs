@@ -24,6 +24,7 @@ export type SparePartCategory =
   | "OTHER";
 
 export type ProductType = "scooter" | "accessory" | "parts";
+export type homePageSections = "scooter" | "accessory" | "blog";
 
 export interface Scooter {
   id: string;

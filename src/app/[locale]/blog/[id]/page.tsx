@@ -1,3 +1,4 @@
+import { Placeholder } from "@/components/ui/Placeholder";
 import ProductCardImage from "@/components/ui/ProductCardImage";
 import { BlogPost } from "@/types/blog";
 import { Play } from "lucide-react";
@@ -24,13 +25,15 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
         ბლოგი
       </h1>
 
-     
-
       <div className=" flex flex-col gap-20">
-         {/* Main image */}
-      <div className="rounded-[20px] ">
-        <ProductCardImage src={blog.coverImage} alt={blog.title} />
-      </div>
+        {/* Main image */}
+        <div className="rounded-[20px] ">
+          {blog.coverImage ? (
+            <ProductCardImage src={blog.coverImage} alt={blog.title} />
+          ) : (
+            <Placeholder />
+          )}
+        </div>
         <div className="flex flex-col gap-8">
           <h1 className="text-[40px] font-bold">{blog.title}</h1>
           {/* First text section */}
@@ -63,7 +66,7 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
             ახალი სტილი. ScootArea ბლოგი შეიქმნა იმისთვის, რომ დაგეხმაროს უკეთ
             გაიცნო ეს სფერო და მიიღო მაქსიმალური სარგებელი შენი სკუტერისგან.
           </p>
-         
+
           <p>
             ჩვენს ბლოგში იპოვი დეტალურ ინფორმაციას ელექტრო სკუტერების მოდელებზე,
             ტექნოლოგიურ სიახლეებზე, ტრენდებსა და ცვლილებებზე, რომლებიც გავლენას

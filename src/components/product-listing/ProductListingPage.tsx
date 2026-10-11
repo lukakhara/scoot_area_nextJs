@@ -5,7 +5,7 @@ import {
   PART_GROUPS,
   SCOOTER_GROUPS,
 } from "./FilterPanel";
-import { ProductCard } from "../ProductCard";
+import { ProductCard } from "../cards/ProductCard";
 import type {
   Product,
   Scooter,
@@ -22,7 +22,11 @@ import { SortButton } from "@/components/product-listing/SortButton";
 import FilterToolbar from "@/components/product-listing/FilterToolbar";
 import Pagination from "@/components/ui/Pagination";
 import { getTranslations } from "next-intl/server";
-import { toAccessoryCardProduct, toScooterCardProduct, toSparePartCardProduct } from "@/lib/mappers/product";
+import {
+  toAccessoryCardProduct,
+  toScooterCardProduct,
+  toSparePartCardProduct,
+} from "@/lib/mappers/product";
 
 type PageType = "scooters" | "parts" | "accessories";
 
@@ -49,7 +53,7 @@ const FETCH_CONFIG: Record<
 > = {
   scooters: { endpoint: "scooters", map: toScooterCardProduct },
   accessories: { endpoint: "accessories", map: toAccessoryCardProduct },
-  parts: { endpoint: "parts", map: toSparePartCardProduct }, 
+  parts: { endpoint: "parts", map: toSparePartCardProduct },
 };
 
 export default async function ProductListingPage({
@@ -135,7 +139,7 @@ export default async function ProductListingPage({
               <SortButton />
             </div>
           ) : (
-            <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px] " >
+            <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px] ">
               {config.title}
             </h1>
           )}
@@ -162,10 +166,7 @@ export default async function ProductListingPage({
                 </div>
               ) : (
                 config.items.map((item, i) => (
-                  <ProductCard
-                    key={item.id ?? `${item.id}-${i}`}
-                    item={item}
-                  />
+                  <ProductCard key={item.id ?? `${item.id}-${i}`} item={item} />
                 ))
               )}
             </div>

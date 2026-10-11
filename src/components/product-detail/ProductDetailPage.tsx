@@ -16,7 +16,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Placeholder } from "@/components/ui/Placeholder";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard } from "@/components/cards/ProductCard";
 import { QuantitySelector } from "@/components/product-detail/QuantitySelector";
 import { ImageThumbnailGallery } from "@/components/product-detail/ImageThumbnailGallery";
 import { CompareButton } from "@/components/ui/CompareButton";
@@ -170,9 +170,9 @@ export default function ProductDetailPage({
           )}
 
           <div>
-              <h1 className="text-3xl leading-tight font-extrabold tracking-tight uppercase sm:text-4xl">
-                {product.name}
-              </h1>
+            <h1 className="text-3xl leading-tight font-extrabold tracking-tight uppercase sm:text-4xl">
+              {product.name}
+            </h1>
 
             <div
               className={
@@ -182,16 +182,14 @@ export default function ProductDetailPage({
               }
             >
               <span
-                className={
-                    "text-2xl font-bold  lg:text-[32px] text-[#EA2700]"
-                }
+                className={"text-2xl font-bold  lg:text-[32px] text-[#EA2700]"}
               >
                 {product.price}₾
               </span>
               {product.price && (
                 <span
                   className={
-                      "text-xl lg:text-[32px] text-muted-foreground line-through lg:text-[#212121]"
+                    "text-xl lg:text-[32px] text-muted-foreground line-through lg:text-[#212121]"
                   }
                 >
                   {product.price}₾

@@ -1,5 +1,5 @@
 import { Phone } from "lucide-react";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard } from "@/components/cards/ProductCard";
 import { Scooter, type Product } from "@/types/product";
 import PaginatedGridSection from "@/components/PaginatedGridSection";
 import Image from "next/image";
@@ -19,8 +19,6 @@ import {
   toScooterCardProduct,
   toSparePartCardProduct,
 } from "@/lib/mappers/product";
-
-
 
 async function getScooters(): Promise<ScooterProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters`, {

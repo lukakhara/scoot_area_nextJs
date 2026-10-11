@@ -57,7 +57,15 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
             key={i}
             className="grid grid-cols-[64px_minmax(0,1fr)_auto] items-start gap-3"
           >
-            <ProductCardImage src={item.image} alt={`product image`}></ProductCardImage>
+            {item.image ? (
+              <ProductCardImage
+                src={item.image}
+                alt={`product image`}
+              ></ProductCardImage>
+            ) : (
+              <Placeholder />
+            )}
+
             <div className="min-w-0">
               <p className="text-xs leading-tight font-extrabold uppercase">
                 {item.title}

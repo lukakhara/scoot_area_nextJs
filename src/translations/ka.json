@@ -45,6 +45,12 @@
       "kg": "kg",
       "OFF": "ფასდაკლება"
     },
+    "productCard": {
+      "speed": "სიჩქარე",
+      "maxRange": "მაქსიმალური მანძილი",
+      "weight": "წონა",
+      "warranty": "გარანტია"
+    },
     "titles": {
       "scooters": "სკუტერები",
       "spareParts": "სათადარიგო ნაწილები",

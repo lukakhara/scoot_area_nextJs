@@ -45,6 +45,13 @@
       "kg": "kg",
       "OFF": "OFF"
     },
+    "productCard": {
+      "engine":"engine",
+      "speed": "Speed",
+      "maxRange": "Maximum range",
+      "weight": "Weight",
+      "warranty": "Warranty"
+    },
     "titles": {
       "scooters": "Scooters",
       "spareParts": "Spare Parts",
@@ -145,12 +152,12 @@
     "yes": "Yes",
     "no": "No",
 
-    "popoverTitle":"Select the desired products",
-    "close":"Close",
-    "product":"Product",
-    "price":"Price",
-    "added":"Added",
-    "compare":"Compare",
+    "popoverTitle": "Select the desired products",
+    "close": "Close",
+    "product": "Product",
+    "price": "Price",
+    "added": "Added",
+    "compare": "Compare",
 
     "units": {
       "kmh": "km/h",
@@ -184,15 +191,15 @@
       "ipRating": "IP rating"
     }
   },
-  "Repair":{
-    "title":"repair",
-    "aboutScootarea":"ScootArea isn't limited to just selling scooters — we make sure your scooter is always in working order.",
-    "containing":"Our services include diagnostics, fixing technical faults, replacing components and parts, resolving battery or motor issues, and more.",
-    "aboutSpecialists":"Our service is provided by certified technicians who know both our models and other popular market brands inside out. We work quickly, use standard-compliant quality parts, and are always ready to provide you with detailed consultations.If your scooter needs professional repair or a technical checkup — contact us today.",
-    "mechanicNumber":"Mechanic's number",
-    "workingHours":"Working hours: Monday-Saturday"
+  "Repair": {
+    "title": "repair",
+    "aboutScootarea": "ScootArea isn't limited to just selling scooters — we make sure your scooter is always in working order.",
+    "containing": "Our services include diagnostics, fixing technical faults, replacing components and parts, resolving battery or motor issues, and more.",
+    "aboutSpecialists": "Our service is provided by certified technicians who know both our models and other popular market brands inside out. We work quickly, use standard-compliant quality parts, and are always ready to provide you with detailed consultations.If your scooter needs professional repair or a technical checkup — contact us today.",
+    "mechanicNumber": "Mechanic's number",
+    "workingHours": "Working hours: Monday-Saturday"
   },
-  "blog":"Blog",
+  "blog": "Blog",
   "cart": {
     "title": "Cart",
     "clear": "Clear",
