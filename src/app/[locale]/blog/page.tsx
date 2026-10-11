@@ -3,6 +3,7 @@ import ProductCardImage from "@/components/ui/ProductCardImage";
 import { formatDate } from "@/lib/formatDate";
 import { BlogListResponse } from "@/types/blog";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,6 +12,7 @@ export default async function BlogPage({
 }: {
   params: Promise<{locale:string}>;
 }) {
+    const t = await getTranslations("");
   const { locale } = await params;
   console.log("locale", locale);
   const queryString = `locale=${locale}`;
@@ -24,15 +26,16 @@ export default async function BlogPage({
   
   const detailHref = `/blog/`
 
-
+ 
+  
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1400px] px-5 pt-8 pb-16 lg:pt-12">
-        <h1 className="text-3xl font-extrabold tracking-tight uppercase sm:text-4xl">
-          ბლოგი
+      <main className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-12 gap-8">
+        <h1 className="text-3xl font-extrabold tracking-tight  sm:text-4xl">
+          {t("blog")}
         </h1>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-8 test">
+        <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-8 ">
           {posts.map((post, i) => (
             <Link
               key={post.id}
