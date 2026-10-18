@@ -45,15 +45,13 @@ export default function Header({
     { label: t("contact"), to: "/contact" },
   ];
 
-
   const count = useCartStore((state) =>
     state.items.reduce((n, i) => n + i.quantity, 0),
   );
   const total = useCartStore((state) =>
     state.items.reduce((n, i) => n + i.quantity * i.price, 0),
   );
-    const hydrated = useHydrated();
-    
+  const hydrated = useHydrated();
 
   return (
     <header
@@ -115,19 +113,26 @@ export default function Header({
             aria-label="ძებნა"
             className="hidden transition-opacity hover:opacity-70 sm:block"
           ></button>
-        
-            <button
-              onClick={() => setCartOpen((v) => !v)}
-              aria-expanded={cartOpen}
-              className="relative flex items-center gap-2 text-xs  text-[14px] font-medium cursor-pointer"
-            >
-              <ShoppingCart className="size-5" />
-              <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
-                {hydrated ? count : 0}
-              </span>
-              {hydrated ? total.toFixed(2) : 0}₾
-            </button>
-         
+
+          <button
+            onClick={() => setCartOpen((v) => !v)}
+            aria-expanded={cartOpen}
+            className="relative flex items-center gap-2 text-xs  text-[14px] font-medium cursor-pointer"
+          >
+            <ShoppingCart className="size-5" />
+            <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
+              {hydrated ? count : 0}
+            </span>
+            {hydrated ? total.toFixed(2) : 0}₾
+          </button>
+          <Link
+          href={'/account'}
+            className={cn(
+              "hidden size-5 rounded-full sm:block",
+              solid ? "bg-foreground/15" : "bg-primary-foreground/20",
+            )}
+            aria-hidden
+          />
 
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
           <div
