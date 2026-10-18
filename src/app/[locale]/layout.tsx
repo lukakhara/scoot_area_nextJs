@@ -7,7 +7,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 
-
 const notoSansGeorgian = localFont({
   src: [
     {
@@ -55,15 +54,10 @@ export default async function RootLayout({
   const messages = await getMessages();
   {
     return (
-      <html
-        lang="en"
-        className={`${notoSansGeorgian.variable}   antialiased `}
-      >
+      <html lang="en" className={`${notoSansGeorgian.variable}   antialiased `}>
         <body className="flex flex-col font-sans ">
           <NextIntlClientProvider messages={messages}>
-            <Header />
             <main className="flex-1 overflow-x-hidden"> {children}</main>
-            <Footer />
           </NextIntlClientProvider>
         </body>
       </html>
