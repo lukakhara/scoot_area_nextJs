@@ -17,7 +17,7 @@ export default async function BlogPage({
 
   const queryString = `locale=${locale}`;
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/blog?${queryString}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/blog?${queryString}`,
   );
   if (!res.ok) {
     throw new Error(`Failed to fetch ${res.status}`);

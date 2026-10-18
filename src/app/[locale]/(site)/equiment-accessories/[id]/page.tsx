@@ -11,7 +11,7 @@ export default async function AccessoryDetailRoute({
 }) {
   const { id } = await params;
   
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accessories/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accessories/${id}`, {
     next: { revalidate: 60 },
   });
   

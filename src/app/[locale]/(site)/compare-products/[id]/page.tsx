@@ -19,8 +19,8 @@ export default async function page({
       .slice(0, 3) ?? []; // 4 columns max, the main scooter takes 1
 
   const [res, listRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters/${id}`),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters/?limit=100`),
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters/${id}`),
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters/?limit=100`),
   ]);
 
   if (!res.ok || !listRes.ok) {

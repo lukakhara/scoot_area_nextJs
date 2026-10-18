@@ -45,7 +45,7 @@ const SPEC_ROWS = [
 
 export default async function page(id:string) {
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters/${id}`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters/${id}`)
 
   const data = await res.json();
 

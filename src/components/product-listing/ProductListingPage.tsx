@@ -51,9 +51,9 @@ const FETCH_CONFIG: Record<
   PageType,
   { endpoint: string; map: (raw: any) => Product }
 > = {
-  scooters: { endpoint: "scooters", map: toScooterCardProduct },
-  accessories: { endpoint: "accessories", map: toAccessoryCardProduct },
-  parts: { endpoint: "parts", map: toSparePartCardProduct },
+  scooters: { endpoint: "api/scooters", map: toScooterCardProduct },
+  accessories: { endpoint: "api/accessories", map: toAccessoryCardProduct },
+  parts: { endpoint: "api/parts", map: toSparePartCardProduct },
 };
 
 export default async function ProductListingPage({

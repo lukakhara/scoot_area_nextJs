@@ -6,7 +6,7 @@ type ScootersResponse = {
 };
 
 export default async function page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters/?limit=100`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters/?limit=100`);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }

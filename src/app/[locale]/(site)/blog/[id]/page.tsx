@@ -8,7 +8,7 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blog/${id}`);
   if (res.status === 404) {
     notFound();
   }

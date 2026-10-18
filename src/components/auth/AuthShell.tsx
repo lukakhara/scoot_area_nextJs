@@ -1,4 +1,3 @@
-import { type ReactNode } from "react";
 import {
   Check,
   ShieldCheck,
@@ -10,6 +9,8 @@ import {
   SiInstagram as Instagram,
  
 } from "@icons-pack/react-simple-icons";
+
+import { type InputHTMLAttributes, type ButtonHTMLAttributes, type ReactNode } from "react";
 
 const PERKS = [
   "სწრაფი მიწოდება მთელი საქართველოს მასშტაბით",
@@ -87,35 +88,6 @@ export function AuthShell({
   );
 }
 
-export function AuthField({
-  label,
-  type = "text",
-  placeholder,
-  hint,
-}: {
-  label: string;
-  type?: string;
-  placeholder?: string;
-  hint?: string;
-}) {
-  return (
-    <label className="block">
-      <span className="mb-1.5 block text-[11px] font-bold tracking-wide text-muted-foreground uppercase">
-        {label}
-      </span>
-      <input
-        type={type}
-        placeholder={placeholder}
-        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/25"
-      />
-      {hint && (
-        <span className="mt-1.5 block text-xs text-muted-foreground">
-          {hint}
-        </span>
-      )}
-    </label>
-  );
-}
 
 export function AuthDivider({ text }: { text: string }) {
   return (
@@ -150,11 +122,60 @@ export function SocialRow() {
   );
 }
 
-export function SubmitButton({ children }: { children: ReactNode }) {
+
+
+type AuthFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "className"> & {
+  label: string;
+  hint?: string;
+  error?: string;
+};
+
+export function AuthField({
+  label,
+  type = "text",
+  hint,
+  error,
+  ...props
+}: AuthFieldProps) {
+  return (
+    <label className="block">
+      <span className="mb-1.5 block text-[11px] font-bold tracking-wide text-muted-foreground uppercase">
+        {label}
+      </span>
+      <input
+        type={type}
+        aria-invalid={!!error}
+        {...props}
+        className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:ring-2 ${
+          error
+            ? "border-red-600 focus:border-red-600 focus:ring-red-600/25"
+            : "border-input focus:border-primary focus:ring-primary/25"
+        }`}
+      />
+      {error ? (
+        <span className="mt-1.5 block text-xs text-red-600">{error}</span>
+      ) : (
+        hint && (
+          <span className="mt-1.5 block text-xs text-muted-foreground">
+            {hint}
+          </span>
+        )
+      )}
+    </label>
+  );
+}
+
+export function SubmitButton({
+  children,
+  ...props
+}: Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className" | "type"> & {
+  children: ReactNode;
+}) {
   return (
     <button
-      type="button"
-      className="w-full rounded-full bg-primary px-6 py-3.5 text-sm font-extrabold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary/90"
+      type="submit"
+      {...props}
+      className="w-full rounded-full bg-primary px-6 py-3.5 text-sm font-extrabold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {children}
     </button>

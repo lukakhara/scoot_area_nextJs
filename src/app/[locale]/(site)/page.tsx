@@ -23,7 +23,7 @@ import {
 
 
 async function getScooters(): Promise<ScooterProduct[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch scooters");
@@ -34,7 +34,7 @@ async function getScooters(): Promise<ScooterProduct[]> {
 }
 
 async function getAccessories(): Promise<AccessoryProduct[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accessories`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accessories`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch accessories");
@@ -44,7 +44,7 @@ async function getAccessories(): Promise<AccessoryProduct[]> {
 }
 
 async function getBlogPosts(): Promise<BlogCardProduct[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blog`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch blog posts");
