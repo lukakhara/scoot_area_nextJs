@@ -12,7 +12,7 @@ export default async function ScooterDetailRoute({
 }) {
   const { id } = await params;
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scooters/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters/${id}`, {
     next: { revalidate: 60 },
   });
 

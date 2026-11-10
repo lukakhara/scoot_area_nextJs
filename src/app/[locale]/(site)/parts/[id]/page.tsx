@@ -11,7 +11,7 @@ export default async function PartsDetailRoute({
 }) {
   const { id } = await params;
   
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/parts/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/parts/${id}`, {
     next: { revalidate: 60 },
   });
   
@@ -34,13 +34,15 @@ export default async function PartsDetailRoute({
     ? ((await similarRes.json()) as { data: Accessory[] })
     : { data: [] };
 
+    // 
   const similar = rawSimilar
     .filter((a) => a.id !== id)
     .slice(0, 3)
     .map(toAccessoryCardProduct);
 
-  const unitsT = await getTranslations("ProductListingPage.units");
 
+  const unitsT = await getTranslations("ProductListingPage.units");
+ 
 
   return (
     <ProductDetailPage
