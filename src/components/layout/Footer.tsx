@@ -11,7 +11,7 @@ export default function Footer() {
   const t = useTranslations("Footer");
 
   return (
-    <footer className="border-t bg-secondary/60 test">
+    <footer className="border-t bg-secondary/60 ">
       <div className="flex w-full items-center justify-center  h-[78px] md:h-[192px] md:px-[33px] lg:px-[66px] px-[13px] xl:h-[192px] gap-8  py-12 md:grid-cols-2 lg:grid-cols-4 align-content-start">
         <picture className="block w-full h-full ">
           <source media="(min-width: 768px)" srcSet="/logoDesk.png" />
