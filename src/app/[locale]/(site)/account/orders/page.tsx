@@ -1,3 +1,4 @@
+'use client'
 import {
   Check,
   ChevronRight,
@@ -9,6 +10,7 @@ import {
 } from "lucide-react";
 import { OutlineBtn, Panel, PrimaryBtn, accountHead } from "@/components/auth/AccountUi";
 import { Placeholder } from "@/components/ui/Placeholder";
+import { useState } from "react";
 
 
 type Status = "processing" | "shipped" | "delivered" | "cancelled";
@@ -149,18 +151,22 @@ function Timeline({ status }: { status: Status }) {
 }
 
 export default function Orders() {
+    const [filter,setFilter] = useState('ყველა')
+  console.log(filter)
+
   return (
     <>
       <Panel
         title="შეკვეთები"
         action={
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 ">
             {FILTERS.map((f, i) => (
               <button
                 key={f}
                 type="button"
-                className={`rounded-full px-4 py-2 text-[11px] font-bold tracking-wide uppercase transition-colors ${
-                  i === 0
+                onClick={() => setFilter(f)}
+                className={`rounded-full px-4 py-2 text-[11px] font-bold tracking-wide uppercase transition-colors cursor-pointer hover:opacity-60 ${
+                  f === filter
                     ? "bg-primary text-primary-foreground"
                     : "border border-border hover:bg-secondary"
                 }`}
@@ -230,14 +236,14 @@ export default function Orders() {
                     {o.status !== "cancelled" && (
                       <button
                         type="button"
-                        className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
+                        className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground cursor-pointer"
                       >
-                        <RotateCcw className="size-3.5" /> გამეორება
+                        <RotateCcw className="size-3.5 " /> გამეორება
                       </button>
                     )}
                     <button
                       type="button"
-                      className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary/90"
+                      className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary/90 cursor-pointer"
                     >
                       დეტალები <ChevronRight className="size-3.5" />
                     </button>
@@ -259,8 +265,8 @@ export default function Orders() {
           იღებთ მიწოდებისას, ხოლო მიღებულ პროდუქტს ანაცვლებთ 14 დღის ფარგლებში.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <PrimaryBtn>დაგვიკავშირდით</PrimaryBtn>
-          <OutlineBtn>დაბრუნების პირობები</OutlineBtn>
+          <PrimaryBtn >დაგვიკავშირდით</PrimaryBtn>
+          <OutlineBtn > დაბრუნების პირობები</OutlineBtn>
         </div>
       </Panel>
     </>
