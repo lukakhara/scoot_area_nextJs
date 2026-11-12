@@ -42,11 +42,11 @@ const LOCATIONS = [
 
 const ContactPage = () => {
   return (
-    <div className="mx-auto max-w-[1400px] px-5 py-12 flex flex-col gap-4">
+    <div className=" px-5 py-12 flex flex-col gap-4 test flex flex-col w-full pr-3.75 pl-4 pt-10 pb-20 md:pt-20 md:px-18 md:pb-30">
       <h1 className="text-2xl font-extrabold tracking-tight uppercase sm:text-3xl">
         კონტაქტი
       </h1>
-      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-full bg-gray-300 flex items-center gap-4 py-6 px-22">
+      <div className=" w-full  flex items-center gap-4 ">
         <h1 className="text-md font-extrabold tracking-tight uppercase sm:text-3xl ">
           სოციალური ქსელები{" "}
         </h1>

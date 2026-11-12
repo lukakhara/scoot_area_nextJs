@@ -1,6 +1,5 @@
 "use client";
 
-
 import { AuthField, SubmitButton } from "@/components/auth/AuthShell";
 import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -9,7 +8,6 @@ import { Eye, EyeOff, Lock } from "lucide-react";
 type Values = {
   email: string;
   password: string;
-  remember: boolean;
 };
 
 type Errors = Partial<Record<keyof Values, string>>;
@@ -24,11 +22,12 @@ function validate(v: Values): Errors {
 export default function LoginForm() {
   const router = useRouter();
   const [values, setValues] = useState<Values>({
-    email: "",
-    password: "",
-    remember: true,
+    email: "mariam.user@example.com",
+    password: "SecurePassword123!",
   });
-  const [touched, setTouched] = useState<Partial<Record<keyof Values, boolean>>>({});
+  const [touched, setTouched] = useState<
+    Partial<Record<keyof Values, boolean>>
+  >({});
   const [submitted, setSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -40,7 +39,10 @@ export default function LoginForm() {
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
-    setValues((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+    setValues((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   }
 
   function onBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -54,21 +56,26 @@ export default function LoginForm() {
     if (Object.keys(errors).length > 0) return;
 
     setLoading(true);
-     console.log(process.env.API_URL);
+
     try {
-      const res = await fetch(`api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          credentials: "include", // required
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        },
+      );
       console.log(res);
+      console.log(process.env.NEXT_PUBLIC_API_URL);
       if (!res.ok) {
         const data = await res.json().catch(() => null);
         setServerError(data?.message ?? "ელ. ფოსტა ან პაროლი არასწორია");
         return;
       }
 
-      router.push("/");
+      router.push("/account");
       router.refresh();
     } catch {
       setServerError("კავშირის შეცდომა, სცადეთ თავიდან");
@@ -120,11 +127,17 @@ export default function LoginForm() {
             aria-label={showPassword ? "პაროლის დამალვა" : "პაროლის ჩვენება"}
             className="absolute top-1/2 right-4 -translate-y-1/2 text-muted-foreground/60 hover:text-foreground"
           >
-            {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+            {showPassword ? (
+              <EyeOff className="size-4" />
+            ) : (
+              <Eye className="size-4" />
+            )}
           </button>
         </span>
         {passwordError && (
-          <span className="mt-1.5 block text-xs text-red-600">{passwordError}</span>
+          <span className="mt-1.5 block text-xs text-red-600">
+            {passwordError}
+          </span>
         )}
       </label>
 
@@ -133,7 +146,7 @@ export default function LoginForm() {
           <input
             type="checkbox"
             name="remember"
-            checked={values.remember}
+     
             onChange={onChange}
             className="size-4 accent-[var(--primary)]"
           />
@@ -146,7 +159,9 @@ export default function LoginForm() {
 
       {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
-      <SubmitButton disabled={loading}>{loading ? "..." : "შესვლა"}</SubmitButton>
+      <SubmitButton disabled={loading}>
+        {loading ? "..." : "შესვლა"}
+      </SubmitButton>
     </form>
   );
 }

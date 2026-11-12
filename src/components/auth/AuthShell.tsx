@@ -12,6 +12,7 @@ import {
 
 import { type InputHTMLAttributes, type ButtonHTMLAttributes, type ReactNode } from "react";
 
+
 const PERKS = [
   "სწრაფი მიწოდება მთელი საქართველოს მასშტაბით",
   "ოფიციალური გარანტია და სერვისი",
@@ -165,6 +166,8 @@ export function AuthField({
   );
 }
 
+
+
 export function SubmitButton({
   children,
   ...props
@@ -174,8 +177,9 @@ export function SubmitButton({
   return (
     <button
       type="submit"
+     
       {...props}
-      className="w-full rounded-full bg-primary px-6 py-3.5 text-sm font-extrabold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+      className="w-full rounded-full bg-primary px-6 py-3.5 text-sm font-extrabold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
     >
       {children}
     </button>

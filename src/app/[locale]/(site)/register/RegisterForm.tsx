@@ -11,27 +11,27 @@ const STRENGTH = [
   { label: "ძლიერი", tone: "bg-sale" },
 ];
 
+// Values = exactly what is sent to the API
 type Values = {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
   password: string;
-  confirm: string;
-  terms: boolean;
 };
 
-type Errors = Partial<Record<keyof Values, string>>;
+type FieldName = keyof Values | "confirm"; // confirm exists only in the browser
+type Errors = Partial<Record<FieldName, string>>;
 
 const initial: Values = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  password: "",
-  confirm: "",
-  terms: false,
+  firstName: "მარიამ  ",
+  lastName: "გიორგაძე",
+  email: "mariam.user@example.com",
+  phone: "+995555112233",
+  password: "SecurePassword12345!",
 };
+
+const isDev = process.env.NODE_ENV !== "production";
 
 // 0 = empty, 1 = weak, 2 = medium, 3 = strong
 function getStrength(pw: string) {
@@ -45,7 +45,7 @@ function getStrength(pw: string) {
   return score <= 2 ? 1 : score === 3 ? 2 : 3;
 }
 
-function validate(v: Values): Errors {
+function validate(v: Values, confirm: string,terms:boolean): Errors {
   const e: Errors = {};
   if (v.firstName.trim().length < 2) e.firstName = "შეიყვანეთ სახელი";
   if (v.lastName.trim().length < 2) e.lastName = "შეიყვანეთ გვარი";
@@ -55,29 +55,65 @@ function validate(v: Values): Errors {
   if (v.password.length < 8) e.password = "მინიმუმ 8 სიმბოლო";
   else if (!/\d/.test(v.password) || !/[A-Za-z]/.test(v.password))
     e.password = "პაროლი უნდა შეიცავდეს ასოსა და ციფრს";
-  if (v.confirm !== v.password) e.confirm = "პაროლები არ ემთხვევა";
-  if (!v.terms) e.terms = "გთხოვთ დაეთანხმოთ პირობებს";
+  if (confirm !== v.password) e.confirm = "პაროლები არ ემთხვევა";
+  if (!terms) terms = "გთხოვთ დაეთანხმოთ პირობებს";
   return e;
+}
+
+// Message by HTTP status, used when the server sends no message of its own
+function messageForStatus(status: number): string {
+  switch (status) {
+    case 400:
+    case 422:
+      return "მონაცემები არასწორია";
+    case 404:
+      return "სერვისი ვერ მოიძებნა (არასწორი მისამართი)";
+    case 409:
+      return "ეს ელ. ფოსტა უკვე რეგისტრირებულია";
+    case 429:
+      return "ძალიან ბევრი მცდელობა, სცადეთ მოგვიანებით";
+    default:
+      return status >= 500
+        ? "სერვერის შეცდომა, სცადეთ მოგვიანებით"
+        : "რეგისტრაცია ვერ მოხერხდა";
+  }
 }
 
 export default function RegisterForm() {
   const router = useRouter();
   const [values, setValues] = useState<Values>(initial);
-  const [touched, setTouched] = useState<Partial<Record<keyof Values, boolean>>>({});
+  const [confirm, setConfirm] = useState(""); // browser-only, never sent
+  const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
 
-  const errors = useMemo(() => validate(values), [values]);
+  const [serverError, setServerError] = useState("");
+  const [serverFieldErrors, setServerFieldErrors] = useState<Errors>({});
+  const [debugInfo, setDebugInfo] = useState("");
+
+  const errors = useMemo(() => validate(values, confirm), [values, confirm]);
   const strength = useMemo(() => getStrength(values.password), [values.password]);
 
-  // show an error only after the field was touched or submit was attempted
-  const err = (k: keyof Values) =>
-    touched[k] || submitted ? errors[k] : undefined;
+  const err = (k: FieldName) =>
+    serverFieldErrors[k] ?? (touched[k] || submitted ? errors[k] : undefined);
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
-    setValues((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+
+    if (name === "confirm") {
+      setConfirm(value);
+    } else {
+      setValues((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
+
+    setServerFieldErrors((prev) => {
+      if (!prev[name as FieldName]) return prev;
+      const { [name as FieldName]: _removed, ...rest } = prev;
+      return rest;
+    });
   }
 
   function onBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -88,27 +124,74 @@ export default function RegisterForm() {
     e.preventDefault();
     setSubmitted(true);
     setServerError("");
-    if (Object.keys(errors).length > 0) return;
+    setServerFieldErrors({});
+    setDebugInfo("");
 
+    if (Object.keys(errors).length > 0) {
+      setServerError("შეასწორეთ მონიშნული ველები");
+      return;
+    }
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (!apiUrl) {
+      setServerError("კონფიგურაციის შეცდომა: API მისამართი არ არის მითითებული");
+      setDebugInfo(
+        "NEXT_PUBLIC_API_URL is undefined (check .env.local and restart next dev)",
+      );
+      return;
+    }
+
+    const url = `${apiUrl}/api/auth/register`;
     setLoading(true);
+    console.log(values);
+
     try {
-      const { confirm, terms, ...payload } = values;
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch(url, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(values), // no confirm here, it lives outside values
       });
 
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        setServerError(data?.message ?? "რეგისტრაცია ვერ მოხერხდა");
+        const text = await res.text();
+        let data: any = null;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          /* not JSON */
+        }
+
+        console.error("Register failed:", {
+          status: res.status,
+          url,
+          body: data ?? text,
+        });
+        setDebugInfo(`${res.status} ${res.statusText} - ${url}`);
+
+        if (data?.errors && typeof data.errors === "object") {
+          setServerFieldErrors(data.errors as Errors);
+          setServerError(data.message ?? messageForStatus(res.status));
+          return;
+        }
+
+        if (res.status === 409) {
+          setServerFieldErrors({
+            email: data?.message ?? messageForStatus(409),
+          });
+          return;
+        }
+
+        setServerError(data?.message ?? messageForStatus(res.status));
         return;
       }
 
-      router.push("/");
+      router.push("/login");
       router.refresh();
-    } catch {
+    } catch (error) {
+      console.error("Register network error:", error);
       setServerError("კავშირის შეცდომა, სცადეთ თავიდან");
+      setDebugInfo(`Network/CORS error - ${url} - ${String(error)}`);
     } finally {
       setLoading(false);
     }
@@ -117,7 +200,7 @@ export default function RegisterForm() {
   const common = { onChange, onBlur };
 
   return (
-    <form onSubmit={onSubmit} noValidate className=" flex flex-col gap-4">
+    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
       <div className="grid gap-5 sm:grid-cols-2">
         <AuthField
           label="სახელი"
@@ -153,7 +236,7 @@ export default function RegisterForm() {
         label="ტელეფონი"
         name="phone"
         type="tel"
-        placeholder="+995 55 55 55"
+        placeholder="+995555555"
         autoComplete="tel"
         value={values.phone}
         error={err("phone")}
@@ -199,7 +282,7 @@ export default function RegisterForm() {
         type="password"
         placeholder="განმეორებით"
         autoComplete="new-password"
-        value={values.confirm}
+        value={confirm}
         error={err("confirm")}
         {...common}
       />
@@ -210,7 +293,7 @@ export default function RegisterForm() {
             type="checkbox"
             name="terms"
             checked={values.terms}
-            onChange={onChange}
+          
             onBlur={onBlur}
             className="mt-0.5 size-4 accent-[var(--primary)]"
           />
@@ -238,7 +321,19 @@ export default function RegisterForm() {
         რეგისტრაციის შემდეგ პირად კაბინეტში ნახავთ შეკვეთებსა და ფასდაკლებებს.
       </div>
 
-      {serverError && <p className="text-sm text-red-600">{serverError}</p>}
+      {serverError && (
+        <div
+          role="alert"
+          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600"
+        >
+          <p>{serverError}</p>
+          {isDev && debugInfo && (
+            <p className="mt-1 break-all font-mono text-[11px] opacity-70">
+              DEBUG: {debugInfo}
+            </p>
+          )}
+        </div>
+      )}
 
       <SubmitButton disabled={loading}>
         {loading ? "..." : "რეგისტრაცია"}
