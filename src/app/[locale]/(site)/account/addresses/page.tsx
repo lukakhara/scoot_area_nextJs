@@ -1,30 +1,16 @@
-import { MapPin, Pencil, Plus, Star, Trash2 } from "lucide-react";
-import {
-  Field,
-  OutlineBtn,
-  Panel,
-  PrimaryBtn,
-} from "@/components/auth/AccountUi";
-import { cookies } from "next/headers";
+import Link from "next/link";
+import { MapPin, Pencil, Plus, Star } from "lucide-react";
+import { Panel } from "@/components/auth/AccountUi";
 import { redirect } from "next/navigation";
-
-interface Address {
-  city: string;
-  street: string;
-  postalCode: string;
-  country: string;
-  isDefault:boolean;
-}
-
-
+import { apiFetch } from "@/lib/api";
+import { deleteAddress, setDefaultAddress } from "./actions";
+import { AddressForm } from "./AddressForm";
+import { DeleteAddressButton } from "./DeleteAddressButton";
+import { ADDRESSES_API, ADDRESSES_PATH, type Address } from "./address";
+import { div } from "framer-motion/client";
 
 async function getAddresses(): Promise<Address[]> {
-  const cookieStore = await cookies();
-
-  const res = await fetch(`${process.env.API_URL}/api/address`, {
-    headers: { cookie: cookieStore.toString() },
-    cache: "no-store", // user-specific data, never cache
-  });
+  const res = await apiFetch(ADDRESSES_API);
 
   if (res.status === 401) redirect("/login");
   if (!res.ok) throw new Error(`Failed to fetch addresses: ${res.status}`);
@@ -33,74 +19,94 @@ async function getAddresses(): Promise<Address[]> {
   return data;
 }
 
-export default async function index() {
+export default async function AddressesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ edit?: string }>;
+}) {
+  const { edit } = await searchParams;
   const addresses = await getAddresses();
+  const editing = addresses.find((a) => a.id === edit);
+
   return (
     <>
       <Panel
         title="შენახული მისამართები"
         action={
-          <PrimaryBtn>
+          <Link
+            href={`${ADDRESSES_PATH}#form`}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground hover:opacity-80"
+          >
             <Plus className="size-4" /> დამატება
-          </PrimaryBtn>
+          </Link>
         }
       >
-        <div className="grid gap-4 md:grid-cols-2">
-          {addresses.map((a) => (
-            <div
-              key={a.street}
-              className={`rounded-2xl border-2 p-5 ${a.isDefault ? "border-sale bg-sale/5" : "border-border"}`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-full bg-primary text-primary-foreground">
-                    <MapPin className="size-4" />
-                  </span>
-                  <div>
-                    <p className="text-xs text-muted-foreground">{a.city}</p>
+        {addresses.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            შენახული მისამართები არ გაქვთ
+          </p>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {addresses.map((a) => (
+              <div
+                key={a.id}
+                className={`rounded-2xl border-2 p-5 ${a.isDefault ? "border-sale bg-sale/5" : "border-border"}`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <span className="grid size-10 place-items-center rounded-full bg-primary text-primary-foreground">
+                      <MapPin className="size-4" />
+                    </span>
+                    <p className="text-xs text-muted-foreground">ქალაქი:{a.city}</p>
                   </div>
+                  {a.isDefault && (
+                   
+                    <span className="rounded-full bg-sale px-2.5 py-1 text-[12px] font-bold text-primary-foreground uppercase">
+                     ნაგულისხმევი
+                    </span> 
+                  )}
                 </div>
-                {a.isDefault && (
-                  <span className="rounded-full bg-sale px-2.5 py-1 text-[10px] font-bold text-primary-foreground uppercase">
-                    ნაგულისხმევი
-                  </span>
-                )}
+
+                <p className="mt-4 text-sm">ქუჩა:{a.street}</p>
+                <p className="text-sm text-muted-foreground">Zip კოდი:{a.postalCode}</p>
+
+                <div className="mt-4 flex flex-wrap items-center gap-4 border-t pt-4 text-xs font-bold uppercase">
+                  <Link
+                    href={`${ADDRESSES_PATH}?edit=${a.id}#form`}
+                    className="inline-flex items-center gap-1.5 hover:text-primary"
+                  >
+                    <Pencil className="size-3.5" /> რედაქტირება
+                  </Link>
+
+                  <form action={deleteAddress.bind(null, a.id)}>
+                    <DeleteAddressButton />
+                  </form>
+
+                  {!a.isDefault && (
+                    <form
+                      action={setDefaultAddress.bind(null, a.id)}
+                      className="ml-auto"
+                    >
+                      <button
+                        type="submit"
+                        className="inline-flex items-center gap-1.5 text-sale cursor-pointer hover:opacity-50"
+                      >
+                        <Star className="size-3.5" /> ნაგულისხმევად
+                      </button>
+                    </form>
+                  )}
+                </div>
               </div>
-              <p className="mt-4 text-sm">{a.street}</p>
-              <p className="text-sm text-muted-foreground">+995 555 12 34 56</p>
-              <div className="mt-4 flex flex-wrap gap-2 border-t pt-4 text-xs font-bold uppercase">
-                <button className="inline-flex items-center gap-1.5 hover:text-primary">
-                  <Pencil className="size-3.5" /> რედაქტირება
-                </button>
-                <button className="inline-flex items-center gap-1.5 text-destructive">
-                  <Trash2 className="size-3.5" /> წაშლა
-                </button>
-                {!a.isDefault && (
-                  <button className="ml-auto inline-flex items-center gap-1.5 text-sale">
-                    <Star className="size-3.5" /> ნაგულისხმევად
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </Panel>
-      <Panel title="ახალი მისამართი">
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="დასახელება" placeholder="მაგ. სახლი" />
-          <Field label="ქალაქი" placeholder="თბილისი" />
-          <Field label="მისამართი" placeholder="ქუჩა, ნომერი" />
-          <Field label="ტელეფონი" prefix="+995" placeholder="5XX XX XX XX" />
-        </div>
-        <label className="mt-5 flex items-center gap-2 text-sm">
-          <input type="checkbox" className="size-4 accent-[var(--sale)]" />{" "}
-          ნაგულისხმევად დაყენება checkout-ისთვის
-        </label>
-        <div className="mt-6 flex gap-3">
-          <PrimaryBtn>შენახვა</PrimaryBtn>
-          <OutlineBtn>გაუქმება</OutlineBtn>
-        </div>
-      </Panel>
+
+      <div id="form">
+        <Panel title={editing ? "მისამართის რედაქტირება" : "ახალი მისამართი"}>
+          <AddressForm key={editing?.id ?? "new"} address={editing} />
+        </Panel>
+      </div>
     </>
   );
 }
