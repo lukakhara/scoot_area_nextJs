@@ -1,22 +1,54 @@
-
 import { MapPin, Pencil, Plus, Star, Trash2 } from "lucide-react";
-import { Field, OutlineBtn, Panel, PrimaryBtn, accountHead } from "@/components/auth/AccountUi";
+import {
+  Field,
+  OutlineBtn,
+  Panel,
+  PrimaryBtn,
+} from "@/components/auth/AccountUi";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+interface Address {
+  city: string;
+  street: string;
+  postalCode: string;
+  country: string;
+  isDefault:boolean;
+}
 
 
-const ADDRESSES = [
-  { name: "სახლი", city: "თბილისი", line: "რუსთაველის გამზ. 10, ბ. 5", isDefault: true },
-  { name: "ოფისი", city: "თბილისი", line: "ჭავჭავაძის გამზ. 33", isDefault: false },
-  { name: "ზაფხული", city: "ბათუმი", line: "გორგილაძის ქ. 21", isDefault: false },
-];
 
-export default function index() {
+async function getAddresses(): Promise<Address[]> {
+  const cookieStore = await cookies();
+
+  const res = await fetch(`${process.env.API_URL}/api/address`, {
+    headers: { cookie: cookieStore.toString() },
+    cache: "no-store", // user-specific data, never cache
+  });
+
+  if (res.status === 401) redirect("/login");
+  if (!res.ok) throw new Error(`Failed to fetch addresses: ${res.status}`);
+
+  const { data } = (await res.json()) as { data: Address[] };
+  return data;
+}
+
+export default async function index() {
+  const addresses = await getAddresses();
   return (
     <>
-      <Panel title="შენახული მისამართები" action={<PrimaryBtn><Plus className="size-4" /> დამატება</PrimaryBtn>}>
+      <Panel
+        title="შენახული მისამართები"
+        action={
+          <PrimaryBtn>
+            <Plus className="size-4" /> დამატება
+          </PrimaryBtn>
+        }
+      >
         <div className="grid gap-4 md:grid-cols-2">
-          {ADDRESSES.map((a) => (
+          {addresses.map((a) => (
             <div
-              key={a.name}
+              key={a.street}
               className={`rounded-2xl border-2 p-5 ${a.isDefault ? "border-sale bg-sale/5" : "border-border"}`}
             >
               <div className="flex items-start justify-between gap-3">
@@ -25,7 +57,6 @@ export default function index() {
                     <MapPin className="size-4" />
                   </span>
                   <div>
-                    <p className="font-bold">{a.name}</p>
                     <p className="text-xs text-muted-foreground">{a.city}</p>
                   </div>
                 </div>
@@ -35,13 +66,19 @@ export default function index() {
                   </span>
                 )}
               </div>
-              <p className="mt-4 text-sm">{a.line}</p>
+              <p className="mt-4 text-sm">{a.street}</p>
               <p className="text-sm text-muted-foreground">+995 555 12 34 56</p>
               <div className="mt-4 flex flex-wrap gap-2 border-t pt-4 text-xs font-bold uppercase">
-                <button className="inline-flex items-center gap-1.5 hover:text-primary"><Pencil className="size-3.5" /> რედაქტირება</button>
-                <button className="inline-flex items-center gap-1.5 text-destructive"><Trash2 className="size-3.5" /> წაშლა</button>
+                <button className="inline-flex items-center gap-1.5 hover:text-primary">
+                  <Pencil className="size-3.5" /> რედაქტირება
+                </button>
+                <button className="inline-flex items-center gap-1.5 text-destructive">
+                  <Trash2 className="size-3.5" /> წაშლა
+                </button>
                 {!a.isDefault && (
-                  <button className="ml-auto inline-flex items-center gap-1.5 text-sale"><Star className="size-3.5" /> ნაგულისხმევად</button>
+                  <button className="ml-auto inline-flex items-center gap-1.5 text-sale">
+                    <Star className="size-3.5" /> ნაგულისხმევად
+                  </button>
                 )}
               </div>
             </div>
@@ -56,9 +93,13 @@ export default function index() {
           <Field label="ტელეფონი" prefix="+995" placeholder="5XX XX XX XX" />
         </div>
         <label className="mt-5 flex items-center gap-2 text-sm">
-          <input type="checkbox" className="size-4 accent-[var(--sale)]" /> ნაგულისხმევად დაყენება checkout-ისთვის
+          <input type="checkbox" className="size-4 accent-[var(--sale)]" />{" "}
+          ნაგულისხმევად დაყენება checkout-ისთვის
         </label>
-        <div className="mt-6 flex gap-3"><PrimaryBtn>შენახვა</PrimaryBtn><OutlineBtn>გაუქმება</OutlineBtn></div>
+        <div className="mt-6 flex gap-3">
+          <PrimaryBtn>შენახვა</PrimaryBtn>
+          <OutlineBtn>გაუქმება</OutlineBtn>
+        </div>
       </Panel>
     </>
   );

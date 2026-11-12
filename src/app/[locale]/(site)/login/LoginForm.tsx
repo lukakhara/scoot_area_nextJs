@@ -67,8 +67,7 @@ export default function LoginForm() {
           body: JSON.stringify(values),
         },
       );
-      console.log(res);
-      console.log(process.env.NEXT_PUBLIC_API_URL);
+    
       if (!res.ok) {
         const data = await res.json().catch(() => null);
         setServerError(data?.message ?? "ელ. ფოსტა ან პაროლი არასწორია");

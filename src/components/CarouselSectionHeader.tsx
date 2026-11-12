@@ -22,7 +22,7 @@ export default function CarouselSectionHeader({
 }: CarouselSectionHeaderProps)
 {
 
-  console.log(typeof window === "undefined" ? "server" : "client",canGoNext);
+ 
   return (
     <div className=" flex items-center justify-between gap-4">
       <h2 className="text-[24px] font-bold tracking-wide uppercase sm:text-[40px]">

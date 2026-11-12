@@ -143,7 +143,7 @@ export default function RegisterForm() {
 
     const url = `${apiUrl}/api/auth/register`;
     setLoading(true);
-    console.log(values);
+   
 
     try {
       const res = await fetch(url, {

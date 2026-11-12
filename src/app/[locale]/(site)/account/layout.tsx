@@ -30,7 +30,7 @@ export default async function AccountLayout({
   children: React.ReactNode;
 }) {
   const user = await requireUser(); // lib/auth.ts
-  console.log('-------------------------------------',user);
+
   return (
     <main className="mx-auto grid w-full max-w-[1400px] flex-1 gap-6 px-5 py-8 lg:grid-cols-[280px_1fr] lg:py-12 ">
       <aside className="space-y-4">

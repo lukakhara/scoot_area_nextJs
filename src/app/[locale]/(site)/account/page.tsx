@@ -10,9 +10,7 @@ import { requireUser } from "@/lib/auth";
 
 export default async function PersonalInfo() {
   const user = await requireUser();
-  console.log("PersonalInfo user:", user);
-
-
+ 
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-3 ">

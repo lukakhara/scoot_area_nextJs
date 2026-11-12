@@ -14,35 +14,35 @@ export type User = {
 
 export const getCurrentUser = cache(async (): Promise<User | null> => {
   const cookieStore = await cookies();
-  console.log("cookies seen by Next:", cookieStore.getAll().map((c) => c.name));
+  // console.log("cookies seen by Next:", cookieStore.getAll().map((c) => c.name));
 
   if (!cookieStore.get("sid")) {
-    console.log("no sid cookie");
+    // console.log("no sid cookie");
     return null;
   }
 
   const url = `${process.env.API_URL}/api/auth/me`;
-  console.log("fetching:", url);
+  // console.log("fetching:", url);
 
   try {
     const res = await fetch(url, {
       headers: { Cookie: cookieStore.toString() },
       cache: "no-store",
     });
-    console.log("me status:", res.status);
+   
     if (!res.ok) return null;
     return (await res.json()) as User;
   } catch (e) {
-    console.log("fetch failed:", e);
+    // console.log("fetch failed:", e);
     return null;
   }
 });
 
 export async function requireUser(): Promise<User> {
   const user = await getCurrentUser();
-  console.log("requireUser called, user:", user);
+  // console.log("requireUser called, user:", user);
   if (!user){
-    console.log("no user, redirecting to login");
+    // console.log("no user, redirecting to login");
   }
    return user;
  
