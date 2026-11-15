@@ -22,11 +22,10 @@ export async function saveAddress(
   const values = {
     city: String(formData.get("city") ?? "").trim(),
     street: String(formData.get("street") ?? "").trim(),
-    postalCode: String(formData.get("postalCode") ?? "").trim(),
     isDefault: formData.get("isDefault") === "on",
   };
 
-  if (!values.city || !values.street || !values.postalCode) {
+  if (!values.city || !values.street) {
     return { error: "შეავსეთ ყველა ველი", values };
   }
 
@@ -40,6 +39,8 @@ export async function saveAddress(
     method: id ? "PATCH" : "POST",
     body: JSON.stringify(body),
   });
+
+  
 
   if (res.status === 401) redirect("/login");
   if (!res.ok) {

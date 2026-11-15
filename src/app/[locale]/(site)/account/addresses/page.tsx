@@ -10,11 +10,12 @@ import { ADDRESSES_API, ADDRESSES_PATH, type Address } from "./address";
 
 async function getAddresses(): Promise<Address[]> {
   const res = await apiFetch(ADDRESSES_API);
-
+  console.log('res',res)
   if (res.status === 401) redirect("/login");
   if (!res.ok) throw new Error(`Failed to fetch addresses: ${res.status}`);
 
   const { data } = (await res.json()) as { data: Address[] };
+   console.log('data',data)
   return data;
 }
 
@@ -100,7 +101,7 @@ export default async function AddressesPage({
         )}
       </Panel>
 
-      <div id="form">
+      <div id="form" className="">
         <Panel title={editing ? "მისამართის რედაქტირება" : "ახალი მისამართი"}>
           <AddressForm key={editing?.id ?? "new"} address={editing} />
         </Panel>

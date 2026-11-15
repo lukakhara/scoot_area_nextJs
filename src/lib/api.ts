@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 // server-only fetch to Express that forwards the session cookie
 export async function apiFetch(path: string, init: RequestInit = {}) {
   const cookieStore = await cookies();
-
+  
   return fetch(`${process.env.API_URL}${path}`, {
     ...init,
     headers: {
@@ -14,4 +14,5 @@ export async function apiFetch(path: string, init: RequestInit = {}) {
     },
     cache: "no-store",
   });
+  
 }

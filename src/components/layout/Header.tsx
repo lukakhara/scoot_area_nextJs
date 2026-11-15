@@ -187,13 +187,13 @@ export default function Header({
 
           <button
             aria-label="მენიუ"
-            className="xl:hidden"
+            className="xl:hidden cursor-pointer hover:scale-110"
             onClick={() => setOpen((v) => !v)}
           >
             {open ? (
-              <X className="size-6" />
+              <X className="size-6 " />
             ) : (
-              <Menu className="size-6" strokeWidth={1} />
+              <Menu className="size-6  " strokeWidth={1} />
             )}
           </button>
         </div>

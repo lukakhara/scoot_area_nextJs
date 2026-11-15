@@ -62,7 +62,7 @@ export function AddressForm({ address }: { address?: Address }) {
           disabled={address?.isDefault}
           className="size-4 accent-[var(--sale)]"
         />
-        ნაგულისხმევ მისამართად   დაყენება
+        ნაგულისხმევ მისამართად დაყენება
       </label>
 
       {state.error && (
@@ -71,11 +71,11 @@ export function AddressForm({ address }: { address?: Address }) {
         </p>
       )}
 
-      <div className="mt-6 flex gap-3">
+      <div className="mt-6 flex gap-3 ">
         <button
           type="submit"
           disabled={pending}
-          className="rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60"
+          className="rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60 "
         >
           {pending ? "ინახება..." : "შენახვა"}
         </button>
