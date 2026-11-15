@@ -185,7 +185,7 @@ export default function Orders() {
 
     (async () => {
       try {
-        const res = await fetch(`${API_URL}/api/orders`, {
+        const res = await fetch(`${API_URL}/api/orders/me`, {
           credentials: "include",
           signal: controller.signal,
         });

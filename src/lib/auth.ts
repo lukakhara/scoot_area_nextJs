@@ -9,7 +9,7 @@ export type User = {
   role: string;
   firstName: string;
   lastName: string;
-  phone:string;
+  phone: string;
 };
 
 export const getCurrentUser = cache(async (): Promise<User | null> => {
@@ -29,7 +29,7 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
       headers: { Cookie: cookieStore.toString() },
       cache: "no-store",
     });
-   
+
     if (!res.ok) return null;
     return (await res.json()) as User;
   } catch (e) {
@@ -40,12 +40,8 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
 
 export async function requireUser(): Promise<User> {
   const user = await getCurrentUser();
-  // console.log("requireUser called, user:", user);
-  if (!user){
-    // console.log("no user, redirecting to login");
-  }
-   return user;
- 
+  if (!user) redirect("/login");
+  return user;
 }
 
 export async function requireRole(role: string): Promise<User> {
