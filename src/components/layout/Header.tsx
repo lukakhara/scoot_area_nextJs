@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import { Menu, ShoppingCart, X } from "lucide-react";
+import { Menu, ShoppingCart, X, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CartPopover from "@/components/CartPopover";
 import Image from "next/image";
@@ -46,8 +46,6 @@ export default function Header({
     { label: t("aboutUs"), to: "/about" },
     { label: t("contact"), to: "/contact" },
   ];
-
-
 
   const items = useCartStore((state) => state.items);
   const hydrated = useHydrated();
@@ -153,16 +151,19 @@ export default function Header({
             <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
               {hydrated ? count : 0}
             </span>
-           {hydrated ? priceToPay.toFixed(2) : "0.00"}₾
+            {hydrated ? priceToPay.toFixed(2) : "0.00"}₾
           </button>
+
           <Link
-            href={"/account"}
+            href="/login"
             className={cn(
-              "hidden size-5 rounded-full sm:block",
+              "hidden size-8 rounded-full sm:flex items-center justify-center",
               solid ? "bg-foreground/15" : "bg-primary-foreground/20",
             )}
-            aria-hidden
-          />
+            aria-label="Account"
+          >
+            <User size={20} color="black"/>
+          </Link>
 
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
           <div

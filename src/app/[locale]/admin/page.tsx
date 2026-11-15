@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState } from "react";
 import {
   ArrowLeft,
@@ -20,23 +20,34 @@ import {
 import { ProductEditor } from "@/components/admin/productEditor";
 import {
   kinds,
-  sampleRows,
   type ProductKind,
   type ProductRow,
 } from "@/components/admin/productFields";
+import {
+  useAdminProducts,
+  useProductCounts,
+} from "@/components/admin/useAdminProducts";
 
 import Link from "next/link";
+import ProductCardImage from "@/components/ui/ProductCardImage";
+
+const kindKeys = kinds.map((item) => item.key);
 
 export default function AdminPage() {
   const [kind, setKind] = useState<ProductKind>("scooter");
   const [search, setSearch] = useState("");
   const [editor, setEditor] = useState<{ product?: ProductRow } | null>(null);
   const [deleting, setDeleting] = useState<ProductRow | null>(null);
-  const rows = sampleRows[kind].filter((row) =>
-    `${row.name} ${row.brand} ${row.values["sku"] || ""}`
-      .toLowerCase()
-      .includes(search.toLowerCase()),
-  );
+  const [countsKey, setCountsKey] = useState(0);
+
+  const { rows, loading, error, reload } = useAdminProducts(kind, search);
+  const counts = useProductCounts(kindKeys, countsKey);
+
+  const refresh = () => {
+    reload();
+    setCountsKey((v) => v + 1);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b-2 border-primary bg-brand-ink text-primary-foreground">
@@ -52,14 +63,13 @@ export default function AdminPage() {
       </header>
       <main className="mx-auto max-w-[1400px] px-5 py-8 sm:px-8 sm:py-12">
         <Button
-          
           variant="link"
-          className="mb-6 h-auto p-0 text-muted-foreground"
+          nativeButton={false}
+          render={<Link href="/" />}
+          className="mb-6 h-auto p-0 text-muted-foreground cursor-pointer"
         >
-          <Link href="/">
-            <ArrowLeft />
-            მაღაზიაში დაბრუნება
-          </Link>
+          <ArrowLeft />
+          მაღაზიაში დაბრუნება
         </Button>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
@@ -68,7 +78,7 @@ export default function AdminPage() {
             </div>
             <h1 className="text-2xl font-extrabold sm:text-3xl">პროდუქტები</h1>
           </div>
-          <Button onClick={() => setEditor({})} className="h-11">
+          <Button onClick={() => setEditor({})} className="h-11 cursor-pointer">
             <Plus />
             პროდუქტის დამატება
           </Button>
@@ -89,13 +99,11 @@ export default function AdminPage() {
                   setKind(item.key);
                   setSearch("");
                 }}
-                className="h-auto min-h-10 whitespace-normal py-2 text-left"
+                className="h-auto min-h-10 whitespace-normal py-2 text-left cursor-pointer"
               >
                 {item.key === "scooter" ? <Bike /> : <Package />}
                 {item.label}
-                <span className="opacity-70">
-                  {sampleRows[item.key].length}
-                </span>
+                <span className="opacity-70">{counts[item.key] ?? "–"}</span>
               </Button>
             ))}
           </div>
@@ -132,14 +140,25 @@ export default function AdminPage() {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className={loading ? "opacity-50" : undefined}>
               {rows.map((row) => (
                 <tr key={row.id} className="border-t">
                   <td className="px-5 py-5">
                     <div className="flex items-center gap-3">
-                      <div className="grid size-12 shrink-0 place-items-center rounded-md bg-secondary">
-                        <Package className="size-5 text-muted-foreground" />
+                      <div className="relative grid size-12 shrink-0 place-items-center overflow-hidden rounded-md bg-secondary">
+                        {row.image ? (
+                          <ProductCardImage
+                            src={row.image}
+                            alt={row.name}
+                            width={96}
+                            height={96}
+                         
+                          />
+                        ) : (
+                          <Package className="size-5 text-muted-foreground" />
+                        )}
                       </div>
+                  
                       <div>
                         <div className="font-semibold">{row.name}</div>
                         <div className="mt-1 text-xs text-muted-foreground">
@@ -152,7 +171,7 @@ export default function AdminPage() {
                     {kind === "part" ? row.values["sku"] : row.brand}
                   </td>
                   <td className="max-w-52 break-words px-5 py-5 text-xs text-muted-foreground">
-                    {row.category.replaceAll("_", " ")}
+                    {/* {row.category.replaceAll("_", " ")} */}
                   </td>
                   <td className="whitespace-nowrap px-5 py-5 font-bold">
                     {row.price}₾
@@ -181,13 +200,14 @@ export default function AdminPage() {
                         aria-label={`${row.name} — რედაქტირება`}
                         title="რედაქტირება"
                         onClick={() => setEditor({ product: row })}
+                        className="cursor-pointer"
                       >
                         <Pencil />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="text-destructive"
+                        className="text-destructive cursor-pointer"
                         aria-label={`${row.name} — წაშლა`}
                         title="წაშლა"
                         onClick={() => setDeleting(row)}
@@ -200,7 +220,20 @@ export default function AdminPage() {
               ))}
             </tbody>
           </table>
-          {rows.length === 0 && (
+          {loading && rows.length === 0 && (
+            <div className="py-16 text-center text-sm text-muted-foreground">
+              იტვირთება...
+            </div>
+          )}
+          {error && (
+            <div className="flex flex-col items-center gap-3 py-16 text-center text-sm text-destructive">
+              მონაცემების ჩატვირთვა ვერ მოხერხდა
+              <Button variant="outline" onClick={reload}>
+                ხელახლა ცდა
+              </Button>
+            </div>
+          )}
+          {!loading && !error && rows.length === 0 && (
             <div className="py-16 text-center text-sm text-muted-foreground">
               პროდუქტი ვერ მოიძებნა
             </div>
@@ -213,7 +246,10 @@ export default function AdminPage() {
           kind={kind}
           product={editor.product}
           open
-          onClose={() => setEditor(null)}
+          onClose={() => {
+            setEditor(null);
+            refresh();
+          }}
         />
       )}
       <Dialog

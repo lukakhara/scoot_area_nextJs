@@ -189,6 +189,7 @@ export default function Orders() {
           credentials: "include",
           signal: controller.signal,
         });
+        
         if (!res.ok) throw new Error(`Request failed: ${res.status}`);
         setOrders(await res.json());
       } catch (err) {
@@ -196,6 +197,7 @@ export default function Orders() {
         setError("შეკვეთების ჩატვირთვა ვერ მოხერხდა");
       } finally {
         if (!controller.signal.aborted) setLoading(false);
+        
       }
     })();
 

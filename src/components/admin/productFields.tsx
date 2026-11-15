@@ -14,6 +14,7 @@ export type ProductRow = {
   price: string;
   stock: string;
   values: Record<string, string>;
+  image?: string | null;
 };
 export const kinds: { key: ProductKind; label: string }[] = [
   { key: "scooter", label: "სკუტერები" },

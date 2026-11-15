@@ -1,3 +1,4 @@
+import "server-only";
 import { cookies } from "next/headers";
 
 // server-only fetch to Express that forwards the session cookie
