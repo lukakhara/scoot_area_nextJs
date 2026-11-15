@@ -17,7 +17,6 @@ import {
   toAccessoryCardProduct,
   toBlogCardProduct,
   toScooterCardProduct,
-  toSparePartCardProduct,
 } from "@/lib/mappers/product";
 
 
@@ -176,6 +175,7 @@ async function Home() {
                 </div>
               </div>
             </div>
+            
           </div>
 
           {/* CIRCLE */}

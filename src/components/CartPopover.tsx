@@ -5,8 +5,13 @@ import { Placeholder } from "./ui/Placeholder";
 import Link from "next/link";
 import { useCartStore } from "@/store/cartStore";
 import ProductCardImage from "./ui/ProductCardImage";
-
-type Item = { title: string; color: string; price: string; qty: number };
+import {
+  cartKey,
+  fullPrice,
+  unitPrice,
+  useCartProducts,
+} from "@/hooks/useCartProducts";
+import type { CartItem } from "@/types/cart";
 
 export default function CartPopover({ onClose }: { onClose: () => void }) {
   const { items, removeItem, updateQuantity, clearCart } = useCartStore(
@@ -18,23 +23,31 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
     })),
   );
 
-  const total = useCartStore((state) =>
-    state.items.reduce(
-      (sum, item) => sum + item.quantity * (item.oldPrice ?? item.price),
-      0,
-    ),
+  const { products, loading, error } = useCartProducts(items);
+
+  const lines = items.map((item) => ({
+    item,
+    product: products[cartKey(item)],
+  }));
+
+  // original prices total, amount to pay, and the difference
+  const fullTotal = lines.reduce(
+    (sum, { item, product }) =>
+      product
+        ? sum + (fullPrice(product) ?? unitPrice(product)) * item.quantity
+        : sum,
+    0,
   );
-
-  const priceToPay = useCartStore((state) =>
-    state.items.reduce((sum, item) => sum + item.quantity * item.price, 0),
+  const priceToPay = lines.reduce(
+    (sum, { item, product }) =>
+      product ? sum + unitPrice(product) * item.quantity : sum,
+    0,
   );
+  const discountTotal = fullTotal - priceToPay;
 
-  const discountTotal = total - priceToPay;
-
-  const updateQuantityOfProduct = (productId: string, delta: number) => {
-    const item = items.find((i) => i.productId === productId);
-    if (!item) return;
-    updateQuantity(item.productId, item.quantity + delta);
+  const changeQuantity = (item: CartItem, delta: number) => {
+    // the store removes the item when quantity drops to 0
+    updateQuantity(item.productType, item.productId, item.quantity + delta);
   };
 
   return (
@@ -52,65 +65,85 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="mt-4 space-y-4">
-        {items.map((item, i) => (
-          <div
-            key={i}
-            className="grid grid-cols-[64px_minmax(0,1fr)_auto] items-start gap-3"
-          >
-            {item.image ? (
-              <ProductCardImage
-                src={item.image}
-                alt={`product image`}
-              ></ProductCardImage>
-            ) : (
-              <Placeholder />
-            )}
+        {lines.map(({ item, product }) => {
+          const image = product?.images?.[0];
 
-            <div className="min-w-0">
-              <p className="text-xs leading-tight font-extrabold uppercase">
-                {item.title}
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                ფერი: {item.color}
-              </p>
-            </div>
-            <div className="flex flex-col items-end gap-2">
-              <button
-                aria-label="წაშლა"
-                onClick={() => removeItem(item.productId)}
-                className="text-muted-foreground hover:text-sale"
-              >
-                <X className="size-4" />
-              </button>
-              <div className="flex items-center gap-3 text-sm">
-                <div className="flex items-center gap-2">
-                  <button
-                    aria-label="შემცირება"
-                    onClick={() => updateQuantityOfProduct(item.productId, -1)}
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    −
-                  </button>
-                  <span className="min-w-3 text-center">{item.quantity}</span>
-                  <button
-                    aria-label="გაზრდა"
-                    onClick={() => updateQuantityOfProduct(item.productId, 1)}
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    +
-                  </button>
+          return (
+            <div
+              key={cartKey(item)}
+              className="grid grid-cols-[64px_minmax(0,1fr)_auto] items-start gap-3"
+            >
+              {image ? (
+                <ProductCardImage src={image} alt={product?.name ?? "product image"} />
+              ) : (
+                <Placeholder />
+              )}
+
+              <div className="min-w-0">
+                {product ? (
+                  <>
+                    <p className="text-xs leading-tight font-extrabold uppercase">
+                      {product.name}
+                    </p>
+                    {product.color && (
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        ფერი: {product.color}
+                      </p>
+                    )}
+                  </>
+                ) : loading ? (
+                  <div className="h-4 w-24 animate-pulse rounded bg-muted" />
+                ) : (
+                  <p className="text-xs text-[#EA2700]">პროდუქტი მიუწვდომელია</p>
+                )}
+              </div>
+
+              <div className="flex flex-col items-end gap-2">
+                <button
+                  aria-label="წაშლა"
+                  onClick={() => removeItem(item.productType, item.productId)}
+                  className="text-muted-foreground hover:text-sale"
+                >
+                  <X className="size-4" />
+                </button>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="flex items-center gap-2">
+                    <button
+                      aria-label="შემცირება"
+                      onClick={() => changeQuantity(item, -1)}
+                      className="text-muted-foreground hover:text-primary"
+                    >
+                      −
+                    </button>
+                    <span className="min-w-3 text-center">{item.quantity}</span>
+                    <button
+                      aria-label="გაზრდა"
+                      onClick={() => changeQuantity(item, 1)}
+                      className="text-muted-foreground hover:text-primary"
+                    >
+                      +
+                    </button>
+                  </div>
+                  {product && (
+                    <span className="font-medium whitespace-nowrap">
+                      {unitPrice(product).toFixed(2)}₾
+                    </span>
+                  )}
                 </div>
-                <span className="font-medium whitespace-nowrap">
-                  {item.price}₾
-                </span>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {items.length === 0 && (
           <p className="py-6 text-center text-sm text-muted-foreground">
             კალათა ცარიელია
+          </p>
+        )}
+
+        {error && (
+          <p role="alert" className="text-center text-sm text-[#EA2700]">
+            პროდუქტების ჩატვირთვა ვერ მოხერხდა
           </p>
         )}
       </div>
@@ -118,7 +151,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
       <dl className="mt-5 space-y-1 border-t pt-4 text-sm">
         <div className="flex items-center justify-between">
           <dt className="text-muted-foreground">ჯამი:</dt>
-          <dd className="font-medium">{priceToPay.toFixed(2)}₾</dd>
+          <dd className="font-medium">{fullTotal.toFixed(2)}₾</dd>
         </div>
         <div className="flex items-center justify-between">
           <dt className="text-muted-foreground">ფასდაკლება:</dt>
@@ -128,7 +161,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
 
       <div className="mt-4 flex items-center justify-between border-t pt-4 text-sm">
         <span className="text-muted-foreground">გადასახდელი თანხა:</span>
-        <span className="text-base font-extrabold">{total.toFixed(2)}₾</span>
+        <span className="text-base font-extrabold">{priceToPay.toFixed(2)}₾</span>
       </div>
 
       <Link

@@ -52,12 +52,6 @@ export function AddressForm({ address }: { address?: Address }) {
           placeholder="ქუჩა, ნომერი"
           defaultValue={v?.street ?? address?.street}
         />
-        <TextField
-          label="საფოსტო ინდექსი"
-          name="postalCode"
-          placeholder="0100"
-          defaultValue={v?.postalCode ?? address?.postalCode}
-        />
       </div>
 
       <label className="mt-5 flex items-center gap-2 text-sm">

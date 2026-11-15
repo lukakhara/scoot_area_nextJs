@@ -5,7 +5,6 @@ export interface Address {
   id: string;
   city: string;
   street: string;
-  postalCode: string;
   isDefault: boolean;
 }
 
@@ -15,7 +14,6 @@ export type FormState = {
   values?: {
     city: string;
     street: string;
-    postalCode: string;
     isDefault: boolean;
   };
 };

@@ -185,10 +185,6 @@ export async function ProductCard({ item }: { item: Product }) {
           item={{
             productId: item.id,
             productType: item.productType,
-            title: item.name,
-            image: item.images?.[0],
-            price: Number(item.price),
-            oldPrice: Number(item.discountPrice ?? item.price),
             quantity: 1,
           }}
         />

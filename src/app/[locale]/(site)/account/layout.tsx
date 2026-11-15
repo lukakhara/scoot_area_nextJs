@@ -1,11 +1,11 @@
-import { Bike, LogOut, MapPin, ShieldCheck, User } from "lucide-react";
+import { Bike, LogOut, MapPin, ShieldCheck, User,Package } from "lucide-react";
 import Link from "next/link";
 import AccountNavLink from "@/components/auth/account-nav-link";
 import { requireUser } from "@/lib/auth";
 
 const LINKS = [
   { to: "/account", label: "პირადი ინფორმაცია", Icon: User },
-  { to: "/account/orders", label: "შეკვეთები", Icon: MapPin },
+  { to: "/account/orders", label: "შეკვეთები", Icon: Package },
   { to: "/account/addresses", label: "მისამართები", Icon: MapPin },
   { to: "/account/garage", label: "ჩემი გარაჟი", Icon: Bike },
   {

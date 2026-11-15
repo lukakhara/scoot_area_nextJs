@@ -8,6 +8,8 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useCartStore } from "@/store/cartStore";
 import { useHydrated } from "@/hooks/useHydrated";
+import { useShallow } from "zustand/react/shallow";
+import { cartKey, unitPrice, useCartProducts } from "@/hooks/useCartProducts";
 
 export default function Header({
   variant = "overlay",
@@ -45,13 +47,41 @@ export default function Header({
     { label: t("contact"), to: "/contact" },
   ];
 
-  const count = useCartStore((state) =>
-    state.items.reduce((n, i) => n + i.quantity, 0),
-  );
-  const total = useCartStore((state) =>
-    state.items.reduce((n, i) => n + i.quantity * i.price, 0),
-  );
+
+
+  const items = useCartStore((state) => state.items);
   const hydrated = useHydrated();
+
+  // number of items in the cart (quantity is the only thing needed from the store)
+  const count = items.reduce((n, i) => n + i.quantity, 0);
+
+  // price comes from the fetched products, not from the store
+  const { products } = useCartProducts(items);
+
+  const priceToPay = items.reduce((sum, item) => {
+    const product = products[cartKey(item)];
+    return product ? sum + unitPrice(product) * item.quantity : sum;
+  }, 0);
+
+  // const hydrated = useHydrated();
+
+  // const { items } = useCartStore(
+  //   useShallow((state) => ({
+  //     items: state.items,
+  //   })),
+  // );
+  // const { products, loading, error } = useCartProducts(items);
+
+  // const lines = items.map((item) => ({
+  //   item,
+  //   product: products[cartKey(item)],
+  // }));
+
+  // const priceToPay = lines.reduce(
+  //   (sum, { item, product }) =>
+  //     product ? sum + unitPrice(product) * item.quantity : sum,
+  //   0,
+  // );
 
   return (
     <header
@@ -123,10 +153,10 @@ export default function Header({
             <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
               {hydrated ? count : 0}
             </span>
-            {hydrated ? total.toFixed(2) : 0}₾
+           {hydrated ? priceToPay.toFixed(2) : "0.00"}₾
           </button>
           <Link
-          href={'/account'}
+            href={"/account"}
             className={cn(
               "hidden size-5 rounded-full sm:block",
               solid ? "bg-foreground/15" : "bg-primary-foreground/20",

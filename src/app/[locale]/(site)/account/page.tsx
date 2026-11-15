@@ -50,7 +50,6 @@ export default async function PersonalInfo() {
             prefix="+995"
             defaultValue={user?.phone}
           />
-          <Field label="დაბადების თარიღი" type="date" />
         </div>
         <p className="mt-4 text-xs text-muted-foreground">
           ტელეფონის ნომერი გამოიყენება კურიერთან დასაკავშირებლად მიწოდებისას.

@@ -7,7 +7,6 @@ import { deleteAddress, setDefaultAddress } from "./actions";
 import { AddressForm } from "./AddressForm";
 import { DeleteAddressButton } from "./DeleteAddressButton";
 import { ADDRESSES_API, ADDRESSES_PATH, type Address } from "./address";
-import { div } from "framer-motion/client";
 
 async function getAddresses(): Promise<Address[]> {
   const res = await apiFetch(ADDRESSES_API);
@@ -68,7 +67,6 @@ export default async function AddressesPage({
                 </div>
 
                 <p className="mt-4 text-sm">ქუჩა:{a.street}</p>
-                <p className="text-sm text-muted-foreground">Zip კოდი:{a.postalCode}</p>
 
                 <div className="mt-4 flex flex-wrap items-center gap-4 border-t pt-4 text-xs font-bold uppercase">
                   <Link
