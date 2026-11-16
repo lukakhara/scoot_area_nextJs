@@ -1,5 +1,4 @@
 import CompareClient from "@/components/CompareClient";
-import { Scooter } from "@/types/product";
 import { Suspense } from "react";
 
 export default async function page({

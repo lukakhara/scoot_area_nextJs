@@ -1,6 +1,6 @@
 
 import { LogOut, Monitor, ShieldCheck, Smartphone,Tablet } from "lucide-react";
-import { Field, OutlineBtn, Panel, PrimaryBtn, accountHead } from "@/components/auth/AccountUi";
+import { Field, OutlineBtn, Panel, PrimaryBtn } from "@/components/auth/AccountUi";
 import { RevokeSessionButton } from "@/components/auth/RevokeSessionButton";
 import { getSessions, type ActiveSession } from "@/lib/sessions";
 

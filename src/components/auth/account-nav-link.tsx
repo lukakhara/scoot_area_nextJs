@@ -12,7 +12,6 @@ export default function AccountNavLink({
   href: string;
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
   const segment = useSelectedLayoutSegment();
 
   const linkSegment = href.split("/")[2] ?? null;

@@ -4,7 +4,6 @@ import {
   OutlineBtn,
   Panel,
   PrimaryBtn,
-  accountHead,
 } from "@/components/auth/AccountUi";
 import { requireUser } from "@/lib/auth";
 

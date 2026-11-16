@@ -36,9 +36,17 @@ const CONTACTS = [
 const GALLERY_IMAGES = [
   { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk2.png" },
   { mobile: "/BlogImageMob3.png", desktop: "/blogImageDesk3.png" },
-  { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk4.png", desktopOnly: true },
+  {
+    mobile: "/blogImageMob2.png",
+    desktop: "/blogImageDesk4.png",
+    desktopOnly: true,
+  },
   { mobile: "/BlogImageMob3.png", desktop: "/blogImageDesk3.png" },
-  { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk4.png", desktopOnly: true },
+  {
+    mobile: "/blogImageMob2.png",
+    desktop: "/blogImageDesk4.png",
+    desktopOnly: true,
+  },
   { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk2.png" },
 ];
 
@@ -47,15 +55,27 @@ function AboutPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-background ">
-      <main className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-12">
-        {/* Intro */}
-        <section>
-          <h1 className="text-2xl font-extrabold tracking-tight uppercase sm:text-3xl">
+    <main className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-25">
+      {/* Intro 1 */}
+      <section className=" flex flex-col gap-20">
+        <section className="flex flex-col gap-7.75">
+          <h1 className="text-2xl font-extrabold tracking-tight uppercase sm:text-[40px] pb-[31px]">
             {t("title")}
           </h1>
-          <picture>
-            <source media="(min-width: 768px)" srcSet="/aboutUs.png" />
+          <div className="flex ">
+            <Image
+              src="/image(14).png"
+              width={1296}
+              height={545}
+              sizes="(min-width: 1296px) 1296px, 100vw"
+              className="h-auto w-full object-cover"
+              alt={t("imageAlt")}
+            />
+          </div>
+        </section>
+
+        {/* <picture>
+            <source media="(min-width: 768px)" srcSet="/aboutUs.png " />
             <Image
               src="/aboutUsMobile.png"
               width={1296}
@@ -63,13 +83,15 @@ function AboutPage() {
               className="w-full object-cover"
               alt={t("imageAlt")}
             />
-          </picture>
+          </picture> */}
 
-          <h2 className="mt-10 text-xl leading-snug font-extrabold tracking-tight uppercase sm:text-3xl">
+        {/* text section 2*/}
+        <section className="flex flex-col gap-8">
+          <h2 className=" text-xl leading-snug font-extrabold tracking-tight uppercase sm:text-[40px]">
             {t("heading")}
           </h2>
 
-          <div className="mt-5 space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
+          <div className="flex flex-col text-sm leading-relaxed text-muted-foreground sm:text-[18px]">
             {PARAGRAPH_KEYS.map((key) => (
               <p key={key}>{t(key)}</p>
             ))}
@@ -81,36 +103,37 @@ function AboutPage() {
               })}
             </p>
           </div>
+        </section>
 
-          {/* Socials + links */}
-          <div className="mt-10 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 sm:flex sm:justify-between">
-            <div className="flex min-w-0 flex-wrap items-center gap-4">
-              {[Facebook, Youtube, Instagram, Linkedin, Send].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  aria-label={t("socialLabel")}
-                  className="hover:text-primary"
-                >
-                  <Icon className="size-6 shrink-0" />
-                </a>
-              ))}
-            </div>
-            <div className="flex shrink-0 gap-3">
-              {(["link1", "link2"] as const).map((key) => (
-                <a
-                  key={key}
-                  href="#"
-                  className="rounded-full border px-5 py-2 text-xs font-semibold transition-colors hover:border-primary hover:text-primary"
-                >
-                  {t(key)}
-                </a>
-              ))}
-            </div>
+        {/* socials 3 */}
+        <section className="flex min-w-0 justify-between flex-wrap items-center gap-4 pt-8">
+          <div className="flex gap-8">
+            {[Facebook, Youtube, Instagram, Linkedin, Send].map((Icon, i) => (
+              <a
+                key={i}
+                href="#"
+                aria-label={t("socialLabel")}
+                className="hover:text-primary"
+              >
+                <Icon className="size-8 shrink-0" />
+              </a>
+            ))}
+          </div>
+
+          <div className="flex shrink-0 gap-3 ">
+            {(["link1", "link2"] as const).map((key) => (
+              <a
+                key={key}
+                href="#"
+                className="rounded-full border px-5 py-2 text-xs font-semibold transition-colors hover:border-primary hover:text-primary text-[24px]"
+              >
+                {t(key)}
+              </a>
+            ))}
           </div>
         </section>
 
-        {/* Partners */}
+        {/* Partners 4 */}
         <section>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
             <h2 className="truncate text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
@@ -134,8 +157,7 @@ function AboutPage() {
               </button>
             </div>
           </div>
-
-          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 ">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i}>
                 <Placeholder
@@ -153,7 +175,7 @@ function AboutPage() {
         </section>
 
         {/* FAQ */}
-        <section className="bg-secondary/60 py-12">
+        <section className="bg-secondary/60 py-12 ">
           <h2 className="text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
             {t("faqTitle")}
           </h2>
@@ -189,7 +211,7 @@ function AboutPage() {
             {t("headOffice")}
           </h2>
 
-          <div className="mt-5 grid gap-6 rounded-2xl bg-secondary/60 p-4 sm:p-6 lg:grid-cols-[1fr_1fr_1fr]">
+          <div className="mt-5 grid gap-6 rounded-2xl bg-secondary/60 p-4 sm:p-6 lg:grid-cols-[2fr_1fr_1fr]">
             <Placeholder
               className="aspect-[4/3] w-full rounded-xl border-2 border-primary/60"
               label="map"
@@ -259,8 +281,8 @@ function AboutPage() {
             ))}
           </div>
         </section>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
 

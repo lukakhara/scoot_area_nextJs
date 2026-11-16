@@ -12,16 +12,16 @@ export default async function Repair() {
       </h1>
 
       <div className="flex flex-col md:flex-row  gap-8 lg:gap-9">
-        <div className="relative aspect-[629/639] w-full  rounded-[20px] flex-1">
+      
           <Image
             src="/repairDes.png"
             alt="Technician repairing a scooter wheel"
             width={629}
             height={634}
-            className="object-cover w-full h-auto"
+            className="object-cover flex-1"
             priority
           />
-        </div>
+      
 
         <div className="flex flex-col  gap-18 md:min-h-full flex-1">
           <div className="flex flex-col text-[14px] md:text-[20px]  text-[#606060] ">

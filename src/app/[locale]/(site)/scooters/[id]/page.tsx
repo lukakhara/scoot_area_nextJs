@@ -1,7 +1,7 @@
 // app/[locale]/scooters/[id]/page.tsx
 import { getTranslations } from "next-intl/server";
 import ProductDetailPage from "@/components/product-detail/ProductDetailPage";
-import type { Scooter, ProductUnits, Product, ScooterApi } from "@/types/product";
+import type { Scooter, ProductUnits, ScooterApi } from "@/types/product";
 import { toScooterCardProduct } from "@/lib/mappers/product"; // extracted mapper, see note below
 import { notFound } from "next/navigation";
 

@@ -56,7 +56,7 @@ function validate(v: Values, confirm: string,terms:boolean): Errors {
   else if (!/\d/.test(v.password) || !/[A-Za-z]/.test(v.password))
     e.password = "პაროლი უნდა შეიცავდეს ასოსა და ციფრს";
   if (confirm !== v.password) e.confirm = "პაროლები არ ემთხვევა";
-  if (!terms) terms = "გთხოვთ დაეთანხმოთ პირობებს";
+  if (!terms) e.terms = "გთხოვთ დაეთანხმოთ პირობებს";
   return e;
 }
 

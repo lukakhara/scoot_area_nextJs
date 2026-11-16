@@ -1,7 +1,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 
-const API = process.env.API_URL ?? "http://localhost:5000";
+const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
 
 export interface ActiveSession {
   sid: string;

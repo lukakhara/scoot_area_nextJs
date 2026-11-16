@@ -1,12 +1,6 @@
 // ProductCard.tsx — no "use client" needed, stays a Server Component
 import Link from "next/link";
-import {
-  CircleCheck,
-  Gauge,
-  Repeat,
-  Weight,
-  Zap,
-} from "lucide-react";
+import { CircleCheck, Gauge, Repeat, Weight, Zap } from "lucide-react";
 import { Placeholder } from "../ui/Placeholder";
 import {
   ProductUnits,
@@ -45,10 +39,15 @@ export async function ProductCard({ item }: { item: Product }) {
     unit?: string;
   }[] = isScooter
     ? [
-        { Icon: Repeat, label: propertiesT("engine"), propertyName: "engine", unit: units.w },
+        {
+          Icon: Repeat,
+          label: propertiesT("engine"),
+          propertyName: "engine",
+          unit: units.w,
+        },
         {
           Icon: Gauge,
-          label:propertiesT("speed"),
+          label: propertiesT("speed"),
           propertyName: "maxSpeed",
           unit: units.kmH,
         },
@@ -58,7 +57,12 @@ export async function ProductCard({ item }: { item: Product }) {
           propertyName: "maxRange",
           unit: units.km,
         },
-        { Icon: Weight, label: propertiesT("weight"), propertyName: "weight", unit: units.kg },
+        {
+          Icon: Weight,
+          label: propertiesT("weight"),
+          propertyName: "weight",
+          unit: units.kg,
+        },
         {
           Icon: CircleCheck,
           label: propertiesT("warranty"),
@@ -75,11 +79,10 @@ export async function ProductCard({ item }: { item: Product }) {
 
   const { hasDiscount, finalPrice, discountPercent } = getDiscountInfo(item);
 
- 
-
   return (
-    <article className="flex h-full flex-col rounded-2xl bg-secondary p-4">
-      <div className="relative overflow-hidden rounded-xl bg-card flex-1 ">
+    <article className="flex h-full flex-col rounded-2xl bg-secondary p-4 ">
+      {/* image section ---------------------------- */}
+      <div className="relative overflow-hidden rounded-xl bg-card flex-1 test">
         {item.images && item.images.length > 0 ? (
           <Link
             href={detailHref}
@@ -98,21 +101,48 @@ export async function ProductCard({ item }: { item: Product }) {
         )}
 
         {isScooter && releaseYear && (
-          <span className="absolute top-3 right-3 rounded-full border px-3 py-1 text-[9.8px] sm:text-[11.85px]">
+          <span className="absolute top-3 right-3 rounded-full  px-3 py-1 text-[9.8px] sm:text-[11.85px] border bg-white">
             {releaseYear}
           </span>
         )}
 
-        <div className="absolute right-0 bottom-0 gap-[3.27px] bg-secondary z-100 py-[6.3px] px-[10.34px] flex items-center justify-center">
+        {/* <div className="absolute right-0 bottom-0 gap-[3.27px] bg-secondary z-100 py-[6.3px] px-[10.34px] flex items-center justify-center border">
           {[0, 1, 2, 3].map((i) => (
             <span
               key={i}
               className={`size-[4.35px] sm:size-[5.27px] cursor-pointer hover:bg-[#c7c7c700] rounded-full ${i === 0 ? "bg-[#C7C7C7]" : "bg-[#E1E1E1]"}`}
             />
           ))}
+        </div> */}
+        <div className="absolute right-0 bottom-0 z-10 flex items-center justify-center gap-[3.27px] rounded-tl-xl bg-secondary py-[6.3px] px-[10.34px]">
+          {/* curve above the tab */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute right-0 bottom-full size-3"
+            style={{
+              background:
+                "radial-gradient(circle at 0 0, transparent 12px, var(--secondary) 10.5px)",
+            }}
+          />
+          {/* curve left of the tab */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute right-full bottom-0 size-3"
+            style={{
+              background:
+                "radial-gradient(circle at 0 0, transparent 12px, var(--secondary) 12.5px)",
+            }}
+          />
+
+          {[0, 1, 2, 3].map((i) => (
+            <span
+              key={i}
+              className={`size-[4.35px] sm:size-[5.27px] cursor-pointer rounded-full ${i === 0 ? "bg-[#C7C7C7]" : "bg-[#E1E1E1]"}`}
+            />
+          ))}
         </div>
       </div>
-
+      {/* image section ends ---------------------------- */}
       <h3 className="mt-4 text-[13px] sm:text-[15.8px] font-bold tracking-wide uppercase">
         <Link
           href={detailHref}

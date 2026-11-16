@@ -1,6 +1,5 @@
 import { Phone } from "lucide-react";
 import { ProductCard } from "@/components/cards/ProductCard";
-import { Scooter, type Product } from "@/types/product";
 import PaginatedGridSection from "@/components/PaginatedGridSection";
 import Image from "next/image";
 import HeroSection from "@/components/HeroSection";

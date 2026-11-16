@@ -1,6 +1,6 @@
 
 import { Bike, Plus, Star, Trash2, Wrench, HardHat } from "lucide-react";
-import { Field, Panel, PrimaryBtn, OutlineBtn, accountHead } from "@/components/auth/AccountUi";
+import { Field, Panel, PrimaryBtn, OutlineBtn } from "@/components/auth/AccountUi";
 import { Placeholder } from "@/components/ui/Placeholder";
 import Link from "next/link";
 

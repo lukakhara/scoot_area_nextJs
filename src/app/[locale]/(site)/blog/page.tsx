@@ -2,7 +2,6 @@ import Pagination from "@/components/ui/Pagination";
 import ProductCardImage from "@/components/ui/ProductCardImage";
 import { formatDate } from "@/lib/formatDate";
 import { BlogListResponse } from "@/types/blog";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,7 +23,7 @@ export default async function BlogPage({
   }
   const { data: posts, meta }: BlogListResponse = await res.json();
 
-  const detailHref = `/blog/`;
+
 
   return (
     <div className="min-h-screen bg-background">

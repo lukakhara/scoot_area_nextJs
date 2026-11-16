@@ -1,5 +1,5 @@
 import ProductDetailPage from "@/components/product-detail/ProductDetailPage";
-import type { Accessory, ProductUnits } from "@/types/product";
+import type { Accessory } from "@/types/product";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { toAccessoryCardProduct } from "@/lib/mappers/product";
@@ -40,7 +40,6 @@ export default async function AccessoryDetailRoute({
     .slice(0, 3)
     .map(toAccessoryCardProduct);
 
-  const unitsT = await getTranslations("ProductListingPage.units");
 
   return (
     <ProductDetailPage

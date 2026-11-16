@@ -27,6 +27,7 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ComparePopover, { CompareProduct } from "@/components/ComparePopover";
 import { Scooter } from "@/types/product";
+import Image from 'next/image';
 
 type TFn = Awaited<ReturnType<typeof useTranslations>>;
 
@@ -212,9 +213,8 @@ export default function CompareClient({
                 s ? (
                   <div key={s.id} className="flex min-w-0 items-center gap-3  ">
                     {s.images?.[0] ? (
-                      // eslint-disable-next-line @next/next/no-img-element
                       <>
-                        <img
+                        <Image
                           src={s.images[0]}
                           alt={s.name}
                           className="size-12 shrink-0 rounded-lg object-cover "
