@@ -18,12 +18,13 @@ export default async function BlogPage({
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/blog?${queryString}`,
   );
+  console.log('res',res);
   if (!res.ok) {
     throw new Error(`Failed to fetch ${res.status}`);
   }
   const { data: posts, meta }: BlogListResponse = await res.json();
 
-
+console.log('posts',posts);
 
   return (
     <div className="min-h-screen bg-background">

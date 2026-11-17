@@ -27,7 +27,7 @@ export default async function AccessoryDetailRoute({
 
   // Similar accessories — simple approach: fetch a small page, exclude current id
   const similarRes = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/accessories?limit=4`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/accessories?limit=4`,
     { next: { revalidate: 60 } },
   );
   const { data: rawSimilar } = similarRes.ok

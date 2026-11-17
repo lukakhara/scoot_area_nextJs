@@ -1,9 +1,8 @@
-// ProductDetailPage.tsx — no "use client", Server Component
+// ProductDetailPage.tsx — Server Component
 import {
   Battery,
   CalendarDays,
   CircleCheck,
-  CreditCard,
   Gauge,
   Mountain,
   Package,
@@ -12,31 +11,19 @@ import {
   Users,
   Weight,
   Zap,
-  ShoppingBasket,
   type LucideIcon,
 } from "lucide-react";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { QuantitySelector } from "@/components/product-detail/QuantitySelector";
 import { ImageThumbnailGallery } from "@/components/product-detail/ImageThumbnailGallery";
-import { CompareButton } from "@/components/ui/CompareButton";
-import { ActionButton } from "@/components/ui/ActionButton";
 import { type Product, type ProductUnits, type Scooter } from "@/types/product";
-import Image from "next/image";
 import ProductCardImage from "../ui/ProductCardImage";
 import { getDiscountInfo } from "@/lib/pricing";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 type PageType = "scooter" | "accessory" | "parts";
-
-export type DetailProduct = {
-  title: string;
-  price: string;
-  oldPrice?: string;
-  discount?: string;
-  imagePath: string;
-  description?: string | string[];
-  configurations?: string[];
-};
 
 function getScooterSpecs(
   scooter: Scooter,
@@ -85,7 +72,7 @@ function getScooterSpecs(
 export default function ProductDetailPage({
   pageType,
   product,
-  similar: similarProp,
+  similar,
   units,
 }: {
   pageType: PageType;
@@ -94,24 +81,15 @@ export default function ProductDetailPage({
   units?: ProductUnits;
 }) {
   const isScooter = pageType === "scooter";
-
-  const similar: Product[] | undefined = similarProp;
-
-  const sectionTitle = isScooter ? "რატომ ეს სკუტერი?" : undefined;
-  const showPhotoGrid = isScooter;
-
- 
+  const mainImage = product.images?.[0];
   const { discountPercent } = getDiscountInfo(product);
 
-  return (
-    <div className="min-h-screen bg-background pt-20">
-      <main className="mx-auto max-w-[1400px] px-5 pt-8 pb-16">
-        {!isScooter && (
-          <h1 className="text-3xl font-extrabold tracking-tight uppercase lg:hidden">
-            {product.id}
-          </h1>
-        )}
+  const hasDiscount = Boolean(product.discountPrice);
+  const currentPrice = hasDiscount ? product.discountPrice : product.price;
 
+  return (
+    <div className="min-h-screen bg-background ">
+      <main className="flex w-full flex-col justify-center md:px-[70px] px-4  pb-20  pt-10 md:pt-20 md:pb-30   gap-15 md:gap-20  ">
         <div
           className={
             isScooter
@@ -119,102 +97,82 @@ export default function ProductDetailPage({
               : "mt-5 grid gap-8 lg:mt-0 lg:grid-cols-2 lg:gap-14 lg:pt-8"
           }
         >
-          {isScooter ? (
-            <div>
-              <div className="relative overflow-hidden rounded-2xl border bg-card">
-                {product.images ? (
+          <div className="grid grid-cols-3 gap-4">
+            <div
+              className={`relative col-span-3 overflow-hidden rounded-2xl w-full ${
+                isScooter ? "bg-card" : "bg-secondary p-4"
+              }`}
+            >
+              {mainImage ? (
+                <div className="relative w-full h-[324px] md:h-[634px] md:w-full shadow-[0_-2px_10px_0_rgba(0,0,0,0.05),2px_5px_5px_0_rgba(0,0,0,0.05)] ">
                   <ProductCardImage
-                    src={product.images[0]}
+                    src={mainImage}
                     alt={product.name}
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover min-w-full "
                   />
-                ) : (
-                  <Placeholder
-                    className="aspect-[4/3] w-full"
-                    label={product.name}
-                  />
-                )}
-                {product.discountPrice && (
-                  <span className="absolute top-4 left-4 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground uppercase">
-                    {discountPercent}% ფასდაკლება
-                  </span>
-                )}
-                <div className="absolute right-4 bottom-4">
-                  <CompareButton variant="notHeader" />
                 </div>
-              </div>
-
-              {product.images && (
-                <ImageThumbnailGallery imagePath={product.images[0]} />
+              ) : (
+                <Placeholder
+                  className="aspect-[4/3] w-full"
+                  label={product.name}
+                />
               )}
-            </div>
-          ) : (
-            <div className="relative overflow-hidden rounded-2xl bg-secondary p-4">
-              {product.discountPrice && (
-                <span className="absolute top-6 left-6 z-10 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground uppercase">
-                  {product.discountPrice} ფასდაკლება
+
+              {hasDiscount && (
+                <span className="absolute top-4 left-4 z-10 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground uppercase">
+                  {discountPercent}% ფასდაკლება
                 </span>
               )}
-              <picture>
-                <source media="(min-width: 768px)" srcSet={product.images[0]} />
-                <Image
-                  src={product.images[0]}
-                  className="aspect-[4/3] w-full object-cover"
-                  alt="product image"
-                  height={634}
-                  width={600}
-                />
-              </picture>
             </div>
-          )}
+
+            {isScooter && mainImage && (
+              <ImageThumbnailGallery imagePath={mainImage} />
+            )}
+          </div>
 
           <div>
             <h1 className="text-3xl leading-tight font-extrabold tracking-tight uppercase sm:text-4xl">
               {product.name}
             </h1>
 
-            <div
-              className={
-                isScooter
-                  ? "mt-4 flex items-baseline gap-3"
-                  : "mt-4 flex items-baseline gap-5"
-              }
-            >
+            <div className="mt-4 flex items-baseline gap-3 lg:gap-5">
               <span
-                className={"text-2xl font-bold  lg:text-[32px] text-[#EA2700]"}
+                className={cn(
+                  "text-2xl font-bold  lg:text-[32px]",
+                  hasDiscount && "text-[#EA2700]",
+                )}
               >
-                {product.price}₾
+                {currentPrice}₾
               </span>
-              {product.price && (
-                <span
-                  className={
-                    "text-xl lg:text-[32px] text-muted-foreground line-through lg:text-[#212121]"
-                  }
-                >
+              {hasDiscount && (
+                <span className="text-xl text-muted-foreground line-through lg:text-[32px]">
                   {product.price}₾
                 </span>
               )}
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="mt-6 flex flex-wrap items-stretch gap-3 border-b border-b-[#EA6200] pb-6 lg:mt-8 lg:gap-5">
               <QuantitySelector isScooter={isScooter} />
 
-              <ActionButton
-                icon={ShoppingBasket}
-                label="კალათაში დამატება"
-                variant={isScooter ? "notHeader" : "outline"}
-              />
-
-              <ActionButton
-                icon={CreditCard}
-                label="ყიდვა"
-                variant={isScooter ? "notHeader" : "outline"}
-              />
+              <button
+                type="button"
+                className="flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]"
+              >
+                კალათაში დამატება
+              </button>
+              <button
+                type="button"
+                className="flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]"
+              >
+                ყიდვა
+              </button>
             </div>
 
-            {/* detail of Scooters or description of Accessory or Parts */}
-            {isScooter && product ? (
-              <ul className="mt-8 space-y-3 rounded-2xl  p-6 text-sm text-[#212121] bg-[#F5F5F5] ">
-                {getScooterSpecs(product, units).map(
+            {isScooter && units ? (
+              <ul className="mt-8 space-y-3 rounded-2xl bg-[#F5F5F5] p-6 text-sm text-[#212121]">
+                {getScooterSpecs(product as Scooter, units).map(
                   ({ Icon, label, value }) => (
                     <li
                       key={label}
@@ -232,55 +190,106 @@ export default function ProductDetailPage({
                 )}
               </ul>
             ) : (
-              <>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Explicabo ipsa dolore, mollitia dolorum architecto ea
-                  delectus, quam saepe voluptate ratione et eaque temporibus
-                  deserunt quisquam reiciendis repellat blanditiis at a!
+              !isScooter && (
+                <div className="mt-8 space-y-4">
+                  <p>
+                    ელექტრო სკუტერი ხშირად აღწევს 25-დან 50 კმ/სთ-მდე სიჩქარეს.
+                    წაქცევის ან შეჯახების შემთხვევისას, ჩაფხუტი მნიშვნელოვნად
+                    ამცირებს თავის ტრავმის რისკს. ეს არ არის არჩევანი — ეს
+                    აუცილებლობაა.
+                  </p>
+                  <div className="space-y-2 ">
+                    <div>ძირითადი მახასიათებლები:</div>
+                    <ul className=" list-disc pl-4">
+                      <li>
+                        სერტიფიცირებული დაცვა (CE / EN 1078 / DOT) - შეესაბამება
+                        ევროპულ და საერთაშორისო სტანდარტებს
+                      </li>
+                      <li>
+                        მსუბუქი კონსტრუქცია - კომფორტული ხანგრძლივი ტარებისთვის
+                      </li>
+                      <li>
+                        ვენტილაციის სისტემა - სუნთქვისუნარიანი მასალა, რომელიც
+                        ხელს უშლის გადახურებას
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <ul>
-                  <li>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Exercitationem itaque quis odio harum q
-                  </li>
-                  <li>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Exercitationem itaque quis odio harum q
-                  </li>
-                  <li>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Exercitationem itaque quis odio harum q
-                  </li>
-                </ul>
-              </>
+              )
             )}
           </div>
         </div>
 
-        <div>
-          <h1>why this scooter?</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut rem unde
-            ratione soluta autem pariatur voluptate magni quia, corporis
-            repellendus, voluptatum quos? Debitis enim vitae corporis voluptatem
-            voluptatibus possimus in!
-          </p>
-        </div>
+        {isScooter && (
+          <div className="mt-10">
+            <h2 className="text-2xl font-extrabold xl:text-[40px]">
+              რატომ ნაინბოტ {product.name}? {/* about: {product.name} */}
+            </h2>
 
-        {isScooter && showPhotoGrid && (
-          <section className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Placeholder
-                key={i}
-                className="aspect-[4/3] w-full rounded-xl"
-                label="photo"
-              />
-            ))}
-          </section>
+            <div className="mt-4 flex flex-col gap-6 ">
+              {/* {product.description} */}
+              <p>
+                სეგვეის ნაინბოტ სი20 არის ელექტრო ქიქსკუტერების სერიის ნაწილი,
+                რომელიც შექმნილია ექსკლუზიურად მოზარდებისთვის. დამატებითი
+                ყურადღება დაეთმო უსაფრთხოების მახასიათებლებს, როგორიცაა
+                ელასტიური რეზინის საბურავები, რაც უზრუნველყოფს სუპერ მოჭიდებას
+                ზედაპირზე. ქიქ სკუტერი არის ძალიან მსუბუქი (10 კგ) და შეიძლება
+                დაიკეცოს ერთი ხელით.
+              </p>
+              <p>
+                ატმოსფერული განათება განლაგებულია საფეხურის ქვედა ნაწილში და
+                არის 3 სხვადასხვა ფერში, ტარების რეჟიმის მიხედვით. ბატარეა
+                მოთავსებულია საფეხურზე, რომელიც ინარჩუნებს სიმძიმის ცენტრს დაბალ
+                დონეზე და აადვილებს სკუტერის მართვას. ჩართვის ღილაკი
+                ინტეგრირებულია დროსელზე და ასევე გამოიყენება ტარების რეჟიმებს
+                შორის გადასართავად. კარგი ხახუნის TPR (თერმოპლასტიკური რეზინის)
+                სახელური, რომელიც ასევე ადვილად იწმინდება, გამოიყენება მეტი
+                კომფორტისა და სტაბილურობის შესაქმნელად.
+              </p>
+              <p>
+                გარდა ამისა ქიქსკუტერი აღჭურვილია ხელით მომუშავე უკანა მუხრუჭით,
+                რაც ყოველთვის უზრუნველყოფს დამუხრუჭების უსაფრთხო მანძილს.
+                სკუტერის სრულად დამუხტვა შესაძლებელია სულ რაღაც 5 საათში.
+                ჭკვიანი ბატარეის მართვის სისტემა (BMS) აკონტროლებს, რომ
+                ელექტროენერგია არ დაიკარგოს ბატარეის მუშაობის დროს, რათა თავიდან
+                აიცილოს ისეთი კრიტიკული სიტუაციები, როგორიცაა გადატვირთვა და
+                განმუხტვა, გადახურება, მოკლე ჩართვა და სხვა.
+              </p>
+            </div>
+          </div>
         )}
 
-        <section className="mt-16">
+        {isScooter && (
+          <div>
+            <section className=" grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from([
+                "/blogImageDesk2.png",
+                "/blogImageDesk3.png",
+                "/blogImageDesk4.png",
+                "/blogImageDesk3.png",
+                "/blogImageDesk4.png",
+                "/blogImageDesk2.png",
+              ]).map((image, i) => (
+                <Image
+                  src={image}
+                  key={i}
+                  alt="Product Image"
+                  width={411}
+                  height={411}
+                  className="aspect-[4/3] w-full rounded-xl"
+                />
+
+                // <Placeholder
+                //   key={i}
+                //   className="aspect-[4/3] w-full rounded-xl"
+                //   label="photo"
+                // />
+              ))}
+            </section>
+          </div>
+        )}
+
+        <section className="pt-5 md:pt-10 ">
           <h2 className="mb-6 text-2xl font-extrabold tracking-tight uppercase sm:text-3xl">
             მსგავსი პროდუქცია
           </h2>

@@ -82,7 +82,7 @@ export async function ProductCard({ item }: { item: Product }) {
   return (
     <article className="flex h-full flex-col rounded-2xl bg-secondary p-4 ">
       {/* image section ---------------------------- */}
-      <div className="relative overflow-hidden rounded-xl bg-card flex-1 test">
+      <div className="relative overflow-hidden rounded-xl bg-card flex-1 ">
         {item.images && item.images.length > 0 ? (
           <Link
             href={detailHref}

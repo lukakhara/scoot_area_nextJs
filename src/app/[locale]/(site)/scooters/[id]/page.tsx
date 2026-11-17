@@ -27,13 +27,15 @@ export default async function ScooterDetailRoute({
 
   // Similar scooters — simple approach: fetch a small page, exclude current id
   const similarRes = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/scooters?limit=4`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/scooters?limit=4`,
     { next: { revalidate: 60 } },
   );
+   console.log("similarRes", similarRes);
   const { data: rawSimilar } = similarRes.ok
     ? ((await similarRes.json()) as { data: Scooter[] })
     : { data: [] };
 
+    console.log("rawSimilar", rawSimilar);
   const similar = rawSimilar
     .filter((s) => s.id !== id)
     .slice(0, 3)

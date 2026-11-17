@@ -9,19 +9,28 @@ export default function ProductCardImage({
   alt,
   width,
   height,
+  sizes,
+  fill,
+  className = "",
 }: {
   src: string;
   alt: string;
   width?: number;
   height?: number;
+  sizes?: string;
+  fill?: boolean;
+  className?: string;
 }) {
-  return (
-      <CldImage
-        src={toPublicId(src)}
-        className="w-full h-full object-cover group-hover:scale-105 group-hover:opacity-80 "
-        alt={alt}
-        width={width ?? 379.78}
-        height={height ?? 214.6}
-      />
+  const common = {
+    src: toPublicId(src),
+    alt,
+    sizes: sizes ?? "(min-width: 1024px) 50vw, 100vw",
+    className: `group-hover:scale-105 group-hover:opacity-80 ${className}`,
+  };
+
+  return fill ? (
+    <CldImage {...common} fill />
+  ) : (
+    <CldImage {...common} width={width ?? 1200} height={height ?? 900} />
   );
 }

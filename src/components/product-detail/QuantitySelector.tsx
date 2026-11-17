@@ -1,33 +1,33 @@
 "use client";
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function QuantitySelector({ isScooter }: { isScooter: boolean }) {
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState("1");
 
   return (
     <div
-      className={
+      className={cn(
+        "flex items-center rounded-full border border-[#212121]",
         isScooter
-          ? "flex items-center gap-3 rounded-full border px-3 py-2"
-          : "flex items-center gap-3 rounded-full border px-4 py-2.5"
-      }
+          ? "px-[13px] py-[6.5px] text-[13px] md:px-[26px] md:py-[15px] md:text-[24px] max-w-[94px]"
+          : "px-4 py-2.5",
+      )}
     >
-      <button
-        aria-label="შემცირება"
-        onClick={() => setQty((v) => Math.max(1, v - 1))}
-        className="text-muted-foreground hover:text-primary"
-      >
-        <Minus className="size-3.5" />
-      </button>
-      <span className="w-5 text-center text-sm font-semibold">{qty}</span>
-      <button
-        aria-label="გაზრდა"
-        onClick={() => setQty((v) => v + 1)}
-        className="text-muted-foreground hover:text-primary"
-      >
-        <Plus className="size-3.5" />
-      </button>
+      <input
+        type="number"
+        inputMode="numeric"
+        min={1}
+        step={1}
+        value={qty}
+        aria-label="რაოდენობა"
+        onChange={(e) => setQty(e.target.value)}
+        onBlur={() => {
+          const n = Math.floor(Number(qty));
+          setQty(String(Number.isFinite(n) && n >= 1 ? n : 1));
+        }}
+        className="w-16 bg-transparent text-center font-semibold outline-none md:w-11"
+      />
     </div>
   );
 }

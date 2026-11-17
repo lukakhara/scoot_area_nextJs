@@ -2,36 +2,29 @@
 import { useState } from "react";
 import Image from "next/image";
 
-export function ImageThumbnailGallery({
-  imagePath,
-}: {
-  imagePath: string;
-}) {
+export function ImageThumbnailGallery({ imagePath }: { imagePath: string }) {
   const [active, setActive] = useState(0);
 
   return (
-    <div className="mt-4 grid grid-cols-3 gap-4">
+    <>
       {[0, 1, 2].map((i) => (
         <button
           key={i}
           onClick={() => setActive(i)}
           aria-label={`სურათი ${i + 1}`}
-          className={`overflow-hidden rounded-xl border bg-card transition-colors ${
+          className={`relative aspect-square w-full overflow-hidden rounded-xl shadow-[0_4px_4px_2px_rgba(0,0,0,0.05)] bg-card transition-colors ${
             active === i ? "border-primary" : "hover:border-primary/50"
           }`}
         >
-          <picture>
-            <source media="(min-width: 768px)" srcSet={imagePath} />
-            <Image
-              src={imagePath}
-              className="aspect-[4/3] w-full object-cover"
-              alt="product image"
-              height={189}
-              width={189}
-            />
-          </picture>
+          <Image
+            src={imagePath}
+            alt="product image"
+            fill
+            sizes="(min-width: 1024px) 17vw, 33vw"
+            className="object-cover hover:opacity-60"
+          />
         </button>
       ))}
-    </div>
+    </>
   );
 }
