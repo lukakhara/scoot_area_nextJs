@@ -118,16 +118,16 @@ export async function ProductCard({ item }: { item: Product }) {
           {/* curve above the tab */}
           <span
             aria-hidden
-            className="pointer-events-none absolute right-0 bottom-full size-3"
+            className="pointer-events-none absolute right-0 bottom-full size-3 "
             style={{
               background:
-                "radial-gradient(circle at 0 0, transparent 12px, var(--secondary) 10.5px)",
+                "radial-gradient(circle at 0 0, transparent 15px, var(--secondary) 10.5px)",
             }}
           />
           {/* curve left of the tab */}
           <span
             aria-hidden
-            className="pointer-events-none absolute right-full bottom-0 size-3"
+            className="pointer-events-none absolute right-full bottom-0 size-3 "
             style={{
               background:
                 "radial-gradient(circle at 0 0, transparent 12px, var(--secondary) 12.5px)",

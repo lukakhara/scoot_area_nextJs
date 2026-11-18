@@ -67,7 +67,7 @@ export default function PaginatedGridSection<
   };
 
   return (
-    <section className="w-full px-[15px] md:px-18 pt-20 relative z-100">
+    <section className="w-full px-[15px] md:px-18 pt-20 relative z-100 ">
       <CarouselSectionHeader
         title={title}
         href={href}

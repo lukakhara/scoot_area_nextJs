@@ -52,7 +52,7 @@ export default async function BlogPage({
               href={`/blog/${post.id}`}
               className="uppercase transition-opacity hover:opacity-70"
             >
-              <article className="flex flex-col rounded-3xl bg-secondary p-5 sm:p-6">
+              <article className="flex flex-col rounded-3xl bg-secondary ">
                 <div className="relative">
                   {post.coverImage ?  <Image
                     src={post.coverImage}

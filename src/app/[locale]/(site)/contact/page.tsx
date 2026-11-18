@@ -103,7 +103,7 @@ export default function ContactPage() {
                 <FiMapPin className="size-8" />
               </div>
 
-              <div className="flex flex-col gap-9 border-b border-[#9E9E9E] md:border-r pb-6 md:pb-0 text-[18px]">
+              <div className="flex flex-col gap-9 border-b md:border-b-0 border-[#9E9E9E] md:border-r pb-6 md:pb-0 text-[18px]">
                 <div className="flex flex-col gap-4  ">
                   {CONTACTS.map(({ icon, color, label }, i) => (
                     <div key={i} className="flex items-center gap-3">

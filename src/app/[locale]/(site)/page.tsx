@@ -122,43 +122,37 @@ async function Home() {
         >
           {/* <div className="px-18 py-12 flex items-center justify-center relative z-100 flex-col gap-8 md:gap-16 max-w-[1400px] w-full"> */}
           {/* HEADING WRAPPER */}
-          <div className=" flex items-center justify-center relative z-100 flex-col  max-w-[1400px] 2xl:max-w-full w-full gap-8  ">
+          <div className=" flex items-center justify-center relative z-100 flex-col   w-full gap-8  ">
             <h2 className=" text-xl font-bold tracking-wide uppercase sm:text-2xl md:text-[40px] w-full">
               შეკეთება
             </h2>
 
             {/* PARENT — now correctly holds BOTH image and text as flex children */}
-            <div className="flex flex-col items-stretch gap-8.75  md:flex-row w-full justify-center  ">
+            <div className="flex w-full flex-col items-stretch justify-center gap-8.75 lg:flex-row">
               {/* Image + ICON */}
-              <div className="relative w-full xl:max-w-[853px] 2xl:max-w-full   flex-shrink-0 self-stretch min-h-0 flex-1">
-                <picture className="block w-full h-full">
-                  <source
-                    media="(min-width: 768px)"
-                    srcSet="/langindPageServiceDesktop.png"
-                  />
-                  {/* BUG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
-                  <Image
-                    src="/langindPageServiceMobile.png"
-                    className="2xl:w-full object-cover h-auto rounded-[20px]"
-                    alt="service image"
-                    width={853}
-                    height={411}
-                  />
-                </picture>
+              <div className="relative w-full min-w-0 self-stretch  md:flex-2 ">
+                <Image
+                  src="/langindPageServiceDesktop.png"
+                  className="h-full w-full rounded-[20px] object-cover"
+                  alt="service image"
+                  width={853}
+                  height={411}
+                />
                 {/* ICON WITH NUMBER */}
-                <div className="absolute left-1 bottom-1 flex items-center gap-3 whitespace-nowrap">
+                <span className="flex items-center gap-3 absolute bottom-0 left-0 rounded-tr-3xl bg-secondary py-2 pr-6 text-xl font-medium text-foreground/80">
                   <div className="size-7.5 bg-[#2C3E50] flex flex-shrink-0 rounded-full items-center justify-center">
                     <Phone className="size-3.5 text-white rounded-full rotate-270" />
                   </div>
-                  <div className="text-[18px] text-[#212121]">
+                  <div className="text-[14px] md:text-[16px] text-[#212121]">
                     +995 55 55 55
                   </div>
-                </div>
+                </span>
+               
               </div>
 
               {/* TEXT */}
-              <div className="flex flex-col justify-between gap-4 text-[#212121]">
-                <h3 className="leading-[120%] font-bold lg:text-[40px] text-[16px]">
+              <div className="flex min-w-0 flex-col justify-between gap-4 text-[#212121] md:flex-1">
+                <h3 className="leading-[120%] font-bold lg:text-[40px] md:text-[30px] text-[16px]">
                   სერვისი,
                   <br className="hidden xl:block" /> რომელსაც{" "}
                   <br className="hidden xl:block" />
@@ -207,6 +201,7 @@ async function Home() {
         items={blogPosts.map((post) => (
           <BlogCard key={post.id} post={post} />
         ))}
+        visibleCount={2}
       />
     </div>
   );
