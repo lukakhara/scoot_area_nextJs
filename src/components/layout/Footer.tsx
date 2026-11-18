@@ -22,7 +22,7 @@ export default function Footer() {
   const t = useTranslations("Footer");
 
   return (
-    <footer className="border-t bg-secondary/60">
+    <footer className="border-none md:border-t bg-secondary/60">
       <div className="flex flex-col gap-8 px-5 py-10 md:grid md:grid-cols-[1fr_2fr_2fr_1.5fr] md:items-center md:gap-4 md:px-8 md:py-[52px] lg:px-[87px]">
         {/* Logo */}
         <div>

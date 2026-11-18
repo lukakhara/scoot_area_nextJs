@@ -3,6 +3,7 @@ import ProductCardImage from "@/components/ui/ProductCardImage";
 import { BlogPost } from "@/types/blog";
 import { Play } from "lucide-react";
 import { notFound } from "next/navigation";
+import { parseMarkdownSections } from "@/lib/parseMarkdownSections";
 
 async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -17,6 +18,8 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
   }
 
   const blog: BlogPost = await res.json();
+
+  const sections = parseMarkdownSections(blog.content ?? "");
 
   return (
     <div className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-12 gap-8">
@@ -37,19 +40,42 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
             <Placeholder className="rounded-[20px]" />
           )}
         </div>
-        <div className="flex flex-col gap-8">
+
+        {/* <div className="flex flex-col gap-8">
           <h1 className="text-[40px] font-bold">{blog.title}</h1>
-          {/* First text section */}
-          <div>{blog.content}</div>
-        </div>
+        
+          <div>{sections}</div>
+        </div> */}
+
+        {sections.map((section, i) => (
+          <div
+            key={`${section.title}-${i}`}
+            className="flex  flex-col gap-4 "
+          >
+            {section.title && (
+              <h1 className="text-[40px] font-bold">{section.title}</h1>
+            )}
+            {section.content
+              .split(/\n{2,}/)
+              .filter(Boolean)
+              .map((paragraph, j) => (
+                <p
+                  key={j}
+                  className="text-base leading-relaxed text-neutral-700 md:text-lg"
+                >
+                  {paragraph}
+                </p>
+              ))}
+          </div>
+        ))}
 
         {/* Image grid */}
-        <div className="flex gap-8 sm:grid-cols-2 md:grid-cols-3 test">
+        <div className="flex gap-8 sm:grid-cols-2 md:grid-cols-3 ">
           {blog.images.map((image) => (
             <ProductCardImage
               src={image}
               alt="blog image"
-              className="rounded-[20px]"
+              className="rounded-[20px] object-cover w-full"
             />
           ))}
         </div>

@@ -18,8 +18,6 @@ import {
   toScooterCardProduct,
 } from "@/lib/mappers/product";
 
-
-
 async function getScooters(): Promise<ScooterProduct[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters`, {
     cache: "no-store",
@@ -32,9 +30,12 @@ async function getScooters(): Promise<ScooterProduct[]> {
 }
 
 async function getAccessories(): Promise<AccessoryProduct[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accessories`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/accessories`,
+    {
+      cache: "no-store",
+    },
+  );
   if (!res.ok) throw new Error("Failed to fetch accessories");
   const json = await res.json();
   const list: BaseCardFields[] = Array.isArray(json) ? json : json.data;
@@ -59,7 +60,6 @@ async function Home() {
     getBlogPosts(),
   ]);
 
-
   return (
     <div className=" min-w-screen bg-background">
       <HeroSection />
@@ -67,7 +67,7 @@ async function Home() {
       {/* Promo banner */}
       <section className="w-full  pt-[60px] md:pt-[99px] pr-[15px] pl-4 md:px-[72px] ">
         <div className="relative overflow-hidden rounded-2xl">
-          <picture>
+          {/* <picture>
             <source
               media="(min-width: 768px)"
               srcSet="/landingPageBannerDesktop.png"
@@ -79,7 +79,14 @@ async function Home() {
               width={1296}
               height={304}
             />
-          </picture>
+          </picture> */}
+          <Image
+            src="/landingPageBannerDesktop.png"
+            className=" w-full object-cover  "
+            alt="item image"
+            width={1296}
+            height={304}
+          ></Image>
 
           <div className="absolute inset-0 flex items-end pl-[15px] pb-[8px] md:pl-[30px] md:pb-[19px]">
             <div className="w-full text-[20px] md:text-[36px] leading-[110%] md:leading-[100%] font-medium text-primary-foreground sm:text-2xl">
@@ -174,7 +181,6 @@ async function Home() {
                 </div>
               </div>
             </div>
-            
           </div>
 
           {/* CIRCLE */}
