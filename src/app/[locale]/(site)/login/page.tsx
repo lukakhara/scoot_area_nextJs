@@ -4,25 +4,28 @@ import {
   SocialRow,
 } from "@/components/auth/AuthShell";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import LoginForm from "./LoginForm";
 
 export default function LoginPage() {
+  const t = useTranslations("LoginPage");
+
   return (
     <AuthShell
-      title="შესვლა"
-      lead="შეავსეთ ელ.ფოსტა და პაროლი თქვენს ანგარიშში შესასვლელად."
+      title={t("title")}
+      lead={t("lead")}
       footer={
         <>
-          არ გაქვთ ანგარიში?{" "}
+          {t("noAccount")}{" "}
           <Link href="/register" className="font-bold text-primary hover:underline">
-            რეგისტრაცია
+            {t("register")}
           </Link>
         </>
       }
     >
       <div className="space-y-5">
         <LoginForm />
-        <AuthDivider text="ან" />
+        <AuthDivider text={t("or")} />
         <SocialRow />
       </div>
     </AuthShell>

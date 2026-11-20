@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 interface CarouselSectionHeaderProps {
@@ -12,17 +13,17 @@ interface CarouselSectionHeaderProps {
   totalPages?: number;
 }
 
-export default function CarouselSectionHeader({
+export default  function CarouselSectionHeader({
   title,
   href,
   onPrev,
   onNext,
   canGoPrev,
   canGoNext,
-}: CarouselSectionHeaderProps)
-{
+}: CarouselSectionHeaderProps) {
+   const t = useTranslations("HomePage");
 
- 
+
   return (
     <div className=" flex items-center justify-between gap-4">
       <h2 className="text-[24px] font-bold tracking-wide uppercase sm:text-[40px]">
@@ -33,7 +34,7 @@ export default function CarouselSectionHeader({
           href={href}
           className="text-[12px] md:text-[16px] text-[#888888] hover:text-primary"
         >
-          ყველას ნახვა
+          {t("seeAll")}
         </Link>
         <div className="flex gap-1.5 border-[#888888]">
           <button

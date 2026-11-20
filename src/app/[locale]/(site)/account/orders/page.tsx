@@ -11,11 +11,8 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import {
-  OutlineBtn,
-  Panel,
-  PrimaryBtn,
-} from "@/components/auth/AccountUi";
+import { useTranslations } from "next-intl";
+import { OutlineBtn, Panel, PrimaryBtn } from "@/components/auth/AccountUi";
 import { Placeholder } from "@/components/ui/Placeholder";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -47,63 +44,48 @@ type ApiOrder = {
   }[];
 };
 
-const STATUS: Record<
-  ApiStatus,
-  { label: string; chip: string; Icon: typeof Clock }
-> = {
-  PENDING: {
-    label: "მოლოდინში",
-    chip: "bg-primary text-primary-foreground",
-    Icon: Clock,
-  },
-  PROCESSING: {
-    label: "დამუშავებაში",
-    chip: "bg-primary text-primary-foreground",
-    Icon: Clock,
-  },
-  SHIPPED: {
-    label: "გაგზავნილი",
-    chip: "bg-brand-ink text-primary-foreground",
-    Icon: Truck,
-  },
+// labels now come from translations using the status key
+const STATUS: Record<ApiStatus, { chip: string; Icon: typeof Clock }> = {
+  PENDING: { chip: "bg-primary text-primary-foreground", Icon: Clock },
+  PROCESSING: { chip: "bg-primary text-primary-foreground", Icon: Clock },
+  SHIPPED: { chip: "bg-brand-ink text-primary-foreground", Icon: Truck },
   READY_FOR_PICKUP: {
-    label: "მზადაა აღებისთვის",
     chip: "bg-brand-ink text-primary-foreground",
     Icon: Package,
   },
-  DELIVERED: {
-    label: "მიწოდებული",
-    chip: "bg-sale text-primary-foreground",
-    Icon: Check,
-  },
+  DELIVERED: { chip: "bg-sale text-primary-foreground", Icon: Check },
   CANCELLED: {
-    label: "გაუქმებული",
     chip: "bg-destructive text-destructive-foreground",
     Icon: X,
   },
 };
 
-const FILTERS: { label: string; statuses: ApiStatus[] | null }[] = [
-  { label: "ყველა", statuses: null },
-  { label: "მუშავდება", statuses: ["PENDING", "PROCESSING"] },
-  { label: "გაგზავნილი", statuses: ["SHIPPED", "READY_FOR_PICKUP"] },
-  { label: "მიწოდებული", statuses: ["DELIVERED"] },
-  { label: "გაუქმებული", statuses: ["CANCELLED"] },
-];
+const FILTERS = [
+  { id: "all", statuses: null },
+  { id: "processing", statuses: ["PENDING", "PROCESSING"] },
+  { id: "shipped", statuses: ["SHIPPED", "READY_FOR_PICKUP"] },
+  { id: "delivered", statuses: ["DELIVERED"] },
+  { id: "cancelled", statuses: ["CANCELLED"] },
+] as const satisfies readonly {
+  id: string;
+  statuses: readonly ApiStatus[] | null;
+}[];
+
+type FilterId = (typeof FILTERS)[number]["id"];
 
 const DELIVERY_STEPS = [
-  { label: "მუშავდება", Icon: Hourglass },
-  { label: "შეკრება", Icon: Package },
-  { label: "გაგზავნილი", Icon: Truck },
-  { label: "მიწოდებული", Icon: Check },
-];
+  { key: "processing", Icon: Hourglass },
+  { key: "packing", Icon: Package },
+  { key: "shipped", Icon: Truck },
+  { key: "delivered", Icon: Check },
+] as const;
 
 const PICKUP_STEPS = [
-  { label: "მუშავდება", Icon: Hourglass },
-  { label: "შეკრება", Icon: Package },
-  { label: "მზადაა", Icon: Package },
-  { label: "გაცემული", Icon: Check },
-];
+  { key: "processing", Icon: Hourglass },
+  { key: "packing", Icon: Package },
+  { key: "ready", Icon: Package },
+  { key: "handedOver", Icon: Check },
+] as const;
 
 const DELIVERY_PROGRESS: Partial<Record<ApiStatus, number>> = {
   PENDING: 0,
@@ -132,15 +114,12 @@ const formatDate = (iso: string) =>
     year: "numeric",
   }); // dd.mm.yyyy
 
-const formatDelivery = (o: ApiOrder) =>
-  o.delivery === "DELIVERY"
-    ? `${o.city}, ${o.street} · მიწოდების სერვისი`
-    : "თვითმომსახურება";
-
 function Timeline({ order }: { order: ApiOrder }) {
+  const t = useTranslations("Orders");
   const isPickup = order.delivery === "STORE_PICKUP";
   const steps = isPickup ? PICKUP_STEPS : DELIVERY_STEPS;
-  const active = (isPickup ? PICKUP_PROGRESS : DELIVERY_PROGRESS)[order.status] ?? 0;
+  const active =
+    (isPickup ? PICKUP_PROGRESS : DELIVERY_PROGRESS)[order.status] ?? 0;
 
   return (
     <ol className="mt-5 flex items-start gap-1 border-t pt-5">
@@ -148,7 +127,7 @@ function Timeline({ order }: { order: ApiOrder }) {
         const done = i <= active;
         return (
           <li
-            key={step.label}
+            key={step.key}
             className="flex flex-1 flex-col items-center text-center"
           >
             <span
@@ -161,11 +140,11 @@ function Timeline({ order }: { order: ApiOrder }) {
               <step.Icon className="size-4" />
             </span>
             <span
-              className={`mt-2 text-[10px] font-bold tracking-wide uppercase ${
+              className={`mt-2 text-[10px] font-bold tracking-wide capitalize ${
                 done ? "text-foreground" : "text-muted-foreground"
               }`}
             >
-              {step.label}
+              {t(`steps.${step.key}`)}
             </span>
           </li>
         );
@@ -175,7 +154,8 @@ function Timeline({ order }: { order: ApiOrder }) {
 }
 
 export default function Orders() {
-  const [filter, setFilter] = useState(FILTERS[0].label);
+  const t = useTranslations("Orders");
+  const [filter, setFilter] = useState<FilterId>("all");
   const [orders, setOrders] = useState<ApiOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -189,22 +169,28 @@ export default function Orders() {
           credentials: "include",
           signal: controller.signal,
         });
-        
+
         if (!res.ok) throw new Error(`Request failed: ${res.status}`);
         setOrders(await res.json());
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return;
-        setError("შეკვეთების ჩატვირთვა ვერ მოხერხდა");
+        setError(t("loadError"));
       } finally {
         if (!controller.signal.aborted) setLoading(false);
-        
       }
     })();
 
     return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const activeStatuses = FILTERS.find((f) => f.label === filter)?.statuses;
+  const formatDelivery = (o: ApiOrder) =>
+    o.delivery === "DELIVERY"
+      ? t("deliveryService", { city: o.city ?? "", street: o.street ?? "" })
+      : t("selfPickup");
+
+  const activeStatuses: readonly ApiStatus[] | null | undefined =
+    FILTERS.find((f) => f.id === filter)?.statuses;
   const visibleOrders = activeStatuses
     ? orders.filter((o) => activeStatuses.includes(o.status))
     : orders;
@@ -212,34 +198,32 @@ export default function Orders() {
   return (
     <>
       <Panel
-        title="შეკვეთები"
+        title={t("title")}
         action={
           <div className="flex flex-wrap gap-2">
-            {FILTERS.map(({ label }) => (
+            {FILTERS.map(({ id }) => (
               <button
-                key={label}
+                key={id}
                 type="button"
-                onClick={() => setFilter(label)}
-                className={`cursor-pointer rounded-full px-4 py-2 text-[11px] font-bold tracking-wide uppercase transition-colors hover:opacity-60 ${
-                  label === filter
+                onClick={() => setFilter(id)}
+                className={`cursor-pointer rounded-full px-4 py-2 text-[11px] font-bold tracking-wide capitalize transition-colors hover:opacity-60 ${
+                  id === filter
                     ? "bg-primary text-primary-foreground"
                     : "border border-border hover:bg-secondary"
                 }`}
               >
-                {label}
+                {t(`filters.${id}`)}
               </button>
             ))}
           </div>
         }
       >
         {loading && (
-          <p className="text-sm text-muted-foreground">იტვირთება...</p>
+          <p className="text-sm text-muted-foreground">{t("loading")}</p>
         )}
         {error && <p className="text-sm text-destructive">{error}</p>}
         {!loading && !error && visibleOrders.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            შეკვეთები არ მოიძებნა
-          </p>
+          <p className="text-sm text-muted-foreground">{t("empty")}</p>
         )}
 
         <div className="space-y-4">
@@ -260,7 +244,9 @@ export default function Orders() {
                     </span>
                     <div>
                       <p className="font-extrabold">
-                        შეკვეთა #{o.id.slice(0, 8).toUpperCase()}
+                        {t("orderNumber", {
+                          id: o.id.slice(0, 8).toUpperCase(),
+                        })}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {formatDate(o.createdAt)} · {formatDelivery(o)}
@@ -268,9 +254,9 @@ export default function Orders() {
                     </div>
                   </div>
                   <span
-                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold tracking-wide uppercase ${s.chip}`}
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold tracking-wide capitalize ${s.chip}`}
                   >
-                    <s.Icon className="size-3" /> {s.label}
+                    <s.Icon className="size-3" /> {t(`status.${o.status}`)}
                   </span>
                 </div>
 
@@ -292,7 +278,7 @@ export default function Orders() {
                           {it.productName}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          რაოდენობა {it.quantity}
+                          {t("quantity", { count: it.quantity })}
                         </p>
                       </div>
                       <p className="text-sm font-extrabold">
@@ -305,35 +291,35 @@ export default function Orders() {
                 <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
                   <div className="space-y-1 text-xs text-muted-foreground">
                     <p>
-                      პროდუქტები:{" "}
+                      {t("products")}{" "}
                       <span className="font-bold text-foreground">
                         {formatPrice(o.subtotal)}
                       </span>
                     </p>
                     <p>
-                      მიწოდება:{" "}
+                      {t("delivery")}{" "}
                       <span className="font-bold text-foreground">
                         {formatPrice(o.deliveryFee)}
                       </span>
                     </p>
                     <p className="text-base font-extrabold text-foreground">
-                      ჯამში: {formatPrice(o.totalPrice)}
+                      {t("total", { price: formatPrice(o.totalPrice) })}
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {o.status !== "CANCELLED" && (
                       <button
                         type="button"
-                        className="inline-flex cursor-pointer items-center gap-2 rounded-full border-2 border-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
+                        className="inline-flex cursor-pointer items-center gap-2 rounded-full border-2 border-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary capitalize transition-colors hover:bg-primary hover:text-primary-foreground"
                       >
-                        <RotateCcw className="size-3.5" /> გამეორება
+                        <RotateCcw className="size-3.5" /> {t("repeat")}
                       </button>
                     )}
                     <button
                       type="button"
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary/90"
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary-foreground capitalize transition-colors hover:bg-primary/90"
                     >
-                      დეტალები <ChevronRight className="size-3.5" />
+                      {t("details")} <ChevronRight className="size-3.5" />
                     </button>
                   </div>
                 </div>
@@ -345,15 +331,13 @@ export default function Orders() {
         </div>
       </Panel>
 
-      <Panel title="დახმარება შეკვეთებთან">
+      <Panel title={t("help.title")}>
         <p className="max-w-prose text-sm text-muted-foreground">
-          შეკვეთის გაუქმება შესაძლებელია მხოლოდ დამუშავების ეტაპზე. გაგზავნილ
-          შეკვეთას იღებთ მიწოდებისას, ხოლო მიღებულ პროდუქტს ანაცვლებთ 14 დღის
-          ფარგლებში.
+          {t("help.text")}
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <PrimaryBtn>დაგვიკავშირდით</PrimaryBtn>
-          <OutlineBtn>დაბრუნების პირობები</OutlineBtn>
+          <PrimaryBtn>{t("help.contact")}</PrimaryBtn>
+          <OutlineBtn>{t("help.returns")}</OutlineBtn>
         </div>
       </Panel>
     </>

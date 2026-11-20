@@ -1,4 +1,5 @@
 import { Pencil } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import {
   Field,
   OutlineBtn,
@@ -8,54 +9,51 @@ import {
 import { requireUser } from "@/lib/auth";
 
 export default async function PersonalInfo() {
+  const t = await getTranslations("PersonalInfo");
   const user = await requireUser();
- 
+
+  const stats = [
+    { n: "12", l: t("stats.orders"), c: "bg-primary" },
+    { n: "3", l: t("stats.addresses"), c: "bg-sale" },
+    { n: "8", l: t("stats.favorites"), c: "bg-brand-ink" },
+  ];
+
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-3 ">
-        {[
-          { n: "12", l: "შეკვეთა", c: "bg-primary" },
-          { n: "3", l: "მისამართი", c: "bg-sale" },
-          { n: "8", l: "ფავორიტი", c: "bg-brand-ink" },
-        ].map((s) => (
+        {stats.map((s) => (
           <div
             key={s.l}
             className={`${s.c} rounded-3xl p-5 text-primary-foreground`}
           >
             <p className="text-3xl font-extrabold">{s.n}</p>
-            <p className="text-xs font-bold uppercase opacity-90">{s.l}</p>
+            <p className="text-xs font-bold capitalize opacity-90">{s.l}</p>
           </div>
         ))}
       </div>
       <Panel
-        title="პირადი ინფორმაცია"
+        title={t("title")}
         action={
           <OutlineBtn>
-            <Pencil className="size-3.5" /> რედაქტირება
+            <Pencil className="size-3.5" /> {t("edit")}
           </OutlineBtn>
         }
       >
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="სახელი" defaultValue={user.firstName} />
-          <Field label="გვარი" defaultValue={user.lastName} />
+          <Field label={t("firstName")} defaultValue={user.firstName} />
+          <Field label={t("lastName")} defaultValue={user.lastName} />
+          <Field label={t("email")} type="email" defaultValue={user.email} />
           <Field
-            label="ელ. ფოსტა"
-            type="email"
-            defaultValue={user.email}
-          />
-          <Field
-            label="ტელეფონი"
+            label={t("phone")}
             type="tel"
             prefix="+995"
             defaultValue={user?.phone}
           />
         </div>
-        <p className="mt-4 text-xs text-muted-foreground">
-          ტელეფონის ნომერი გამოიყენება კურიერთან დასაკავშირებლად მიწოდებისას.
-        </p>
+        <p className="mt-4 text-xs text-muted-foreground">{t("phoneHint")}</p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <PrimaryBtn>შენახვა</PrimaryBtn>
-          <OutlineBtn>გაუქმება</OutlineBtn>
+          <PrimaryBtn>{t("save")}</PrimaryBtn>
+          <OutlineBtn>{t("cancel")}</OutlineBtn>
         </div>
       </Panel>
     </>

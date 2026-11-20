@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { saveAddress } from "./actions";
 import { ADDRESSES_PATH, type Address, type FormState } from "./address";
 
@@ -18,7 +19,7 @@ function TextField({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-bold uppercase">{label}</span>
+      <span className="mb-1.5 block text-xs font-bold capitalize">{label}</span>
       <input
         name={name}
         required
@@ -31,6 +32,7 @@ function TextField({
 }
 
 export function AddressForm({ address }: { address?: Address }) {
+  const t = useTranslations("AddressForm");
   const [state, action, pending] = useActionState<FormState, FormData>(
     saveAddress.bind(null, address?.id),
     {},
@@ -41,15 +43,15 @@ export function AddressForm({ address }: { address?: Address }) {
     <form action={action}>
       <div className="grid gap-5 sm:grid-cols-2">
         <TextField
-          label="ქალაქი"
+          label={t("city")}
           name="city"
-          placeholder="თბილისი"
+          placeholder={t("cityPlaceholder")}
           defaultValue={v?.city ?? address?.city}
         />
         <TextField
-          label="მისამართი"
+          label={t("street")}
           name="street"
-          placeholder="ქუჩა, ნომერი"
+          placeholder={t("streetPlaceholder")}
           defaultValue={v?.street ?? address?.street}
         />
       </div>
@@ -62,7 +64,7 @@ export function AddressForm({ address }: { address?: Address }) {
           disabled={address?.isDefault}
           className="size-4 accent-[var(--sale)]"
         />
-        ნაგულისხმევ მისამართად დაყენება
+        {t("setDefault")}
       </label>
 
       {state.error && (
@@ -77,14 +79,14 @@ export function AddressForm({ address }: { address?: Address }) {
           disabled={pending}
           className="rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60 "
         >
-          {pending ? "ინახება..." : "შენახვა"}
+          {pending ? t("saving") : t("save")}
         </button>
         {address && (
           <Link
             href={ADDRESSES_PATH}
             className="rounded-full border px-5 py-2.5 text-sm font-bold"
           >
-            გაუქმება
+            {t("cancel")}
           </Link>
         )}
       </div>

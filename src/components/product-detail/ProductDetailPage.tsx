@@ -1,4 +1,5 @@
 // ProductDetailPage.tsx — Server Component
+import { getTranslations } from "next-intl/server";
 import {
   Battery,
   CalendarDays,
@@ -28,48 +29,49 @@ type PageType = "scooter" | "accessory" | "parts";
 function getScooterSpecs(
   scooter: Scooter,
   units: ProductUnits,
+  t: (key: string) => string,
 ): { Icon: LucideIcon; label: string; value: string }[] {
   return [
-    { Icon: Repeat, label: "ძრავი", value: scooter.engine },
+    { Icon: Repeat, label: t("specs.engine"), value: scooter.engine },
     {
       Icon: Gauge,
-      label: "სიჩქარე",
+      label: t("specs.maxSpeed"),
       value: `${scooter.maxSpeed} ${units.kmH}`,
     },
     {
       Icon: Zap,
-      label: "მაქსიმალური მანძილი",
+      label: t("specs.maxRange"),
       value: `${scooter.maxRange} ${units.km}`,
     },
-    { Icon: Weight, label: "წონა", value: `${scooter.weight} ${units.kg}` },
+    { Icon: Weight, label: t("specs.weight"), value: `${scooter.weight} ${units.kg}` },
     {
       Icon: CalendarDays,
-      label: "გამოშვების თარიღი",
+      label: t("specs.releaseDate"),
       value: String(new Date(scooter.releaseDate).getFullYear()),
     },
-    { Icon: CircleCheck, label: "გარანტია", value: scooter.warranty },
-    { Icon: Mountain, label: "აღმართი", value: scooter.inclineAngle },
-    { Icon: Timer, label: "დატენვის დრო", value: scooter.chargingTime },
+    { Icon: CircleCheck, label: t("specs.warranty"), value: scooter.warranty },
+    { Icon: Mountain, label: t("specs.inclineAngle"), value: scooter.inclineAngle },
+    { Icon: Timer, label: t("specs.chargingTime"), value: scooter.chargingTime },
     {
       Icon: Package,
-      label: "მგზავრის დასაშვები წონა",
+      label: t("specs.maxRiderWeight"),
       value: `${scooter.maxRiderWeight} ${units.kg}`,
     },
     {
       Icon: Users,
-      label: "მგზავრის რეკომენდირებული წონა",
+      label: t("specs.recommendedRiderWeight"),
       value: `${scooter.recommendedRiderWeight} ${units.kg}`,
     },
     {
       Icon: Battery,
-      label: "ძრავების რაოდენობა",
+      label: t("specs.motorCount"),
       value: String(scooter.motorCount),
     },
-    { Icon: CircleCheck, label: "ბორბლის ზომა", value: scooter.wheelSize },
+    { Icon: CircleCheck, label: t("specs.wheelSize"), value: scooter.wheelSize },
   ];
 }
 
-export default function ProductDetailPage({
+export default async function ProductDetailPage({
   pageType,
   product,
   similar,
@@ -80,6 +82,7 @@ export default function ProductDetailPage({
   similar?: Product[];
   units?: ProductUnits;
 }) {
+  const t = await getTranslations("ProductDetailPage");
   const isScooter = pageType === "scooter";
   const mainImage = product.images?.[0];
   const { discountPercent } = getDiscountInfo(product);
@@ -122,7 +125,7 @@ export default function ProductDetailPage({
 
               {hasDiscount && (
                 <span className="absolute top-4 left-4 z-10 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground uppercase">
-                  {discountPercent}% ფასდაკლება
+                  {t("discountBadge", { percent: discountPercent })}
                 </span>
               )}
             </div>
@@ -160,19 +163,19 @@ export default function ProductDetailPage({
                 type="button"
                 className="flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]"
               >
-                კალათაში დამატება
+                {t("addToCart")}
               </button>
               <button
                 type="button"
                 className="flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]"
               >
-                ყიდვა
+                {t("buyNow")}
               </button>
             </div>
 
             {isScooter && units ? (
               <ul className="mt-8 space-y-3 rounded-2xl bg-[#F5F5F5] p-6 text-sm text-[#212121]">
-                {getScooterSpecs(product as Scooter, units).map(
+                {getScooterSpecs(product as Scooter, units, t).map(
                   ({ Icon, label, value }) => (
                     <li
                       key={label}
@@ -192,26 +195,13 @@ export default function ProductDetailPage({
             ) : (
               !isScooter && (
                 <div className="mt-8 space-y-4">
-                  <p>
-                    ელექტრო სკუტერი ხშირად აღწევს 25-დან 50 კმ/სთ-მდე სიჩქარეს.
-                    წაქცევის ან შეჯახების შემთხვევისას, ჩაფხუტი მნიშვნელოვნად
-                    ამცირებს თავის ტრავმის რისკს. ეს არ არის არჩევანი — ეს
-                    აუცილებლობაა.
-                  </p>
+                  <p>{t("accessoryInfo.intro")}</p>
                   <div className="space-y-2 ">
-                    <div>ძირითადი მახასიათებლები:</div>
+                    <div>{t("accessoryInfo.featuresTitle")}</div>
                     <ul className=" list-disc pl-4">
-                      <li>
-                        სერტიფიცირებული დაცვა (CE / EN 1078 / DOT) - შეესაბამება
-                        ევროპულ და საერთაშორისო სტანდარტებს
-                      </li>
-                      <li>
-                        მსუბუქი კონსტრუქცია - კომფორტული ხანგრძლივი ტარებისთვის
-                      </li>
-                      <li>
-                        ვენტილაციის სისტემა - სუნთქვისუნარიანი მასალა, რომელიც
-                        ხელს უშლის გადახურებას
-                      </li>
+                      <li>{t("accessoryInfo.feature1")}</li>
+                      <li>{t("accessoryInfo.feature2")}</li>
+                      <li>{t("accessoryInfo.feature3")}</li>
                     </ul>
                   </div>
                 </div>
@@ -223,38 +213,14 @@ export default function ProductDetailPage({
         {isScooter && (
           <div className="mt-10">
             <h2 className="text-2xl font-extrabold xl:text-[40px]">
-              რატომ ნაინბოტ {product.name}? {/* about: {product.name} */}
+              {t("aboutHeading", { name: product.name })}
             </h2>
 
             <div className="mt-4 flex flex-col gap-6 ">
               {/* {product.description} */}
-              <p>
-                სეგვეის ნაინბოტ სი20 არის ელექტრო ქიქსკუტერების სერიის ნაწილი,
-                რომელიც შექმნილია ექსკლუზიურად მოზარდებისთვის. დამატებითი
-                ყურადღება დაეთმო უსაფრთხოების მახასიათებლებს, როგორიცაა
-                ელასტიური რეზინის საბურავები, რაც უზრუნველყოფს სუპერ მოჭიდებას
-                ზედაპირზე. ქიქ სკუტერი არის ძალიან მსუბუქი (10 კგ) და შეიძლება
-                დაიკეცოს ერთი ხელით.
-              </p>
-              <p>
-                ატმოსფერული განათება განლაგებულია საფეხურის ქვედა ნაწილში და
-                არის 3 სხვადასხვა ფერში, ტარების რეჟიმის მიხედვით. ბატარეა
-                მოთავსებულია საფეხურზე, რომელიც ინარჩუნებს სიმძიმის ცენტრს დაბალ
-                დონეზე და აადვილებს სკუტერის მართვას. ჩართვის ღილაკი
-                ინტეგრირებულია დროსელზე და ასევე გამოიყენება ტარების რეჟიმებს
-                შორის გადასართავად. კარგი ხახუნის TPR (თერმოპლასტიკური რეზინის)
-                სახელური, რომელიც ასევე ადვილად იწმინდება, გამოიყენება მეტი
-                კომფორტისა და სტაბილურობის შესაქმნელად.
-              </p>
-              <p>
-                გარდა ამისა ქიქსკუტერი აღჭურვილია ხელით მომუშავე უკანა მუხრუჭით,
-                რაც ყოველთვის უზრუნველყოფს დამუხრუჭების უსაფრთხო მანძილს.
-                სკუტერის სრულად დამუხტვა შესაძლებელია სულ რაღაც 5 საათში.
-                ჭკვიანი ბატარეის მართვის სისტემა (BMS) აკონტროლებს, რომ
-                ელექტროენერგია არ დაიკარგოს ბატარეის მუშაობის დროს, რათა თავიდან
-                აიცილოს ისეთი კრიტიკული სიტუაციები, როგორიცაა გადატვირთვა და
-                განმუხტვა, გადახურება, მოკლე ჩართვა და სხვა.
-              </p>
+              <p>{t("aboutParagraphs.p1")}</p>
+              <p>{t("aboutParagraphs.p2")}</p>
+              <p>{t("aboutParagraphs.p3")}</p>
             </div>
           </div>
         )}
@@ -273,17 +239,11 @@ export default function ProductDetailPage({
                 <Image
                   src={image}
                   key={i}
-                  alt="Product Image"
+                  alt={t("galleryImageAlt")}
                   width={411}
                   height={411}
                   className="aspect-[4/3] w-full rounded-xl"
                 />
-
-                // <Placeholder
-                //   key={i}
-                //   className="aspect-[4/3] w-full rounded-xl"
-                //   label="photo"
-                // />
               ))}
             </section>
           </div>
@@ -291,7 +251,7 @@ export default function ProductDetailPage({
 
         <section className="pt-5 md:pt-10 ">
           <h2 className="mb-6 text-2xl font-extrabold tracking-tight uppercase sm:text-3xl">
-            მსგავსი პროდუქცია
+            {t("similarProducts")}
           </h2>
           <div
             className={
@@ -301,9 +261,9 @@ export default function ProductDetailPage({
             }
           >
             {!similar ? (
-              <p>Similar products could not be fetched.</p>
+              <p>{t("similarError")}</p>
             ) : similar.length === 0 ? (
-              <p>No similar products found.</p>
+              <p>{t("similarEmpty")}</p>
             ) : (
               similar.map((item) => <ProductCard key={item.id} item={item} />)
             )}

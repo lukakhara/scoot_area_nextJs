@@ -1,23 +1,17 @@
-import {
-  Check,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+import { Check, ShieldCheck, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Placeholder } from "@/components/ui/Placeholder";
 import {
   SiFacebook as Facebook,
   SiInstagram as Instagram,
- 
 } from "@icons-pack/react-simple-icons";
+import {
+  type InputHTMLAttributes,
+  type ButtonHTMLAttributes,
+  type ReactNode,
+} from "react";
 
-import { type InputHTMLAttributes, type ButtonHTMLAttributes, type ReactNode } from "react";
-
-
-const PERKS = [
-  "სწრაფი მიწოდება მთელი საქართველოს მასშტაბით",
-  "ოფიციალური გარანტია და სერვისი",
-  "პირადი ფასები და სიახლეები პირველებში",
-];
+const PERK_KEYS = ["delivery", "warranty", "prices"] as const;
 
 export function AuthShell({
   title,
@@ -30,6 +24,8 @@ export function AuthShell({
   children: ReactNode;
   footer: ReactNode;
 }) {
+  const t = useTranslations("AuthShell");
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <main className="mx-auto grid w-full max-w-[1400px] flex-1 gap-6 px-5 py-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-12">
@@ -39,15 +35,15 @@ export function AuthShell({
               <Sparkles className="size-3.5" /> scoot area
             </span>
             <h2 className="mt-6 max-w-sm text-3xl leading-tight font-extrabold tracking-tight">
-              ერთი ანგარიში — მთელი სკუტერის ცხოვრება
+              {t("heading")}
             </h2>
             <ul className="mt-8 space-y-4 text-sm">
-              {PERKS.map((perk) => (
-                <li key={perk} className="flex items-start gap-3">
+              {PERK_KEYS.map((key) => (
+                <li key={key} className="flex items-start gap-3">
                   <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-sale">
                     <Check className="size-3.5 text-primary-foreground" />
                   </span>
-                  {perk}
+                  {t(`perks.${key}`)}
                 </li>
               ))}
             </ul>
@@ -89,7 +85,6 @@ export function AuthShell({
   );
 }
 
-
 export function AuthDivider({ text }: { text: string }) {
   return (
     <div className="my-6 flex items-center gap-4">
@@ -103,12 +98,14 @@ export function AuthDivider({ text }: { text: string }) {
 }
 
 export function SocialRow() {
+  const t = useTranslations("AuthShell");
+
   return (
     <div className="grid grid-cols-3 gap-3">
       {[
         { Icon: Facebook, label: "Facebook" },
         { Icon: Instagram, label: "Instagram" },
-        { Icon: Check, label: "E-mail" },
+        { Icon: Check, label: t("email") },
       ].map(({ Icon, label }) => (
         <button
           key={label}
@@ -123,9 +120,10 @@ export function SocialRow() {
   );
 }
 
-
-
-type AuthFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "className"> & {
+type AuthFieldProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "className"
+> & {
   label: string;
   hint?: string;
   error?: string;
@@ -166,8 +164,6 @@ export function AuthField({
   );
 }
 
-
-
 export function SubmitButton({
   children,
   ...props
@@ -177,7 +173,6 @@ export function SubmitButton({
   return (
     <button
       type="submit"
-     
       {...props}
       className="w-full rounded-full bg-primary px-6 py-3.5 text-sm font-extrabold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
     >

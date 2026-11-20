@@ -102,7 +102,7 @@ function AboutPage() {
       {/* Intro 1 */}
       <section className=" flex flex-col gap-20">
         <section className="flex flex-col gap-7.75">
-          <h1 className="text-2xl font-extrabold tracking-tight uppercase sm:text-[40px] pb-[31px]">
+          <h1 className="text-2xl font-extrabold tracking-tight capitalize sm:text-[40px] pb-[31px]">
             {t("title")}
           </h1>
           <div className="flex ">
@@ -119,7 +119,7 @@ function AboutPage() {
 
         {/* text section 2*/}
         <section className="flex flex-col gap-8">
-          <h2 className=" text-xl leading-snug font-extrabold tracking-tight uppercase sm:text-[40px]">
+          <h2 className=" text-xl leading-snug font-extrabold tracking-tight capitalize sm:text-[40px]">
             {t("heading")}
           </h2>
 
@@ -170,7 +170,7 @@ function AboutPage() {
         {/* Partners 4 */}
         <section>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
-            <h2 className="truncate text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
+            <h2 className="truncate text-xl font-extrabold tracking-tight capitalize sm:text-2xl">
               {t("partners")}
             </h2>
             <div className="flex shrink-0 items-center gap-2">
@@ -198,7 +198,7 @@ function AboutPage() {
                   className="aspect-square w-full rounded-lg"
                   label="logo"
                 />
-                <p className="mt-3 text-[11px] leading-tight font-extrabold uppercase">
+                <p className="mt-3 text-[11px] leading-tight font-extrabold capitalize">
                   {t("companyLine1")}
                   <br />
                   {t("companyLine2")}
@@ -210,7 +210,7 @@ function AboutPage() {
 
         {/* FAQ */}
         <section className="bg-secondary/60 py-12 ">
-          <h2 className="text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
+          <h2 className="text-xl font-extrabold tracking-tight capitalize sm:text-2xl">
             {t("faqTitle")}
           </h2>
 
@@ -220,7 +220,7 @@ function AboutPage() {
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   aria-expanded={openFaq === i}
-                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-xs font-medium uppercase sm:text-sm"
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-xs font-medium capitalize sm:text-sm"
                 >
                   <span className="min-w-0 flex-1">{t(`faq.${key}.q`)}</span>
                   <ChevronDown
@@ -241,7 +241,7 @@ function AboutPage() {
 
         {/* Head office */}
         <section>
-          <h2 className="text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
+          <h2 className="text-xl font-extrabold tracking-tight capitalize sm:text-2xl">
             {t("headOffice")}
           </h2>
 
@@ -338,7 +338,7 @@ function AboutPage() {
 
         {/* Gallery */}
         <section>
-          <h2 className="text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
+          <h2 className="text-xl font-extrabold tracking-tight capitalize sm:text-2xl">
             {t("gallery")}
           </h2>
           <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-3">

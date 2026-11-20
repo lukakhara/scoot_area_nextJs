@@ -1,22 +1,22 @@
 import { Bike, MapPin, ShieldCheck, User, Package } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import AccountNavLink from "@/components/auth/account-nav-link";
 import { requireUser } from "@/lib/auth";
 import LogoutButton from "@/components/auth/logout-button";
 
 const LINKS = [
-  { to: "/account", label: "პირადი ინფორმაცია", Icon: User },
-  { to: "/account/orders", label: "შეკვეთები", Icon: Package },
-  { to: "/account/addresses", label: "მისამართები", Icon: MapPin },
-  { to: "/account/garage", label: "ჩემი გარაჟი", Icon: Bike },
+  { to: "/account", key: "personal", Icon: User },
+  { to: "/account/orders", key: "orders", Icon: Package },
+  { to: "/account/addresses", key: "addresses", Icon: MapPin },
+  { to: "/account/garage", key: "garage", Icon: Bike },
   {
     to: "/account/change-password",
-    label: "პაროლის შეცვლა",
+    key: "changePassword",
     Icon: ShieldCheck,
   },
 ] as const;
 
 function getInitials(firstName: string, lastName: string): string {
-  // Ensure the strings aren't empty, then get the first letters and capitalize them
   const firstInitial = firstName ? firstName[0].toUpperCase() : "";
   const lastInitial = lastName ? lastName[0].toUpperCase() : "";
 
@@ -28,6 +28,7 @@ export default async function AccountLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const t = await getTranslations("AccountLayout");
   const user = await requireUser();
 
   return (
@@ -35,23 +36,23 @@ export default async function AccountLayout({
       <aside className="space-y-4">
         <div className="flex items-center gap-4 rounded-3xl bg-brand-ink p-5 text-primary-foreground">
           <span className="grid size-14 shrink-0 place-items-center rounded-full bg-primary text-xl font-extrabold uppercase">
-            {getInitials(user.firstName[0],user.lastName[0])}
+            {getInitials(user.firstName, user.lastName)}
           </span>
           <div className="min-w-0">
             <p className="truncate font-bold">
               {user.firstName} {user.lastName}
             </p>
             <p className="truncate text-xs opacity-70">{user.email}</p>
-            <span className="mt-1 inline-block rounded-full bg-sale px-2 py-0.5 text-[10px] font-bold uppercase">
-              ვერიფიცირებული
+            <span className="mt-1 inline-block rounded-full bg-sale px-2 py-0.5 text-[10px] font-bold ">
+              {t("verified")}
             </span>
           </div>
         </div>
 
-        <nav className="flex gap-2 overflow-x-auto rounded-3xl border bg-card p-2 lg:flex-col">
-          {LINKS.map(({ to, label, Icon }) => (
+        <nav className="flex gap-2 overflow-x-auto rounded-3xl border bg-card p-2 lg:flex-col ">
+          {LINKS.map(({ to, key, Icon }) => (
             <AccountNavLink key={to} href={to}>
-              <Icon className="size-4" /> {label}
+              <Icon className="size-4" /> {t(`links.${key}`)}
             </AccountNavLink>
           ))}
           <LogoutButton />

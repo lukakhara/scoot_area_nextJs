@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   ArrowLeft,
   Bike,
@@ -34,6 +35,7 @@ import ProductCardImage from "@/components/ui/ProductCardImage";
 const kindKeys = kinds.map((item) => item.key);
 
 export default function AdminPage() {
+  const t = useTranslations("AdminPage");
   const [kind, setKind] = useState<ProductKind>("scooter");
   const [search, setSearch] = useState("");
   const [editor, setEditor] = useState<{ product?: ProductRow } | null>(null);
@@ -57,7 +59,7 @@ export default function AdminPage() {
           </Link>
           <div className="flex items-center gap-2 text-xs">
             <ShieldCheck className="size-4 text-sale" />
-            <span>ადმინისტრატორი</span>
+            <span>{t("role")}</span>
           </div>
         </div>
       </header>
@@ -69,25 +71,27 @@ export default function AdminPage() {
           className="mb-6 h-auto p-0 text-muted-foreground cursor-pointer"
         >
           <ArrowLeft />
-          მაღაზიაში დაბრუნება
+          {t("backToStore")}
         </Button>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="mb-2 text-xs font-bold uppercase text-sale">
-              Scootarea / Admin
+              {t("eyebrow")}
             </div>
-            <h1 className="text-2xl font-extrabold sm:text-3xl">პროდუქტები</h1>
+            <h1 className="text-2xl font-extrabold sm:text-3xl">
+              {t("title")}
+            </h1>
           </div>
           <Button onClick={() => setEditor({})} className="h-11 cursor-pointer">
             <Plus />
-            პროდუქტის დამატება
+            {t("addProduct")}
           </Button>
         </div>
         <div className="mt-8 flex flex-col justify-between gap-4 border-b pb-5 lg:flex-row lg:items-center">
           <div
             className="flex flex-wrap gap-2"
             role="tablist"
-            aria-label="პროდუქტის ტიპი"
+            aria-label={t("productTypeLabel")}
           >
             {kinds.map((item) => (
               <Button
@@ -110,29 +114,29 @@ export default function AdminPage() {
           <label className="relative block lg:w-72">
             <Search className="absolute left-3 top-3 size-4 text-muted-foreground" />
             <input
-              aria-label="პროდუქტის ძებნა"
+              aria-label={t("searchPlaceholder")}
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="პროდუქტის ძებნა"
+              placeholder={t("searchPlaceholder")}
               className="h-10 w-full rounded-md border bg-background pl-10 pr-3 text-sm outline-none focus:border-primary"
             />
           </label>
         </div>
         <div className="mt-5 flex justify-between text-xs text-muted-foreground">
-          <span>{rows.length} პროდუქტი</span>
-          <span>ფასი — ₾</span>
+          <span>{t("productCount", { count: rows.length })}</span>
+          <span>{t("currencyNote")}</span>
         </div>
         <div className="mt-4 overflow-x-auto rounded-lg border">
           <table className="w-full min-w-[760px] text-left text-sm">
             <thead className="bg-secondary text-xs text-muted-foreground">
               <tr>
                 {[
-                  "პროდუქტი",
-                  kind === "part" ? "SKU" : "ბრენდი",
-                  "კატეგორია",
-                  "ფასი",
-                  "მარაგი",
-                  "მოქმედება",
+                  t("table.product"),
+                  kind === "part" ? t("table.sku") : t("table.brand"),
+                  t("table.category"),
+                  t("table.price"),
+                  t("table.stock"),
+                  t("table.actions"),
                 ].map((label) => (
                   <th key={label} className="px-5 py-4 font-semibold">
                     {label}
@@ -152,13 +156,12 @@ export default function AdminPage() {
                             alt={row.name}
                             width={96}
                             height={96}
-                         
                           />
                         ) : (
                           <Package className="size-5 text-muted-foreground" />
                         )}
                       </div>
-                  
+
                       <div>
                         <div className="font-semibold">{row.name}</div>
                         <div className="mt-1 text-xs text-muted-foreground">
@@ -197,8 +200,8 @@ export default function AdminPage() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        aria-label={`${row.name} — რედაქტირება`}
-                        title="რედაქტირება"
+                        aria-label={t("editAria", { name: row.name })}
+                        title={t("edit")}
                         onClick={() => setEditor({ product: row })}
                         className="cursor-pointer"
                       >
@@ -208,8 +211,8 @@ export default function AdminPage() {
                         variant="ghost"
                         size="icon"
                         className="text-destructive cursor-pointer"
-                        aria-label={`${row.name} — წაშლა`}
-                        title="წაშლა"
+                        aria-label={t("deleteAria", { name: row.name })}
+                        title={t("delete")}
                         onClick={() => setDeleting(row)}
                       >
                         <Trash2 />
@@ -222,20 +225,20 @@ export default function AdminPage() {
           </table>
           {loading && rows.length === 0 && (
             <div className="py-16 text-center text-sm text-muted-foreground">
-              იტვირთება...
+              {t("loading")}
             </div>
           )}
           {error && (
             <div className="flex flex-col items-center gap-3 py-16 text-center text-sm text-destructive">
-              მონაცემების ჩატვირთვა ვერ მოხერხდა
+              {t("loadError")}
               <Button variant="outline" onClick={reload}>
-                ხელახლა ცდა
+                {t("retry")}
               </Button>
             </div>
           )}
           {!loading && !error && rows.length === 0 && (
             <div className="py-16 text-center text-sm text-muted-foreground">
-              პროდუქტი ვერ მოიძებნა
+              {t("noProducts")}
             </div>
           )}
         </div>
@@ -259,15 +262,15 @@ export default function AdminPage() {
         }}
       >
         <DialogContent className="w-[calc(100%_-_2rem)] rounded-lg">
-          <DialogTitle>პროდუქტის წაშლა</DialogTitle>
+          <DialogTitle>{t("deleteDialogTitle")}</DialogTitle>
           <DialogDescription>{deleting?.name}</DialogDescription>
           <div className="mt-4 flex justify-end gap-3">
             <Button variant="outline" onClick={() => setDeleting(null)}>
-              გაუქმება
+              {t("cancel")}
             </Button>
             <Button variant="destructive" disabled>
               <Trash2 />
-              წაშლა
+              {t("delete")}
             </Button>
           </div>
         </DialogContent>

@@ -60,6 +60,8 @@ async function Home() {
     getBlogPosts(),
   ]);
 
+  const br = () => <br className="hidden xl:block" />;
+
   return (
     <div className=" min-w-screen bg-background">
       <HeroSection />
@@ -90,9 +92,9 @@ async function Home() {
 
           <div className="absolute inset-0 flex items-end pl-[15px] pb-[8px] md:pl-[30px] md:pb-[19px]">
             <div className="w-full text-[20px] md:text-[36px] leading-[110%] md:leading-[100%] font-medium text-primary-foreground sm:text-2xl">
-              -10% ახალი თიბისი
+              {t("newTBC")}
               <br />
-              ბარათით გადახდისას
+              {t("buyingWithCard")}
             </div>
           </div>
         </div>
@@ -124,7 +126,7 @@ async function Home() {
           {/* HEADING WRAPPER */}
           <div className=" flex items-center justify-center relative z-100 flex-col   w-full gap-8  ">
             <h2 className=" text-xl font-bold tracking-wide uppercase sm:text-2xl md:text-[40px] w-full">
-              შეკეთება
+              {t("repair")}
             </h2>
 
             {/* PARENT — now correctly holds BOTH image and text as flex children */}
@@ -147,30 +149,19 @@ async function Home() {
                     +995 55 55 55
                   </div>
                 </span>
-               
               </div>
 
               {/* TEXT */}
               <div className="flex min-w-0 flex-col justify-between gap-4 text-[#212121] md:flex-1">
                 <h3 className="leading-[120%] font-bold lg:text-[40px] md:text-[30px] text-[16px]">
-                  სერვისი,
-                  <br className="hidden xl:block" /> რომელსაც{" "}
-                  <br className="hidden xl:block" />
-                  შეგიძლია ენდო
+                  <h3>{t.rich("Service.title", { br })}</h3>
                 </h3>
                 <div className="flex flex-col gap-[21px]">
                   <p className="md:text-[22px] font-medium leading-[120%] text-[14px]">
-                    SCOOTAREA გთავაზობს
-                    <br className="hidden xl:block" /> სკუტერების სწრაფ და
-                    <br className="hidden xl:block" /> პროფესიონალურ შეკეთებას.
+                     {t.rich("Service.subtitle", { br })}
                   </p>
                   <p className="md:text-[18px] text-[14px]">
-                    სერტიფიცირებული სპეციალისტები, სწრაფი{" "}
-                    <br className="hidden xl:block" />
-                    მომსახურება და მაღალი ხარისხის ნაწილები{" "}
-                    <br className="hidden xl:block" />— ყველაფერი იმისთვის, რომ
-                    ისევ მშვიდად <br className="hidden xl:block" />
-                    განაგრძო გზის გაგრძელება.
+                     {t.rich("Service.description", { br })}
                   </p>
                 </div>
               </div>

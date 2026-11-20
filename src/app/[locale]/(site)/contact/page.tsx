@@ -11,9 +11,9 @@ import {
 } from "react-icons/fa";
 import { FiPhone, FiMail, FiClock, FiMapPin } from "react-icons/fi";
 import { SiGooglemaps } from "react-icons/si";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { PHONE_DISPLAY, PHONE_E164, EMAIL } from "@/lib/contact";
-
 
 const COLORS = {
   ink: "#111827",
@@ -29,9 +29,6 @@ const COLORS = {
 } as const;
 
 const PHONE_DIGITS = PHONE_E164.replace("+", "");
-
-
-
 
 type IconItem = { icon: IconType; color: string };
 
@@ -95,22 +92,7 @@ const CONTACTS: (IconItem & {
   },
 ];
 
-const MAP_URL =
-  "https://www.google.com/maps/search/?api=1&query=" +
-  encodeURIComponent("რუსთაველის გამზ. 10, თბილისი, საქართველო");
-
-const LOCATIONS = [
-  {
-    title: "სათაო ოფისი",
-    hours: "ორშაბათი–შაბათი | 10:00 - 18:00",
-    address: "რუსთაველის გამზ. 10, თბილისი, საქართველო",
-  },
-  {
-    title: "ბათუმი",
-    hours: "ორშაბათი–შაბათი | 10:00 - 18:00",
-    address: "რუსთაველის გამზ. 10, თბილისი, საქართველო", // TODO: Batumi address
-  },
-];
+const LOCATION_IDS = ["head", "batumi"] as const;
 
 const googleMapsUrl = (address: string) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
@@ -142,15 +124,17 @@ function Badge({
 }
 
 export default function ContactPage() {
+  const t = useTranslations("ContactPage");
+
   return (
     <div className="flex w-full flex-col gap-4 px-4 pt-10 pb-20 md:px-18 md:pt-20 md:pb-30">
       <h1 className="text-[24px] font-extrabold uppercase tracking-tight sm:text-[40px]">
-        კონტაქტი
+        {t("title")}
       </h1>
 
       <div className="-mx-4 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-6 bg-muted px-4 py-8 md:-mx-18 md:px-18">
         <h2 className="text-[16px] font-extrabold uppercase tracking-tight sm:text-[22px]">
-          სოციალური ქსელები
+          {t("socials")}
         </h2>
         <div className="flex items-center gap-2.5">
           {SOCIALS.map(({ icon, href, label }) => (
@@ -171,110 +155,124 @@ export default function ContactPage() {
       </div>
 
       <div className="flex flex-col gap-13 pt-15 md:pt-20">
-        {LOCATIONS.map(({ title, hours, address }) => (
-          <section key={title}>
-            <h2 className="text-[24px] font-extrabold uppercase tracking-tight">
-              {title}
-            </h2>
-            <div className="mt-4 grid gap-8 rounded-2xl bg-card p-4 shadow-md lg:grid-cols-[1.3fr_0.5fr_0.9fr]">
-              <a
-                href={googleMapsUrl(address)}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${title} – Google Maps`}
-                className="grid aspect-[2/1] w-full place-items-center rounded-xl border border-primary bg-muted text-primary"
-              >
-                <FiMapPin className="size-8" />
-              </a>
+        {LOCATION_IDS.map((id) => {
+          const title = t(`locations.${id}.title`);
+          const address = t(`locations.${id}.address`);
+          const hours = t("hours");
 
-              <div className="flex flex-col gap-9 border-b md:border-b-0 border-[#9E9E9E] md:border-r pb-6 md:pb-0 text-[18px]">
-                <div className="flex flex-col gap-4">
-                  {CONTACTS.map(({ icon, color, label, href, external }) => (
-                    <a
-                      key={href}
-                      href={href}
-                      {...(external && {
-                        target: "_blank",
-                        rel: "noopener noreferrer",
-                      })}
-                      className="flex items-center gap-3 hover:text-primary"
-                    >
-                      <Badge icon={icon} color={color} className="size-9" />
-                      {label}
-                    </a>
-                  ))}
-                </div>
-
+          return (
+            <section key={id}>
+              <h2 className="text-[24px] font-extrabold uppercase tracking-tight">
+                {title}
+              </h2>
+              <div className="mt-4 grid gap-8 rounded-2xl bg-card p-4 shadow-md lg:grid-cols-[1.3fr_0.5fr_0.9fr]">
                 <a
-                  href={`mailto:${EMAIL}`}
-                  className="flex items-center gap-3 pt-4 hover:text-primary"
+                  href={googleMapsUrl(address)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t("openInMaps", { title })}
+                  className="grid aspect-[2/1] w-full place-items-center rounded-xl border border-primary bg-muted text-primary"
                 >
-                  <Badge icon={FiMail} color={COLORS.ink} className="size-9" />
-                  {EMAIL}
+                  <FiMapPin className="size-8" />
                 </a>
-              </div>
 
-              <ul className="flex flex-col gap-4 text-sm text-[18px]">
-                <li className="flex items-center gap-3">
-                  <Badge icon={FiClock} color={COLORS.ink} className="size-9" />
-                  {hours}
-                </li>
-                <li className="flex items-start gap-3">
-                  <Badge
-                    icon={FiMapPin}
-                    color={COLORS.ink}
-                    className="size-9"
-                  />
-                  <span>{address}</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <a
-                    href={wazeUrl(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Waze"
-                  >
-                    <Badge
-                      icon={FaWaze}
-                      color={COLORS.waze}
-                      className="size-9 rounded-md"
-                    />
-                  </a>
-                  <a
-                    href={googleMapsUrl(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Google Maps"
-                    className="grid size-9 place-items-center"
-                    style={{ color: COLORS.gmaps }}
-                  >
-                    <SiGooglemaps className="size-5" />
-                  </a>
-                </li>
-
-                <li className="flex items-baseline gap-4 pt-4 md:hidden">
-                  <div className="flex items-baseline gap-3">
-                    {SOCIALS.map(({ icon, href, label }) => (
+                <div className="flex flex-col gap-9 border-b md:border-b-0 border-[#9E9E9E] md:border-r pb-6 md:pb-0 text-[18px]">
+                  <div className="flex flex-col gap-4">
+                    {CONTACTS.map(({ icon, color, label, href, external }) => (
                       <a
-                        key={label}
+                        key={href}
                         href={href}
-                        aria-label={label}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="size-6"
+                        {...(external && {
+                          target: "_blank",
+                          rel: "noopener noreferrer",
+                        })}
+                        className="flex items-center gap-3 hover:text-primary"
                       >
-                        <Badge icon={icon} className="bg-[#2C3E50]" />
+                        <Badge icon={icon} color={color} className="size-9" />
+                        {label}
                       </a>
                     ))}
                   </div>
-                  <span className="text-sm text-muted-foreground">
-                    @ScootArea
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </section>
-        ))}
+
+                  <a
+                    href={`mailto:${EMAIL}`}
+                    className="flex items-center gap-3 pt-4 hover:text-primary"
+                  >
+                    <Badge
+                      icon={FiMail}
+                      color={COLORS.ink}
+                      className="size-9"
+                    />
+                    {EMAIL}
+                  </a>
+                </div>
+
+                <ul className="flex flex-col gap-4 text-sm text-[18px]">
+                  <li className="flex items-center gap-3">
+                    <Badge
+                      icon={FiClock}
+                      color={COLORS.ink}
+                      className="size-9"
+                    />
+                    {hours}
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Badge
+                      icon={FiMapPin}
+                      color={COLORS.ink}
+                      className="size-9"
+                    />
+                    <span>{address}</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <a
+                      href={wazeUrl(address)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Waze"
+                    >
+                      <Badge
+                        icon={FaWaze}
+                        color={COLORS.waze}
+                        className="size-9 rounded-md"
+                      />
+                    </a>
+                    <a
+                      href={googleMapsUrl(address)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Google Maps"
+                      className="grid size-9 place-items-center"
+                      style={{ color: COLORS.gmaps }}
+                    >
+                      <SiGooglemaps className="size-5" />
+                    </a>
+                  </li>
+
+                  <li className="flex items-baseline gap-4 pt-4 md:hidden">
+                    <div className="flex items-baseline gap-3">
+                      {SOCIALS.map(({ icon, href, label }) => (
+                        <a
+                          key={label}
+                          href={href}
+                          aria-label={label}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="size-6"
+                        >
+                          <Badge icon={icon} className="bg-[#2C3E50]" />
+                        </a>
+                      ))}
+                    </div>
+                    <span className="text-sm text-muted-foreground">
+                      @ScootArea
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </section>
+          );
+        })}
       </div>
     </div>
   );

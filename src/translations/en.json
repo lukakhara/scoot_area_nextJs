@@ -11,7 +11,7 @@
   "Footer": {
     "scooters": "Scooters",
     "electricBicycles": "Electric Bicycles",
-        "gearAndAccessories": "Gear and Accessories",
+    "gearAndAccessories": "Gear and Accessories",
     "spareParts": "Spare Parts",
     "repair": "Repair",
     "blog": "Blog",
@@ -29,13 +29,17 @@
     },
     "Service": {
       "header": "Repair",
-      "subtitle": "Service you can trust",
-      "description": "SCOOTAREA offers fast and professional repair services for scooters.",
-      "details": "Certified specialists, fast service, and high-quality parts—everything to get you back on the road with peace of mind."
+      "title": "A service you can<br></br> trust",
+      "subtitle": "SCOOTAREA offers fast and<br></br> professional scooter<br></br> repair.",
+      "description": "Certified specialists, fast service<br></br> and high-quality parts<br></br>— everything so you can keep<br></br> riding with peace of mind."
     },
+    "newTBC": "-10% with new tbc",
+    "buyingWithCard": "card purchace",
+    "repair": "Repair",
     "Blog": "Blog",
     "scooters": "Scooters",
-    "accessories": "Accessories"
+    "accessories": "Accessories",
+    "seeAll": "See all"
   },
   "ProductListingPage": {
     "units": {
@@ -47,7 +51,7 @@
       "OFF": "OFF"
     },
     "productCard": {
-      "engine":"engine",
+      "engine": "engine",
       "speed": "Speed",
       "maxRange": "Maximum range",
       "weight": "Weight",
@@ -108,19 +112,18 @@
       "COMFORT_UPGRADES": "Comfort Upgrades",
       "CHARGING_POWER": "Charging & Power",
       "SPARE_PARTS": "Spare Parts",
-
-      "BRAKE_PADS": "სამუხრუჭე ხუნდები",
-      "TIRES_TUBES": "საბურავები და კამერები",
-      "MOTOR_PARTS": "ძრავის ნაწილები",
-      "BATTERY_CELLS": "ელემენტის უჯრედები",
-      "WHEELS": "ბორბლები",
-      "BEARINGS": "საკისრები",
-      "CABLES_WIRING": "კაბელები და გაყვანილობა",
-      "CONTROLLER": "კონტროლერი",
-      "DISPLAY_PANEL": "დისპლეის პანელი",
-      "SUSPENSION_PARTS": "ამორტიზატორის / ამორტიზაციის ნაწილები",
-      "SCREWS_BOLTS": "ჭანჭიკები და ხრახნები",
-      "OTHER": "სხვა"
+      "BRAKE_PADS": "Brake Pads",
+      "TIRES_TUBES": "Tires & Tubes",
+      "MOTOR_PARTS": "Motor Parts",
+      "BATTERY_CELLS": "Battery Cells",
+      "WHEELS": "Wheels",
+      "BEARINGS": "Bearings",
+      "CABLES_WIRING": "Cables & Wiring",
+      "CONTROLLER": "Controller",
+      "DISPLAY_PANEL": "Display Panel",
+      "SUSPENSION_PARTS": "Suspension Parts",
+      "SCREWS_BOLTS": "Screws & Bolts",
+      "OTHER": "Other"
     },
     "genderOptions": {
       "female": "Female",
@@ -236,14 +239,319 @@
     "companyLine2": "name",
     "faqTitle": "Frequently asked questions",
     "faq": {
-      "1": { "q": "How do I buy an electric scooter?", "a": "Choose a model in the catalog, add it to your cart and place the order. Delivery takes 1–3 business days." },
-      "2": { "q": "What are the advantages of buying at ScootArea?", "a": "Official warranty, an authorized service center, a stock of spare parts and technical consultation." },
-      "3": { "q": "Do warranty terms apply to the products?", "a": "Yes, every scooter comes with the manufacturer's warranty, while accessories are covered by individual terms." }
+      "1": {
+        "q": "How do I buy an electric scooter?",
+        "a": "Choose a model in the catalog, add it to your cart and place the order. Delivery takes 1–3 business days."
+      },
+      "2": {
+        "q": "What are the advantages of buying at ScootArea?",
+        "a": "Official warranty, an authorized service center, a stock of spare parts and technical consultation."
+      },
+      "3": {
+        "q": "Do warranty terms apply to the products?",
+        "a": "Yes, every scooter comes with the manufacturer's warranty, while accessories are covered by individual terms."
+      }
     },
     "headOffice": "Head office",
     "hours": "Monday–Saturday | 10:00 – 18:00",
     "addressLine1": "10 Rustaveli Ave.",
     "addressLine2": "Tbilisi, Georgia",
     "gallery": "Gallery"
-  }
+  },
+  "CartPopover": {
+    "title": "Cart",
+    "clear": "Clear",
+    "color": "Color: {color}",
+    "unavailable": "Product unavailable",
+    "remove": "Remove",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "empty": "Your cart is empty",
+    "loadError": "Failed to load products",
+    "subtotal": "Subtotal:",
+    "discount": "Discount:",
+    "total": "Total to pay:",
+    "viewCart": "View cart",
+    "productImage": "Product image"
+  },
+  "ContactPage": {
+    "title": "Contact",
+    "socials": "Social Media",
+    "hours": "Monday–Saturday | 10:00 - 18:00",
+    "openInMaps": "{title} – Google Maps",
+    "locations": {
+      "head": {
+        "title": "Head Office",
+        "address": "10 Rustaveli Ave, Tbilisi, Georgia"
+      },
+      "batumi": {
+        "title": "Batumi",
+        "address": "10 Rustaveli Ave, Tbilisi, Georgia"
+      }
+    }
+  },
+  "LoginForm": {
+    "email": "Email",
+    "password": "Password",
+    "hidePassword": "Hide password",
+    "showPassword": "Show password",
+    "remember": "Remember me",
+    "forgotPassword": "Forgot your password?",
+    "submit": "Log in",
+    "errors": {
+      "invalidEmail": "Invalid email address",
+      "passwordRequired": "Enter your password",
+      "invalidCredentials": "Incorrect email or password",
+      "connection": "Connection error, please try again"
+    }
+  },
+  "LoginPage": {
+    "title": "Log in",
+    "lead": "Enter your email and password to log in to your account.",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "or": "or"
+  },
+  "AuthShell": {
+    "heading": "One account — your whole scooter life",
+    "perks": {
+      "delivery": "Fast delivery across Georgia",
+      "warranty": "Official warranty and service",
+      "prices": "Personal prices and news first"
+    },
+    "email": "Email"
+  },
+  "PersonalInfo": {
+    "stats": {
+      "orders": "Orders",
+      "addresses": "Addresses",
+      "favorites": "Favorites"
+    },
+    "title": "Personal information",
+    "edit": "Edit",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "phoneHint": "Your phone number is used by the courier to contact you during delivery.",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "AccountLayout": {
+    "links": {
+      "personal": "Personal information",
+      "orders": "Orders",
+      "addresses": "Addresses",
+      "garage": "My garage",
+      "changePassword": "Change password"
+    },
+    "verified": "Verified"
+  },
+  "LogoutButton": {
+    "logout": "Log out"
+  },
+  "Orders": {
+    "title": "Orders",
+    "loading": "Loading...",
+    "loadError": "Failed to load orders",
+    "empty": "No orders found",
+    "orderNumber": "Order #{id}",
+    "deliveryService": "{city}, {street} · Delivery service",
+    "selfPickup": "Store pickup",
+    "quantity": "Quantity {count}",
+    "products": "Products:",
+    "delivery": "Delivery:",
+    "total": "Total: {price}",
+    "repeat": "Reorder",
+    "details": "Details",
+    "status": {
+      "PENDING": "Pending",
+      "PROCESSING": "Processing",
+      "SHIPPED": "Shipped",
+      "READY_FOR_PICKUP": "Ready for pickup",
+      "DELIVERED": "Delivered",
+      "CANCELLED": "Cancelled"
+    },
+    "filters": {
+      "all": "All",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "steps": {
+      "processing": "Processing",
+      "packing": "Packing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "ready": "Ready",
+      "handedOver": "Picked up"
+    },
+    "help": {
+      "title": "Help with orders",
+      "text": "An order can only be cancelled while it is being processed. A shipped order is paid for on delivery, and a received product can be exchanged within 14 days.",
+      "contact": "Contact us",
+      "returns": "Return policy"
+    }
+  },
+  "AddressesPage": {
+    "title": "Saved addresses",
+    "add": "Add",
+    "empty": "You have no saved addresses",
+    "city": "City: {city}",
+    "street": "Street: {street}",
+    "default": "Default",
+    "edit": "Edit",
+    "setDefault": "Set as default",
+    "editTitle": "Edit address",
+    "newTitle": "New address"
+  },
+  "AddressForm": {
+    "city": "City",
+    "cityPlaceholder": "Tbilisi",
+    "street": "Address",
+    "streetPlaceholder": "Street, number",
+    "setDefault": "Set as default address",
+    "saving": "Saving...",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "GaragePage": {
+    "title": "My garage",
+    "addScooter": "Add scooter",
+    "primary": "Primary",
+    "mileage": "{year} · Mileage {km} km",
+    "parts": "Parts",
+    "accessories": "Accessories",
+    "setPrimary": "Set as primary",
+    "delete": "Delete",
+    "brand": "Brand",
+    "model": "Model",
+    "year": "Year",
+    "mileageField": "Mileage (km)",
+    "hint": "Parts and accessories will be filtered based on your scooter.",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "AccountSecurityPage": {
+    "timeAgo": {
+      "justNow": "Just now"
+    },
+    "session": {
+      "unknownDevice": "Unknown device",
+      "activeNow": "Active now",
+      "currentDevice": "This device",
+      "revoke": "Sign out",
+      "revokeOthers": "Sign out of all devices"
+    },
+    "password": {
+      "title": "Change password",
+      "currentLabel": "Current password",
+      "newLabel": "New password",
+      "newPlaceholder": "At least 8 characters",
+      "confirmLabel": "Repeat new password",
+      "submit": "Update password",
+      "cancel": "Cancel"
+    },
+    "sessions": {
+      "title": "Active sessions"
+    }
+  },
+  "ComparePage": {
+    "title": "Compare desired products"
+  },
+  "BlogDetailPage": {
+    "title": "Blog",
+    "imageAlt": "Blog image",
+    "firstSection": {
+      "p1": "The goal of the ScootArea blog is to share experience, help you make the right decisions, and guide you on your scooter journey — whether it's your first purchase, a technical challenge, or simply an interest in a modern way of getting around. Stay tuned — you'll learn something new every day. Electric scooters are appearing more and more often on modern city streets — they're not just a mode of transport, they're a new lifestyle. The ScootArea blog was created to help you get to know this space better and get the most out of your scooter.",
+      "p2": "In our blog, you'll find detailed information about electric scooter models, tech news, trends, and changes affecting eco-friendly mobility.",
+      "p3": "Read comparisons to choose the ideal model for you. Explore maintenance tips that will make it easier to keep your scooter running smoothly for a long time.",
+      "p4": "Also don't miss legal advice and road rules, which play an important role in today's urban life — especially when riding in a new format. The goal of the ScootArea blog is",
+      "p5": "to share experience, help you make the right decisions, and guide you on your scooter journey — whether it's your first purchase, a technical challenge, or simply an interest in a modern way of getting around. Stay tuned — you'll learn something new every day."
+    },
+    "secondSection": {
+      "intro1": "Electric scooters are appearing more and more often on modern city streets — they're not just a mode of transport, they're a new lifestyle. The ScootArea blog was created to help you get to know this space better and get the most out of your scooter.",
+      "intro2": "In our blog, you'll find detailed information about electric scooter models, tech news, trends, and changes affecting eco-friendly mobility. Read comparisons to choose the ideal model for you. Explore maintenance tips that will make it easier to keep your scooter running smoothly for a long time.",
+      "intro3": "Also don't miss legal advice and road rules, which play an important role in today's urban life — especially when riding in a new format.",
+      "p1": "The goal of the ScootArea blog is to share experience, help you make the right decisions, and guide you on your scooter journey — whether it's your first purchase, a technical challenge, or simply an interest in a modern way of getting around. Stay tuned — you'll learn something new every day. Electric scooters are appearing more and more often on modern city streets — they're not just a mode of transport, they're a new lifestyle. The ScootArea blog was created to help you get to know this space better and get the most out of your scooter.",
+      "p2": "In our blog, you'll find detailed information about electric scooter models, tech news, trends, and changes affecting eco-friendly mobility.",
+      "p3": "Read comparisons to choose the ideal model for you. Explore maintenance tips that will make it easier to keep your scooter running smoothly for a long time.",
+      "p4": "Also don't miss legal advice and road rules, which play an important role in today's urban life — especially when riding in a new format. The goal of the ScootArea blog is",
+      "p5": "to share experience, help you make the right decisions, and guide you on your scooter journey — whether it's your first purchase, a technical challenge, or simply an interest in a modern way of getting around. Stay tuned — you'll learn something new every day."
+    }
+  },
+  "AdminPage": {
+    "role": "Administrator",
+    "backToStore": "Back to store",
+    "eyebrow": "Scootarea / Admin",
+    "title": "Products",
+    "addProduct": "Add product",
+    "productTypeLabel": "Product type",
+    "searchPlaceholder": "Search products",
+    "productCount": "{count} products",
+    "currencyNote": "Price — ₾",
+    "table": {
+      "product": "Product",
+      "sku": "SKU",
+      "brand": "Brand",
+      "category": "Category",
+      "price": "Price",
+      "stock": "Stock",
+      "actions": "Actions"
+    },
+    "edit": "Edit",
+    "editAria": "Edit {name}",
+    "delete": "Delete",
+    "deleteAria": "Delete {name}",
+    "loading": "Loading...",
+    "loadError": "Failed to load data",
+    "retry": "Try again",
+    "noProducts": "No products found",
+    "deleteDialogTitle": "Delete product",
+    "cancel": "Cancel"
+  },
+  "ProductDetailPage": {
+    "specs": {
+      "engine": "Motor",
+      "maxSpeed": "Top speed",
+      "maxRange": "Max range",
+      "weight": "Weight",
+      "releaseDate": "Release year",
+      "warranty": "Warranty",
+      "inclineAngle": "Max incline",
+      "chargingTime": "Charging time",
+      "maxRiderWeight": "Max rider weight",
+      "recommendedRiderWeight": "Recommended rider weight",
+      "motorCount": "Number of motors",
+      "wheelSize": "Wheel size"
+    },
+    "discountBadge": "{percent}% off",
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "accessoryInfo": {
+      "intro": "Electric scooters often reach speeds of 25 to 50 km/h. In the event of a fall or collision, a helmet significantly reduces the risk of head injury. It is not a choice — it is a necessity.",
+      "featuresTitle": "Key features:",
+      "feature1": "Certified protection (CE / EN 1078 / DOT) — meets European and international standards",
+      "feature2": "Lightweight construction — comfortable for long rides",
+      "feature3": "Ventilation system — breathable material that helps prevent overheating"
+    },
+    "aboutHeading": "Why {name}?",
+    "aboutParagraphs": {
+      "p1": "The Segway Ninebot C20 is part of the electric kickscooter lineup designed exclusively for teens. Extra attention was given to safety features, such as elastic rubber tires that provide strong grip on the surface. The kickscooter is very lightweight (10 kg) and can be folded with one hand.",
+      "p2": "Ambient lighting is located underneath the deck and comes in 3 different colors depending on the riding mode. The battery is positioned in the deck to keep the center of gravity low and make the scooter easier to control. The power button is integrated into the throttle and is also used to switch between riding modes. A high-friction TPR (thermoplastic rubber) grip, which is also easy to clean, is used for added comfort and stability.",
+      "p3": "In addition, the kickscooter is equipped with a manual rear brake that always ensures a safe braking distance. The scooter can be fully charged in just 5 hours. The smart Battery Management System (BMS) monitors operation so energy is not wasted and prevents critical situations such as overcharging and over-discharging, overheating, short circuits, and more."
+    },
+    "galleryImageAlt": "Product Image",
+    "similarProducts": "Similar products",
+    "similarError": "Similar products could not be fetched.",
+    "similarEmpty": "No similar products found."
+  },
+  "CompareSelector": {
+      "productColumn": "Product",
+      "priceColumn": "Price",
+      "imageAlt": "{name} image",
+      "selectAria": "Select",
+      "compareButton": "Compare"
+    }
 }

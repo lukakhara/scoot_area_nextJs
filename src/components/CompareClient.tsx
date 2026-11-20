@@ -217,6 +217,8 @@ export default function CompareClient({
                         <Image
                           src={s.images[0]}
                           alt={s.name}
+                          width={80}
+                          height={80}
                           className="size-12 shrink-0 rounded-lg object-cover "
                         />
                       </>

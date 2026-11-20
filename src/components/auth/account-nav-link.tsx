@@ -24,7 +24,7 @@ export default function AccountNavLink({
       href={href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "flex shrink-0 items-center gap-3 rounded-2xl px-4 py-3 text-xs font-bold tracking-wide uppercase transition-colors",
+        "flex shrink-0 items-center gap-3 rounded-2xl px-4 py-3 text-xs font-bold tracking-wide capitalize transition-colors",
         isActive
           ? "bg-orange-300 "
           : "text-foreground/70 hover:bg-secondary hover:text-foreground ",

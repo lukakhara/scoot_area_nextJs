@@ -3,6 +3,7 @@
 import { AuthField, SubmitButton } from "@/components/auth/AuthShell";
 import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Eye, EyeOff, Lock } from "lucide-react";
 
 type Values = {
@@ -10,16 +11,19 @@ type Values = {
   password: string;
 };
 
-type Errors = Partial<Record<keyof Values, string>>;
+type ErrorKey = "invalidEmail" | "passwordRequired";
+type Errors = Partial<Record<keyof Values, ErrorKey>>;
 
+// returns translation keys instead of text, so the component translates them
 function validate(v: Values): Errors {
   const e: Errors = {};
-  if (!/^\S+@\S+\.\S+$/.test(v.email)) e.email = "არასწორი ელ. ფოსტა";
-  if (!v.password) e.password = "შეიყვანეთ პაროლი";
+  if (!/^\S+@\S+\.\S+$/.test(v.email)) e.email = "invalidEmail";
+  if (!v.password) e.password = "passwordRequired";
   return e;
 }
 
 export default function LoginForm() {
+  const t = useTranslations("LoginForm");
   const router = useRouter();
   const [values, setValues] = useState<Values>({
     email: "mariam.user@example.com",
@@ -34,8 +38,10 @@ export default function LoginForm() {
   const [serverError, setServerError] = useState("");
 
   const errors = useMemo(() => validate(values), [values]);
-  const err = (k: keyof Values) =>
-    touched[k] || submitted ? errors[k] : undefined;
+  const err = (k: keyof Values) => {
+    const key = touched[k] || submitted ? errors[k] : undefined;
+    return key ? t(`errors.${key}`) : undefined;
+  };
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
@@ -67,17 +73,17 @@ export default function LoginForm() {
           body: JSON.stringify(values),
         },
       );
-    
+
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        setServerError(data?.message ?? "ელ. ფოსტა ან პაროლი არასწორია");
+        setServerError(data?.message ?? t("errors.invalidCredentials"));
         return;
       }
 
       router.push("/account");
       router.refresh();
     } catch {
-      setServerError("კავშირის შეცდომა, სცადეთ თავიდან");
+      setServerError(t("errors.connection"));
     } finally {
       setLoading(false);
     }
@@ -88,7 +94,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-5">
       <AuthField
-        label="ელ. ფოსტა"
+        label={t("email")}
         name="email"
         type="email"
         placeholder="scootarea@info.ge"
@@ -101,7 +107,7 @@ export default function LoginForm() {
 
       <label className="block">
         <span className="mb-1.5 block text-[11px] font-bold tracking-wide text-muted-foreground uppercase">
-          პაროლი
+          {t("password")}
         </span>
         <span className="relative block">
           <Lock className="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground/60" />
@@ -123,7 +129,7 @@ export default function LoginForm() {
           <button
             type="button"
             onClick={() => setShowPassword((s) => !s)}
-            aria-label={showPassword ? "პაროლის დამალვა" : "პაროლის ჩვენება"}
+            aria-label={showPassword ? t("hidePassword") : t("showPassword")}
             className="absolute top-1/2 right-4 -translate-y-1/2 text-muted-foreground/60 hover:text-foreground"
           >
             {showPassword ? (
@@ -145,21 +151,20 @@ export default function LoginForm() {
           <input
             type="checkbox"
             name="remember"
-     
             onChange={onChange}
             className="size-4 accent-[var(--primary)]"
           />
-          დამახსოვრება
+          {t("remember")}
         </label>
         <a href="#" className="text-xs font-bold text-primary hover:underline">
-          დაგავიწყდათ პაროლი?
+          {t("forgotPassword")}
         </a>
       </div>
 
       {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
       <SubmitButton disabled={loading}>
-        {loading ? "..." : "შესვლა"}
+        {loading ? "..." : t("submit")}
       </SubmitButton>
     </form>
   );
