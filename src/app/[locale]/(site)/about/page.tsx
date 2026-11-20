@@ -7,6 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
+ 
   Mail,
   MapPin,
   Phone,
@@ -15,22 +16,64 @@ import {
 import {
   SiFacebook as Facebook,
   SiInstagram as Instagram,
-  SiLinkerd as Linkedin,
   SiYoutube as Youtube,
 } from "@icons-pack/react-simple-icons";
 import { Placeholder } from "@/components/ui/Placeholder";
 import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import GalleryImage from "@/components/GalleryImage";
+import {
+  EMAIL,
+  PHONE_DISPLAY,
+  PHONE_E164,
+  SOCIAL_URLS,
+  googleMapsUrl,
+} from "@/lib/contact";
 
 const PARAGRAPH_KEYS = ["p1", "p2", "p3", "p4", "p5"] as const;
 const FAQ_KEYS = ["1", "2", "3"] as const;
 
+const SOCIALS = [
+  { Icon: Facebook, label: "Facebook", href: SOCIAL_URLS.facebook },
+  { Icon: Youtube, label: "YouTube", href: SOCIAL_URLS.youtube },
+  { Icon: Instagram, label: "Instagram", href: SOCIAL_URLS.instagram },
+  { Icon: Youtube, label: "LinkedIn", href: SOCIAL_URLS.linkedin },
+  { Icon: Send, label: "Telegram", href: SOCIAL_URLS.telegram },
+];
+
+const ABOUT_LINKS = [
+  { key: "link1", href: "/blog" },
+  { key: "link2", href: "/contact" },
+] as const;
+
 const CONTACTS = [
-  { icon: Phone, label: "+995 55 55 55", tone: "bg-brand-ink" },
-  { icon: Phone, label: "+995 55 55 55", tone: "bg-[oklch(0.62_0.16_150)]" },
-  { icon: Phone, label: "+995 55 55 55", tone: "bg-[oklch(0.52_0.2_300)]" },
-  { icon: Send, label: "+995 55 55 55", tone: "bg-[oklch(0.65_0.14_235)]" },
+  {
+    icon: Phone,
+    label: PHONE_DISPLAY,
+    tone: "bg-brand-ink",
+    href: `tel:${PHONE_E164}`,
+  },
+  {
+    icon: Phone,
+    label: PHONE_DISPLAY,
+    tone: "bg-[oklch(0.62_0.16_150)]",
+    href: `https://wa.me/${PHONE_E164.replace("+", "")}`,
+    external: true,
+  },
+  {
+    icon: Phone,
+    label: PHONE_DISPLAY,
+    tone: "bg-[oklch(0.52_0.2_300)]",
+    href: `viber://chat?number=${encodeURIComponent(PHONE_E164)}`,
+  },
+  {
+    icon: Send,
+    label: PHONE_DISPLAY,
+    tone: "bg-[oklch(0.65_0.14_235)]",
+    href: `https://t.me/${PHONE_E164}`,
+    external: true,
+  },
 ];
 
 const GALLERY_IMAGES = [
@@ -74,17 +117,6 @@ function AboutPage() {
           </div>
         </section>
 
-        {/* <picture>
-            <source media="(min-width: 768px)" srcSet="/aboutUs.png " />
-            <Image
-              src="/aboutUsMobile.png"
-              width={1296}
-              height={545}
-              className="w-full object-cover"
-              alt={t("imageAlt")}
-            />
-          </picture> */}
-
         {/* text section 2*/}
         <section className="flex flex-col gap-8">
           <h2 className=" text-xl leading-snug font-extrabold tracking-tight uppercase sm:text-[40px]">
@@ -108,11 +140,13 @@ function AboutPage() {
         {/* socials 3 */}
         <section className="flex min-w-0 justify-between flex-wrap items-center gap-4 pt-8">
           <div className="flex gap-8">
-            {[Facebook, Youtube, Instagram, Linkedin, Send].map((Icon, i) => (
+            {SOCIALS.map(({ Icon, label, href }) => (
               <a
-                key={i}
-                href="#"
-                aria-label={t("socialLabel")}
+                key={label}
+                href={href}
+                aria-label={label}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:text-primary"
               >
                 <Icon className="size-8 shrink-0" />
@@ -121,14 +155,14 @@ function AboutPage() {
           </div>
 
           <div className="flex shrink-0 gap-3 ">
-            {(["link1", "link2"] as const).map((key) => (
-              <a
+            {ABOUT_LINKS.map(({ key, href }) => (
+              <Link
                 key={key}
-                href="#"
+                href={href}
                 className="rounded-full border px-5 py-2 text-xs font-semibold transition-colors hover:border-primary hover:text-primary text-[24px]"
               >
                 {t(key)}
-              </a>
+              </Link>
             ))}
           </div>
         </section>
@@ -212,32 +246,53 @@ function AboutPage() {
           </h2>
 
           <div className="mt-5 grid gap-6 rounded-2xl bg-secondary/60 p-4 sm:p-6 lg:grid-cols-[2fr_1fr_1fr]">
-            <Placeholder
-              className="aspect-[4/3] w-full rounded-xl border-2 border-primary/60"
-              label="map"
-            />
+            <a
+              href={googleMapsUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t("headOffice")}
+            >
+              <Placeholder
+                className="aspect-[4/3] w-full rounded-xl border-2 border-primary/60"
+                label="map"
+              />
+            </a>
 
             <ul className="space-y-3 text-sm lg:border-r lg:pr-6">
-              {CONTACTS.map(({ icon: Icon, label, tone }, i) => (
-                <li key={i} className="flex items-center gap-3">
-                  <span
-                    className={`grid size-7 shrink-0 place-items-center rounded-full ${tone}`}
+              {CONTACTS.map(({ icon: Icon, label, tone, href, external }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    {...(external && {
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                    })}
+                    className="flex items-center gap-3 hover:text-primary"
                   >
-                    <Icon
-                      className={cn(
-                        "size-3.5 text-primary-foreground",
-                        Icon === Phone ? "rotate-270" : "",
-                      )}
-                    />
-                  </span>
-                  {label}
+                    <span
+                      className={`grid size-7 shrink-0 place-items-center rounded-full ${tone}`}
+                    >
+                      <Icon
+                        className={cn(
+                          "size-3.5 text-primary-foreground",
+                          Icon === Phone ? "rotate-270" : "",
+                        )}
+                      />
+                    </span>
+                    {label}
+                  </a>
                 </li>
               ))}
-              <li className="flex items-center gap-3 pt-4">
-                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand-ink">
-                  <Mail className="size-3.5 text-primary-foreground" />
-                </span>
-                Scootarea@info.ge
+              <li className="pt-4">
+                <a
+                  href={`mailto:${EMAIL}`}
+                  className="flex items-center gap-3 hover:text-primary"
+                >
+                  <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand-ink">
+                    <Mail className="size-3.5 text-primary-foreground" />
+                  </span>
+                  {EMAIL}
+                </a>
               </li>
             </ul>
 
@@ -260,9 +315,20 @@ function AboutPage() {
               </li>
               <li className="flex items-center gap-3 pt-4">
                 <div className="flex items-center gap-3">
-                  {[Facebook, Instagram, Linkedin, Send].map((Icon, i) => (
-                    <Icon key={i} className="size-4" />
-                  ))}
+                  {SOCIALS.filter(({ label }) => label !== "YouTube").map(
+                    ({ Icon, label, href }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        aria-label={label}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-primary"
+                      >
+                        <Icon className="size-4" />
+                      </a>
+                    ),
+                  )}
                 </div>
                 <span className="text-muted-foreground">@ScootArea</span>
               </li>

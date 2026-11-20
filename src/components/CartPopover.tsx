@@ -58,7 +58,8 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
         </h2>
         <button
           onClick={() => clearCart()}
-          className="text-sm text-muted-foreground underline hover:text-primary"
+          className="text-sm text-muted-foreground underline hover:text-primary 
+          hover:cursor-pointer"
         >
           გასუფთავება
         </button>
@@ -102,7 +103,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
                 <button
                   aria-label="წაშლა"
                   onClick={() => removeItem(item.productType, item.productId)}
-                  className="text-muted-foreground hover:text-sale"
+                  className="text-muted-foreground hover:text-sale hover:cursor-pointer"
                 >
                   <X className="size-4" />
                 </button>
@@ -111,7 +112,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
                     <button
                       aria-label="შემცირება"
                       onClick={() => changeQuantity(item, -1)}
-                      className="text-muted-foreground hover:text-primary"
+                      className="text-muted-foreground hover:text-primary  hover:cursor-pointer"
                     >
                       −
                     </button>
@@ -119,7 +120,7 @@ export default function CartPopover({ onClose }: { onClose: () => void }) {
                     <button
                       aria-label="გაზრდა"
                       onClick={() => changeQuantity(item, 1)}
-                      className="text-muted-foreground hover:text-primary"
+                      className="text-muted-foreground hover:text-primary  hover:cursor-pointer"
                     >
                       +
                     </button>
