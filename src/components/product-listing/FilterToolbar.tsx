@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { FilterButton } from "./FilterButton";
 import { SortButton } from "./SortButton";
 import { CompareButton } from "../ui/CompareButton";
@@ -16,19 +16,19 @@ const FilterToolbar = ({
         haveFilterToolbarOnTop ? "mt-6 lg:mt-8" : "mt-10 pb-2",
       )}
     >
-      {haveFilterToolbarOnTop ? (
-        // headerActions: true → just Filter, below the title/sort row (image 2)
-        <FilterButton />
-      ) : (
-        // headerActions: false → Filter left, Sort + Compare right (image 1)
-        <>
+      <Suspense fallback={null}>
+        {haveFilterToolbarOnTop ? (
           <FilterButton />
-          <div className="flex items-center gap-8">
-            <SortButton />
-            <CompareButton href="/compare" />
-          </div>
-        </>
-      )}
+        ) : (
+          <>
+            <FilterButton />
+            <div className="flex items-center gap-8">
+              <SortButton />
+              <CompareButton href="/compare" />
+            </div>
+          </>
+        )}
+      </Suspense>
     </div>
   );
 };

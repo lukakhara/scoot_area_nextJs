@@ -22,7 +22,12 @@ import { SortButton } from "@/components/product-listing/SortButton";
 import FilterToolbar from "@/components/product-listing/FilterToolbar";
 import Pagination from "@/components/ui/Pagination";
 import { getTranslations } from "next-intl/server";
-import { toAccessoryCardProduct, toScooterCardProduct, toSparePartCardProduct } from "@/lib/mappers/product";
+import {
+  toAccessoryCardProduct,
+  toScooterCardProduct,
+  toSparePartCardProduct,
+} from "@/lib/mappers/product";
+import { Suspense } from "react";
 
 type PageType = "scooters" | "parts" | "accessories";
 
@@ -49,7 +54,7 @@ const FETCH_CONFIG: Record<
 > = {
   scooters: { endpoint: "scooters", map: toScooterCardProduct },
   accessories: { endpoint: "accessories", map: toAccessoryCardProduct },
-  parts: { endpoint: "parts", map: toSparePartCardProduct }, 
+  parts: { endpoint: "parts", map: toSparePartCardProduct },
 };
 
 export default async function ProductListingPage({
@@ -132,10 +137,12 @@ export default async function ProductListingPage({
               <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px]">
                 {config.title}
               </h1>
-              <SortButton />
+              <Suspense>
+                <SortButton />
+              </Suspense>
             </div>
           ) : (
-            <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px] " >
+            <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px] ">
               {config.title}
             </h1>
           )}
@@ -152,7 +159,9 @@ export default async function ProductListingPage({
         </div>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8 ">
-          <FilterPanel groups={config.filterGroups} />
+          <Suspense>
+            <FilterPanel groups={config.filterGroups} />
+          </Suspense>
 
           <div>
             <div className={config.gridClassName}>
@@ -162,20 +171,19 @@ export default async function ProductListingPage({
                 </div>
               ) : (
                 config.items.map((item, i) => (
-                  <ProductCard
-                    key={item.id ?? `${item.id}-${i}`}
-                    item={item}
-                  />
+                  <ProductCard key={item.id ?? `${item.id}-${i}`} item={item} />
                 ))
               )}
             </div>
             {items.length === 0 ? (
               ""
             ) : (
-              <Pagination
-                currentPage={meta.page}
-                totalPages={meta.totalPages}
-              />
+              <Suspense>
+                <Pagination
+                  currentPage={meta.page}
+                  totalPages={meta.totalPages}
+                />
+              </Suspense>
             )}
           </div>
         </div>

@@ -6,13 +6,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default async function BlogPage({
   params,
 }: {
-  params: Promise<{locale:string}>;
+  params: Promise<{ locale: string }>;
 }) {
-    const t = await getTranslations("");
+  const t = await getTranslations("");
   const { locale } = await params;
   console.log("locale", locale);
   const queryString = `locale=${locale}`;
@@ -23,11 +24,9 @@ export default async function BlogPage({
     throw new Error(`Failed to fetch ${res.status}`);
   }
   const { data: posts, meta }: BlogListResponse = await res.json();
-  
-  const detailHref = `/blog/`
 
- 
-  
+  const detailHref = `/blog/`;
+
   return (
     <div className="min-h-screen bg-background">
       <main className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-12 gap-8">
@@ -87,8 +86,9 @@ export default async function BlogPage({
             </Link>
           ))}
         </div>
-
-        <Pagination currentPage={meta.page} totalPages={meta.totalPages} />
+        <Suspense>
+          <Pagination currentPage={meta.page} totalPages={meta.totalPages} />
+        </Suspense>
       </main>
     </div>
   );
