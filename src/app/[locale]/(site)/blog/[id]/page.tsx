@@ -10,7 +10,7 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const [res, t] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blog/${id}`),
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/${id}`),
     getTranslations("BlogDetailPage"),
   ]);
 

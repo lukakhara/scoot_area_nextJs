@@ -52,7 +52,7 @@ export default async function RootLayout({
   const messages = await getMessages();
   {
     return (
-      <html lang="en" className={`${notoSansGeorgian.variable}   antialiased `}>
+      <html lang="ka" className={`${notoSansGeorgian.variable}   antialiased `}>
         <body className="flex flex-col font-sans ">
           <NextIntlClientProvider messages={messages}>
             <main className="flex-1 overflow-x-hidden"> {children}</main>

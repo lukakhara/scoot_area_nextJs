@@ -14,8 +14,9 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { OutlineBtn, Panel, PrimaryBtn } from "@/components/auth/AccountUi";
 import { Placeholder } from "@/components/ui/Placeholder";
+import { API_URL } from "@/lib/config";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
 type ApiStatus =
   | "PENDING"
@@ -165,7 +166,7 @@ export default function Orders() {
 
     (async () => {
       try {
-        const res = await fetch(`${API_URL}/api/orders/me`, {
+        const res = await fetch(`${API_URL}/orders/me`, {
           credentials: "include",
           signal: controller.signal,
         });

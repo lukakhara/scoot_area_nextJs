@@ -20,6 +20,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Placeholder } from "@/components/ui/Placeholder";
+import { API_URL } from "@/lib/config";
 
 const SPEC_ROWS = [
   { Icon: Repeat, label: "ძრავი" },
@@ -45,7 +46,7 @@ const SPEC_ROWS = [
 
 export default async function page(id:string) {
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters/${id}`)
+  const res = await fetch(`${API_URL}/scooters/${id}`)
 
   const data = await res.json();
 

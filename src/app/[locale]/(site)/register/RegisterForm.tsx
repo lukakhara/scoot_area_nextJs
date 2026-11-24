@@ -4,6 +4,7 @@ import { AuthField, SubmitButton } from "@/components/auth/AuthShell";
 import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
+import { API_URL } from "@/lib/config";
 
 const STRENGTH = [
   { label: "სუსტი", tone: "bg-primary" },
@@ -132,16 +133,9 @@ export default function RegisterForm() {
       return;
     }
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (!apiUrl) {
-      setServerError("კონფიგურაციის შეცდომა: API მისამართი არ არის მითითებული");
-      setDebugInfo(
-        "NEXT_PUBLIC_API_URL is undefined (check .env.local and restart next dev)",
-      );
-      return;
-    }
+   
 
-    const url = `${apiUrl}/api/auth/register`;
+    const url = `${API_URL}/auth/register`;
     setLoading(true);
    
 

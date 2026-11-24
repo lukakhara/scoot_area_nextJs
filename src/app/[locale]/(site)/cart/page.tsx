@@ -6,8 +6,9 @@ import { useCartStore } from "@/store/cartStore";
 import type { ProductType } from "@/types/product";
 import type { ApiProduct, CartItem } from "@/types/cart";
 import { cn } from "@/lib/utils";
+import { API_URL } from "@/lib/config";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const DELIVERY_FEE = 50;
 const FREE_DELIVERY_FROM = 1500;
 
@@ -129,7 +130,7 @@ function CartPage() {
         const results = await Promise.all(
           items.map(async (item) => {
             const res = await fetch(
-              `${API_URL}/api/${PRODUCT_ENDPOINTS[item.productType]}/${item.productId}`,
+              `${API_URL}/${PRODUCT_ENDPOINTS[item.productType]}/${item.productId}`,
               { signal: controller.signal },
             );
 
@@ -167,7 +168,7 @@ function CartPage() {
 
     (async () => {
       try {
-        const res = await fetch(`${API_URL}/api/auth/me`, {
+        const res = await fetch(`${API_URL}/auth/me`, {
           credentials: "include",
           signal: controller.signal,
         });
@@ -196,7 +197,7 @@ function CartPage() {
 
     (async () => {
       try {
-        const res = await fetch(`${API_URL}/api/address`, {
+        const res = await fetch(`${API_URL}/address`, {
           credentials: "include",
           signal: controller.signal,
         });
@@ -267,7 +268,7 @@ function CartPage() {
     setError(null);
 
     try {
-      const res = await fetch(`${API_URL}/api/orders`, {
+      const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

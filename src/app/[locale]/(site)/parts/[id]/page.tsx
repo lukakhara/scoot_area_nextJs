@@ -12,7 +12,7 @@ export default async function PartsDetailRoute({
 }) {
   const { id } = await params;
 
-  const res = await fetch(`${API}/api/parts/${id}`, {
+  const res = await fetch(`${API}/parts/${id}`, {
     next: { revalidate: 60 },
   });
 
@@ -23,7 +23,7 @@ export default async function PartsDetailRoute({
   const part: SparePartApi | undefined = json.data ?? json;
   if (!part) notFound();
 
-  const similarRes = await fetch(`${API}/api/parts?limit=4`, {
+  const similarRes = await fetch(`${API}/parts?limit=4`, {
     next: { revalidate: 60 },
   });
   const rawSimilar: SparePartApi[] = similarRes.ok

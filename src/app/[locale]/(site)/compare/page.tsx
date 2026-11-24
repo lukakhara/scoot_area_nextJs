@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { ScooterCompare } from "@/types/product";
 import CompareSelector from "@/components/CompareSelector";
+import { API_URL } from "@/lib/config";
 
 type ScootersResponse = {
   data: ScooterCompare[];
@@ -8,7 +9,7 @@ type ScootersResponse = {
 
 export default async function page() {
   const [res, t] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters/?limit=100`),
+    fetch(`${API_URL}/scooters/?limit=100`),
     getTranslations("ComparePage"),
   ]);
 

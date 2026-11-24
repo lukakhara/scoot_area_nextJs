@@ -22,8 +22,10 @@ const DETAIL_ROUTES: Record<Product["productType"], string> = {
 
 export async function ProductCard({ item }: { item: Product }) {
   const isScooter = item.productType === "scooter";
-  const unitsT = await getTranslations("ProductListingPage.units");
-  const propertiesT = await getTranslations("ProductListingPage.productCard");
+  const [unitsT, propertiesT] = await Promise.all([
+    getTranslations("ProductListingPage.units"),
+    getTranslations("ProductListingPage.productCard"),
+  ]);
   const units: ProductUnits = {
     w: unitsT("w"),
     kmH: unitsT("kmH"),
@@ -73,8 +75,9 @@ export async function ProductCard({ item }: { item: Product }) {
     : [];
 
   const detailHref = `${DETAIL_ROUTES[item.productType]}/${item.id}`;
+  console.log("detailHref=",detailHref)
   const releaseYear = isScooter
-    ? new Date(item.releaseDate).getFullYear()
+    ? new Date(item.releaseDate).getUTCFullYear()
     : undefined;
 
   const { hasDiscount, finalPrice, discountPercent } = getDiscountInfo(item);
@@ -106,14 +109,6 @@ export async function ProductCard({ item }: { item: Product }) {
           </span>
         )}
 
-        {/* <div className="absolute right-0 bottom-0 gap-[3.27px] bg-secondary z-100 py-[6.3px] px-[10.34px] flex items-center justify-center border">
-          {[0, 1, 2, 3].map((i) => (
-            <span
-              key={i}
-              className={`size-[4.35px] sm:size-[5.27px] cursor-pointer hover:bg-[#c7c7c700] rounded-full ${i === 0 ? "bg-[#C7C7C7]" : "bg-[#E1E1E1]"}`}
-            />
-          ))}
-        </div> */}
         <div className="absolute right-0 bottom-0 z-10 flex items-center justify-center gap-[3.27px] rounded-tl-xl bg-secondary py-[6.3px] px-[10.34px]">
           {/* curve above the tab */}
           <span

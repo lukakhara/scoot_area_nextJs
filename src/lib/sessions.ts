@@ -17,7 +17,7 @@ export interface ActiveSession {
 export async function getSessions(): Promise<ActiveSession[]> {
   const cookieStore = await cookies();
 
-  const res = await fetch(`${API}/api/sessions`, {
+  const res = await fetch(`${API}/sessions`, {
     headers: { cookie: cookieStore.toString() }, // sends the session cookie to Express
     cache: "no-store",
   });

@@ -45,7 +45,7 @@ export function useCartProducts(items: CartItem[]) {
         const results = await Promise.all(
           items.map(async (item) => {
             const res = await fetch(
-              `${API_URL}/api/${PRODUCT_ENDPOINTS[item.productType]}/${item.productId}`,
+              `${API_URL}/${PRODUCT_ENDPOINTS[item.productType]}/${item.productId}`,
               { signal: controller.signal },
             );
 

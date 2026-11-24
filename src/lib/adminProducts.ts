@@ -50,7 +50,7 @@ async function request(
   params: URLSearchParams,
   signal?: AbortSignal,
 ): Promise<ListResponse> {
-  const res = await fetch(`${API_URL}/api/${endpoints[kind]}?${params}`, {
+  const res = await fetch(`${API_URL}/${endpoints[kind]}?${params}`, {
     credentials: "include",
     signal,
   });

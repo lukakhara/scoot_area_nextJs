@@ -1,6 +1,8 @@
+import { API_URL } from "./config";
+
 export async function logout(): Promise<boolean> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+    const res = await fetch(`${API_URL}/auth/logout`, {
       method: "POST",
       credentials: "include",
     });

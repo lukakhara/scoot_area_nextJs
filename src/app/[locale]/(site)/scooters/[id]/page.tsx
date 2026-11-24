@@ -4,6 +4,7 @@ import ProductDetailPage from "@/components/product-detail/ProductDetailPage";
 import type { Scooter, ProductUnits, ScooterApi } from "@/types/product";
 import { toScooterCardProduct } from "@/lib/mappers/product"; // extracted mapper, see note below
 import { notFound } from "next/navigation";
+import { API_URL } from "@/lib/config";
 
 export default async function ScooterDetailRoute({
   params,
@@ -12,7 +13,7 @@ export default async function ScooterDetailRoute({
 }) {
   const { id } = await params;
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters/${id}`, {
+  const res = await fetch(`${API_URL}/scooters/${id}`, {
     next: { revalidate: 60 },
   });
 
@@ -27,7 +28,7 @@ export default async function ScooterDetailRoute({
 
   // Similar scooters — simple approach: fetch a small page, exclude current id
   const similarRes = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/scooters?limit=4`,
+    `${API_URL}//scooters?limit=4`,
     { next: { revalidate: 60 } },
   );
    console.log("similarRes", similarRes);

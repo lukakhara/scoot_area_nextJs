@@ -21,7 +21,7 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
     return null;
   }
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/me`;
   // console.log("fetching:", url);
 
   try {

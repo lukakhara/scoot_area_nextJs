@@ -1,3 +1,4 @@
+import { API_URL } from "@/lib/config";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -12,7 +13,7 @@ export default async function AdminLayout({
   const token = (await cookies()).get("token")?.value;
 
   const res = token
-    ? await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
+    ? await fetch(`${API_URL}/auth/me`, {
         headers: { Cookie: `token=${token}` },
         cache: "no-store",
       })

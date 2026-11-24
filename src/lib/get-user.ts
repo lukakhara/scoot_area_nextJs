@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { cookies } from "next/headers";
+import { API_URL } from "./config";
 
 export type CurrentUser = {
   id: string;
@@ -15,12 +16,12 @@ export type CurrentUser = {
 export const getUser = cache(async (): Promise<CurrentUser | null> => {
   const cookieStore = await cookies();
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
+  const res = await fetch(`${API_URL}/auth/me`, {
     headers: { cookie: cookieStore.toString() }, // forward the sid cookie
     cache: "no-store",
 
   });
- console.log("getUser called",res,process.env.NEXT_PUBLIC_API_URL);
+ console.log("getUser called",res,API_URL);
  
   if (res.status === 401) return null;
   if (!res.ok) throw new Error("Failed to load user");
