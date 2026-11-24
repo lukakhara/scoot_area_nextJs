@@ -17,48 +17,42 @@ import {
   toBlogCardProduct,
   toScooterCardProduct,
 } from "@/lib/mappers/product";
+import SectionMessage from "@/components/SectionMessage";
 
-async function getScooters(): Promise<ScooterProduct[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scooters`, {
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error("Failed to fetch scooters");
-
-  const json = await res.json();
-  const list: ScooterCardProduct[] = Array.isArray(json) ? json : json.data;
-  return list.map(toScooterCardProduct);
-}
-
-async function getAccessories(): Promise<AccessoryProduct[]> {
+async function fetchList<T>(path: string, locale?: string): Promise<T[]> {
+  const query = locale ? `?locale=${locale}` : "";
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/accessories`,
-    {
-      cache: "no-store",
-    },
+    `${process.env.NEXT_PUBLIC_API_URL}/${path}${query}`,
+    { next: { revalidate: 60 } },
   );
-  if (!res.ok) throw new Error("Failed to fetch accessories");
+  if (!res.ok) throw new Error(`Failed to fetch ${path}: ${res.status}`);
   const json = await res.json();
-  const list: BaseCardFields[] = Array.isArray(json) ? json : json.data;
-  return list.map(toAccessoryCardProduct);
+  return Array.isArray(json) ? json : json.data;
 }
 
-async function getBlogPosts(): Promise<BlogCardProduct[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blog`, {
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error("Failed to fetch blog posts");
-  const json = await res.json();
-  const list: BlogCardProduct[] = Array.isArray(json) ? json : json.data;
-  return list.map(toBlogCardProduct);
-}
-
-async function Home() {
+async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const t = await getTranslations("HomePage");
-  const [scooters, accessories, blogPosts] = await Promise.all([
-    getScooters(),
-    getAccessories(),
-    getBlogPosts(),
+  const { locale } = await params;
+
+  const [scootersRes, accessoriesRes, blogRes] = await Promise.allSettled([
+    fetchList<ScooterCardProduct>("scooters"),
+    fetchList<BaseCardFields>("accessories"),
+    fetchList<BlogCardProduct>("blog", locale),
   ]);
+  console.log("scootersRes", scootersRes);
+  console.log("accessoriesRes", accessoriesRes);
+  console.log("blogRes", blogRes);
+
+  const scooters: ScooterProduct[] =
+    scootersRes.status === "fulfilled"
+      ? scootersRes.value.map(toScooterCardProduct)
+      : [];
+  const accessories: AccessoryProduct[] =
+    accessoriesRes.status === "fulfilled"
+      ? accessoriesRes.value.map(toAccessoryCardProduct)
+      : [];
+  const blogPosts: BlogCardProduct[] =
+    blogRes.status === "fulfilled" ? blogRes.value.map(toBlogCardProduct) : [];
 
   const br = () => <br className="hidden xl:block" />;
 
@@ -101,13 +95,28 @@ async function Home() {
       </section>
 
       {/* Scooters */}
-      <PaginatedGridSection
+      {/* <PaginatedGridSection
         title={t("scooters")}
         href="/scooters"
         items={scooters.map((item) => (
           <ProductCard key={item.id} item={item} />
         ))}
-      />
+      /> */}
+
+      {/* Scooters */}
+      {scootersRes.status === "rejected" ? (
+        <SectionMessage title={t("scooters")} message={t("loadError")} />
+      ) : scooters.length === 0 ? (
+        <SectionMessage title={t("scooters")} message={t("empty")} />
+      ) : (
+        <PaginatedGridSection
+          title={t("scooters")}
+          href="/scooters"
+          items={scooters.map((item) => (
+            <ProductCard key={item.id} item={item} />
+          ))}
+        />
+      )}
 
       {/* Service */}
       <div className="relative border-none sm:border-2 sm:border-b-[#EA6200]">
@@ -154,14 +163,14 @@ async function Home() {
               {/* TEXT */}
               <div className="flex min-w-0 flex-col justify-between gap-4 text-[#212121] md:flex-1">
                 <h3 className="leading-[120%] font-bold lg:text-[40px] md:text-[30px] text-[16px]">
-                  <h3>{t.rich("Service.title", { br })}</h3>
+                  <p>{t.rich("Service.title", { br })}</p>
                 </h3>
                 <div className="flex flex-col gap-[21px]">
                   <p className="md:text-[22px] font-medium leading-[120%] text-[14px]">
-                     {t.rich("Service.subtitle", { br })}
+                    {t.rich("Service.subtitle", { br })}
                   </p>
                   <p className="md:text-[18px] text-[14px]">
-                     {t.rich("Service.description", { br })}
+                    {t.rich("Service.description", { br })}
                   </p>
                 </div>
               </div>
