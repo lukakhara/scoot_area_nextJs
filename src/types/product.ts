@@ -24,6 +24,7 @@ export type SparePartCategory =
   | "OTHER";
 
 export type ProductType = "scooter" | "accessory" | "parts";
+export type homePageSections = "scooter" | "accessory" | "blog";
 
 export interface Scooter {
   id: string;
@@ -60,6 +61,7 @@ export interface Scooter {
   discountEndsAt?: string | null;
   installment: string;
   images: string[]; // Derived field, not in API response; use `imagesPath` to construct it
+  description?: string | null;
 }
 
 export interface Accessory {
@@ -107,6 +109,7 @@ export interface BaseCardFields {
   images: string[];
   discountPrice?: number | string | null;
   discountEndsAt?: string | null;
+  description?: string | null;
 }
 
 export interface ScooterCardProduct
@@ -114,7 +117,13 @@ export interface ScooterCardProduct
     BaseCardFields,
     Pick<
       Scooter,
-      "releaseDate" | "weight" | "engine" | "maxSpeed" | "maxRange" | "warranty" | "installment" 
+      | "releaseDate"
+      | "weight"
+      | "engine"
+      | "maxSpeed"
+      | "maxRange"
+      | "warranty"
+      | "installment"
     > {}
 
 export interface BlogCardProduct {
@@ -151,11 +160,10 @@ export interface ProductUnits {
   kg: string;
 }
 
-
-export interface ScooterCompare{
-  id:string;
-  name:string;
-  color:string;
-  price:number;
-  images:string[];
+export interface ScooterCompare {
+  id: string;
+  name: string;
+  color: string;
+  price: number;
+  images: string[];
 }

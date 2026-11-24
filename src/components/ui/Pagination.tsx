@@ -17,7 +17,6 @@ export default function Pagination({
   const router = useRouter();
   const pathname = usePathname();
 
-  console.log(currentPage);
 
   // function onPageChange(page:number){
   //   const stringPage = page.toString();

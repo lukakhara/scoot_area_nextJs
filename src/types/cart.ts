@@ -1,13 +1,17 @@
-// types/cart.ts — the single shared type, imported by cartStore, AddToCartButton, and this page
-import type { Product } from "./product";
+import type { ProductType } from "./product";
 
-export type CartItem = {
+export interface CartItem {
   productId: string;
-  productType: Product["productType"];
-  title: string;
-  color?: string;
-  image?: string;
-  price: number;
-  oldPrice?: number;
+  productType: ProductType;
   quantity: number;
-};
+}
+
+// what the product endpoints return
+export interface ApiProduct {
+  id: string;
+  name: string;
+  images?: string[];
+  price: string | number;
+  discountPrice?: string | number | null;
+  color?: string | null;
+}

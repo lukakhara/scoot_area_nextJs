@@ -5,7 +5,7 @@ import {
   PART_GROUPS,
   SCOOTER_GROUPS,
 } from "./FilterPanel";
-import { ProductCard } from "../ProductCard";
+import { ProductCard } from "../cards/ProductCard";
 import type {
   Product,
   Scooter,
@@ -28,6 +28,7 @@ import {
   toSparePartCardProduct,
 } from "@/lib/mappers/product";
 import { Suspense } from "react";
+
 
 type PageType = "scooters" | "parts" | "accessories";
 
@@ -52,9 +53,9 @@ const FETCH_CONFIG: Record<
   PageType,
   { endpoint: string; map: (raw: any) => Product }
 > = {
-  scooters: { endpoint: "scooters", map: toScooterCardProduct },
-  accessories: { endpoint: "accessories", map: toAccessoryCardProduct },
-  parts: { endpoint: "parts", map: toSparePartCardProduct },
+  scooters: { endpoint: "api/scooters", map: toScooterCardProduct },
+  accessories: { endpoint: "api/accessories", map: toAccessoryCardProduct },
+  parts: { endpoint: "api/parts", map: toSparePartCardProduct },
 };
 
 export default async function ProductListingPage({
@@ -99,7 +100,7 @@ export default async function ProductListingPage({
     meta: PageMeta;
   };
 
-  console.log("rawItems", rawItems);
+ 
   items = rawItems.map(fetchConfig.map);
   meta = rawMeta;
 
@@ -126,7 +127,7 @@ export default async function ProductListingPage({
   };
 
   const config: PageConfig = { ...PAGE_CONFIG[pageType], items };
-  console.log("config", config);
+
 
   return (
     <div className="min-h-screen bg-background ">

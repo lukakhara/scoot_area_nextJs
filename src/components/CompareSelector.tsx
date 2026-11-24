@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { Plus } from "lucide-react";
 import { ScooterCompare } from "@/types/product";
@@ -14,6 +15,7 @@ export default function CompareSelector({
 }: {
   scooters: ScooterCompare[];
 }) {
+  const t = useTranslations("CompareSelector");
   const router = useRouter();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -40,8 +42,8 @@ export default function CompareSelector({
     <section className="mt-6 ">
       {/* Column headings (stay fixed above the scroll area) */}
       <div className="hidden grid-cols-[minmax(0,1fr)_140px_40px] items-center gap-4 border-b pb-3 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase sm:grid ">
-        <span>პროდუქტი</span>
-        <span>ფასი</span>
+        <span>{t("productColumn")}</span>
+        <span>{t("priceColumn")}</span>
         <span />
       </div>
 
@@ -60,7 +62,7 @@ export default function CompareSelector({
                 <div className="size-32">
                   <ProductCardImage
                     src={scooter.images[0]}
-                    alt={`${scooter.name}'s image`}
+                    alt={t("imageAlt", { name: scooter.name })}
                     width={128}
                     height={128}
                   />
@@ -80,7 +82,7 @@ export default function CompareSelector({
 
               <button
                 type="button"
-                aria-label="არჩევა"
+                aria-label={t("selectAria")}
                 aria-pressed={active}
                 disabled={disabled}
                 onClick={() => toggleProduct(scooter.id)}
@@ -103,7 +105,7 @@ export default function CompareSelector({
         disabled={!canCompare}
         className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border px-6 py-3.5 text-xs font-semibold uppercase transition-colors enabled:hover:border-primary enabled:hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <Plus className="size-4" /> შედარება
+        <Plus className="size-4" /> {t("compareButton")}
       </button>
     </section>
   );

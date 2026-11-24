@@ -42,7 +42,7 @@ export function HeroSection() {
           <source media="(min-width: 768px)" srcSet={image.desktop} />
           <Image
             src={image.mobile}
-            className="w-full h-auto object-cover xl:h-[1024px] "
+            className="w-full h-auto object-cover xl:h-[1024px] aspect-[3/4] sm:aspect-[4/3] lg:aspect-[16/10] 2xl:aspect-[16/9]"
             alt="item image"
             width={1440}
             height={1024}
@@ -70,14 +70,14 @@ export function HeroSection() {
                 <button
                   aria-label="წინა"
                   onClick={goPrev}
-                  className="rounded-full border md:border-[1.28px] border-white size-4 sm:size-9 flex items-center justify-center"
+                  className="rounded-full border md:border-[1.28px] border-white size-4 sm:size-9 flex items-center justify-center cursor-pointer hover:opacity-60"
                 >
                   <ChevronLeft className="size-2 sm:size-6" />
                 </button>
                 <button
                   aria-label="შემდეგი"
                   onClick={goNext}
-                  className="rounded-full border md:border-[1.28px] border-white size-4 sm:size-9 flex items-center justify-center"
+                  className="rounded-full border md:border-[1.28px] border-white size-4 sm:size-9 flex items-center justify-center cursor-pointer hover:opacity-60"
                 >
                   <ChevronRight className="size-2 sm:size-6" />
                 </button>

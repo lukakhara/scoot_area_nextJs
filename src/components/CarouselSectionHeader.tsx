@@ -1,4 +1,5 @@
-import { Brackets, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 interface CarouselSectionHeaderProps {
@@ -12,7 +13,7 @@ interface CarouselSectionHeaderProps {
   totalPages?: number;
 }
 
-export default function CarouselSectionHeader({
+export default  function CarouselSectionHeader({
   title,
   href,
   onPrev,
@@ -20,6 +21,9 @@ export default function CarouselSectionHeader({
   canGoPrev,
   canGoNext,
 }: CarouselSectionHeaderProps) {
+   const t = useTranslations("HomePage");
+
+
   return (
     <div className=" flex items-center justify-between gap-4">
       <h2 className="text-[24px] font-bold tracking-wide uppercase sm:text-[40px]">
@@ -30,14 +34,14 @@ export default function CarouselSectionHeader({
           href={href}
           className="text-[12px] md:text-[16px] text-[#888888] hover:text-primary"
         >
-          ყველას ნახვა
+          {t("seeAll")}
         </Link>
         <div className="flex gap-1.5 border-[#888888]">
           <button
             aria-label="წინა"
             onClick={onPrev}
             disabled={!canGoPrev}
-            className="rounded-full border p-1.5 hover:border-primary disabled:opacity-30 disabled:pointer-events-none"
+            className="rounded-full border p-1.5 hover:border-primary disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
           >
             <ChevronLeft className="size-3.5  sm:size-5" />
           </button>
@@ -45,7 +49,7 @@ export default function CarouselSectionHeader({
             aria-label="შემდეგი"
             onClick={onNext}
             disabled={!canGoNext}
-            className="rounded-full border p-1.5 hover:border-primary disabled:opacity-30 disabled:pointer-events-none"
+            className="rounded-full border p-1.5 hover:border-primary disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
           >
             <ChevronRight className="size-3.5 sm:size-5" />
           </button>

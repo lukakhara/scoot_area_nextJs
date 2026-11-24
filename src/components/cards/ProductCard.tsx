@@ -1,0 +1,226 @@
+// ProductCard.tsx — no "use client" needed, stays a Server Component
+import Link from "next/link";
+import { CircleCheck, Gauge, Repeat, Weight, Zap } from "lucide-react";
+import { Placeholder } from "../ui/Placeholder";
+import {
+  ProductUnits,
+  type Product,
+  type ScooterCardProduct,
+} from "../../types/product";
+import ProductCardImage from "../ui/ProductCardImage";
+import { CompareButton } from "../ui/CompareButton";
+import AddToCartButton from "../ui/AddToCartButton";
+import { getTranslations } from "next-intl/server";
+import { cn } from "@/lib/utils";
+import { getDiscountInfo } from "@/lib/pricing";
+
+const DETAIL_ROUTES: Record<Product["productType"], string> = {
+  scooter: "/scooters",
+  accessory: "/equiment-accessories",
+  parts: "/parts",
+};
+
+export async function ProductCard({ item }: { item: Product }) {
+  const isScooter = item.productType === "scooter";
+  const unitsT = await getTranslations("ProductListingPage.units");
+  const propertiesT = await getTranslations("ProductListingPage.productCard");
+  const units: ProductUnits = {
+    w: unitsT("w"),
+    kmH: unitsT("kmH"),
+    y: unitsT("y"),
+    km: unitsT("km"),
+    kg: unitsT("kg"),
+  };
+  // if passed item is scooter we create scooter specs in other situation we have empty scooter specs
+  const SCOOTER_SPECS: {
+    Icon: typeof Repeat;
+    label: string;
+    propertyName: keyof ScooterCardProduct;
+    unit?: string;
+  }[] = isScooter
+    ? [
+        {
+          Icon: Repeat,
+          label: propertiesT("engine"),
+          propertyName: "engine",
+          unit: units.w,
+        },
+        {
+          Icon: Gauge,
+          label: propertiesT("speed"),
+          propertyName: "maxSpeed",
+          unit: units.kmH,
+        },
+        {
+          Icon: Zap,
+          label: propertiesT("maxRange"),
+          propertyName: "maxRange",
+          unit: units.km,
+        },
+        {
+          Icon: Weight,
+          label: propertiesT("weight"),
+          propertyName: "weight",
+          unit: units.kg,
+        },
+        {
+          Icon: CircleCheck,
+          label: propertiesT("warranty"),
+          propertyName: "warranty",
+          unit: units.y,
+        },
+      ]
+    : [];
+
+  const detailHref = `${DETAIL_ROUTES[item.productType]}/${item.id}`;
+  const releaseYear = isScooter
+    ? new Date(item.releaseDate).getFullYear()
+    : undefined;
+
+  const { hasDiscount, finalPrice, discountPercent } = getDiscountInfo(item);
+
+  return (
+    <article className="flex h-full flex-col rounded-2xl bg-secondary p-4 ">
+      {/* image section ---------------------------- */}
+      <div className="relative overflow-hidden rounded-xl bg-card flex-1 ">
+        {item.images && item.images.length > 0 ? (
+          <Link
+            href={detailHref}
+            className="transition-colors hover:text-primary cursor-pointer group"
+          >
+            <ProductCardImage src={item.images[0]} alt={item.name} />
+          </Link>
+        ) : (
+          <Placeholder className="" label={item.name} />
+        )}
+
+        {item.discountPrice && (
+          <span className="absolute top-3 left-3 rounded-full bg-primary px-3 py-1.5 text-[9.8px] sm:text-[11.85px] text-primary-foreground uppercase ">
+            {discountPercent}% {unitsT("OFF")}
+          </span>
+        )}
+
+        {isScooter && releaseYear && (
+          <span className="absolute top-3 right-3 rounded-full  px-3 py-1 text-[9.8px] sm:text-[11.85px] border bg-white">
+            {releaseYear}
+          </span>
+        )}
+
+        {/* <div className="absolute right-0 bottom-0 gap-[3.27px] bg-secondary z-100 py-[6.3px] px-[10.34px] flex items-center justify-center border">
+          {[0, 1, 2, 3].map((i) => (
+            <span
+              key={i}
+              className={`size-[4.35px] sm:size-[5.27px] cursor-pointer hover:bg-[#c7c7c700] rounded-full ${i === 0 ? "bg-[#C7C7C7]" : "bg-[#E1E1E1]"}`}
+            />
+          ))}
+        </div> */}
+        <div className="absolute right-0 bottom-0 z-10 flex items-center justify-center gap-[3.27px] rounded-tl-xl bg-secondary py-[6.3px] px-[10.34px]">
+          {/* curve above the tab */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute right-0 bottom-full size-3 "
+            style={{
+              background:
+                "radial-gradient(circle at 0 0, transparent 15px, var(--secondary) 10.5px)",
+            }}
+          />
+          {/* curve left of the tab */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute right-full bottom-0 size-3 "
+            style={{
+              background:
+                "radial-gradient(circle at 0 0, transparent 12px, var(--secondary) 12.5px)",
+            }}
+          />
+
+          {[0, 1, 2, 3].map((i) => (
+            <span
+              key={i}
+              className={`size-[4.35px] sm:size-[5.27px] cursor-pointer rounded-full ${i === 0 ? "bg-[#C7C7C7]" : "bg-[#E1E1E1]"}`}
+            />
+          ))}
+        </div>
+      </div>
+      {/* image section ends ---------------------------- */}
+      <h3 className="mt-4 text-[13px] sm:text-[15.8px] font-bold tracking-wide uppercase">
+        <Link
+          href={detailHref}
+          className="transition-colors hover:text-primary"
+        >
+          {item.name}
+        </Link>
+      </h3>
+
+      <div
+        className={
+          isScooter
+            ? "mt-2 flex items-baseline justify-between gap-2 border-b border-[#B7B7B7] pb-3"
+            : "mt-2 flex items-baseline gap-2"
+        }
+      >
+        <div className="flex items-baseline gap-2">
+          {item.discountPrice && (
+            <span
+              className={`text-[13px] sm:text-[15.8px] ${item.discountPrice ? "text-[#EA2700] font-medium" : ""}`}
+            >
+              {item.discountPrice}₾
+            </span>
+          )}
+
+          <span
+            className={cn(
+              "text-[13px] sm:text-[15.8px] text-[#212121] ",
+              item.discountPrice ? "line-through" : "",
+            )}
+          >
+            {item.price}₾
+          </span>
+        </div>
+        {isScooter && item.installment && (
+          <span className="text-[10.89px] sm:text-[13.16px] text-[#606060]">
+            {item.installment}
+          </span>
+        )}
+      </div>
+
+      {isScooter && (
+        <ul className="mt-3 space-y-1.5 text-[10.89px] sm:text-[13.6px] text-[#606060]">
+          {SCOOTER_SPECS.map(({ Icon, label, propertyName, unit }) => (
+            <li key={label} className="flex items-center gap-2 justify-between">
+              <div className="flex gap-2 items-center">
+                <Icon className="size-3 shrink-0" />
+                {label}
+              </div>
+
+              <div className="text-black">
+                {item[propertyName]}
+                {unit ? ` ${unit}` : ""}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div
+        className={`grid grid-cols-2  gap-2 pt-4 ${isScooter ? "" : "grid-cols-1! "}  `}
+      >
+        {isScooter && (
+          <CompareButton
+            variant="addToCartCompare"
+            href={`/compare-products/${item.id}`}
+          />
+        )}
+        <AddToCartButton
+          item={{
+            productId: item.id,
+            productType: item.productType,
+            quantity: 1,
+          }}
+        />
+      </div>
+    </article>
+  );
+}
+
+export default ProductCard;

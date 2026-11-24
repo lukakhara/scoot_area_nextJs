@@ -27,6 +27,7 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ComparePopover, { CompareProduct } from "@/components/ComparePopover";
 import { Scooter } from "@/types/product";
+import Image from 'next/image';
 
 type TFn = Awaited<ReturnType<typeof useTranslations>>;
 
@@ -133,7 +134,6 @@ export default function CompareClient({
 
   const GRID =
     "grid grid-cols-[minmax(60px,1fr)_repeat(var(--cols),minmax(120px,1fr))_190px] md:grid-cols-[minmax(180px,1fr)_repeat(var(--cols),minmax(150px,1fr))_120px] items-center";
-  console.log("selectedIds", selectedIds);
 
   // popup list: everything except the scooter already shown
   const popupProducts: CompareProduct[] = allScooters
@@ -213,11 +213,12 @@ export default function CompareClient({
                 s ? (
                   <div key={s.id} className="flex min-w-0 items-center gap-3  ">
                     {s.images?.[0] ? (
-                      // eslint-disable-next-line @next/next/no-img-element
                       <>
-                        <img
+                        <Image
                           src={s.images[0]}
                           alt={s.name}
+                          width={80}
+                          height={80}
                           className="size-12 shrink-0 rounded-lg object-cover "
                         />
                       </>

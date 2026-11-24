@@ -32,7 +32,6 @@ export function SortButton({
   }
 
   const isScootersPage = pathname.includes("scooter");
-  console.log("is scooter page=", isScootersPage);
 
   const sortOptions = [
     { param: "price", text: t("priceLowToHigh") },

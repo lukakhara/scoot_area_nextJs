@@ -1,12 +1,15 @@
 "use client";
 import { useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import { Menu, ShoppingCart, X } from "lucide-react";
+import { Menu, ShoppingCart, X, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CartPopover from "@/components/CartPopover";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useCartStore } from "@/store/cartStore";
+import { useHydrated } from "@/hooks/useHydrated";
+import { useShallow } from "zustand/react/shallow";
+import { cartKey, unitPrice, useCartProducts } from "@/hooks/useCartProducts";
 
 export default function Header({
   variant = "overlay",
@@ -44,12 +47,39 @@ export default function Header({
     { label: t("contact"), to: "/contact" },
   ];
 
-  const count = useCartStore((state) =>
-    state.items.reduce((n, i) => n + i.quantity, 0),
-  );
-  const total = useCartStore((state) =>
-    state.items.reduce((n, i) => n + i.quantity * i.price, 0),
-  );
+  const items = useCartStore((state) => state.items);
+  const hydrated = useHydrated();
+
+  // number of items in the cart (quantity is the only thing needed from the store)
+  const count = items.reduce((n, i) => n + i.quantity, 0);
+
+  // price comes from the fetched products, not from the store
+  const { products } = useCartProducts(items);
+
+  const priceToPay = items.reduce((sum, item) => {
+    const product = products[cartKey(item)];
+    return product ? sum + unitPrice(product) * item.quantity : sum;
+  }, 0);
+
+  // const hydrated = useHydrated();
+
+  // const { items } = useCartStore(
+  //   useShallow((state) => ({
+  //     items: state.items,
+  //   })),
+  // );
+  // const { products, loading, error } = useCartProducts(items);
+
+  // const lines = items.map((item) => ({
+  //   item,
+  //   product: products[cartKey(item)],
+  // }));
+
+  // const priceToPay = lines.reduce(
+  //   (sum, { item, product }) =>
+  //     product ? sum + unitPrice(product) * item.quantity : sum,
+  //   0,
+  // );
 
   return (
     <header
@@ -111,19 +141,29 @@ export default function Header({
             aria-label="ძებნა"
             className="hidden transition-opacity hover:opacity-70 sm:block"
           ></button>
-        
-            <button
-              onClick={() => setCartOpen((v) => !v)}
-              aria-expanded={cartOpen}
-              className="relative flex items-center gap-2 text-xs  text-[14px] font-medium cursor-pointer"
-            >
-              <ShoppingCart className="size-5" />
-              <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
-                {count}
-              </span>
-              {total.toFixed(2)}₾
-            </button>
-         
+
+          <button
+            onClick={() => setCartOpen((v) => !v)}
+            aria-expanded={cartOpen}
+            className="relative flex items-center gap-2 text-xs  text-[14px] font-medium cursor-pointer"
+          >
+            <ShoppingCart className="size-5" />
+            <span className="absolute -top-2 left-4 flex size-4 items-center justify-center rounded-full bg-sale text-[9px] text-primary-foreground ">
+              {hydrated ? count : 0}
+            </span>
+            {hydrated ? priceToPay.toFixed(2) : "0.00"}₾
+          </button>
+
+          <Link
+            href="/login"
+            className={cn(
+              "hidden size-8 rounded-full sm:flex items-center justify-center",
+              solid ? "bg-foreground/15" : "bg-primary-foreground/20",
+            )}
+            aria-label="Account"
+          >
+            <User size={20} color="black"/>
+          </Link>
 
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
           <div
@@ -147,13 +187,13 @@ export default function Header({
 
           <button
             aria-label="მენიუ"
-            className="xl:hidden"
+            className="xl:hidden cursor-pointer hover:scale-110"
             onClick={() => setOpen((v) => !v)}
           >
             {open ? (
-              <X className="size-6" />
+              <X className="size-6 " />
             ) : (
-              <Menu className="size-6" strokeWidth={1} />
+              <Menu className="size-6  " strokeWidth={1} />
             )}
           </button>
         </div>
