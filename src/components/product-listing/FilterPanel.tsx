@@ -16,7 +16,7 @@ export const ACCESSORY_GROUPS: Group[] = [
   {
     titleKey: "brand",
     type: "radio",
-    optionKeys: ["Ninebot", "Kukirin", "Xiaomi", "Segway"],
+    optionKeys: ["GUB", "Voltz", "Kryptonite", "Scorpion","Segway"],
   },
   {
     titleKey: "category",
@@ -50,7 +50,7 @@ export const PART_GROUPS: Group[] = [
   {
     titleKey: "brand",
     type: "radio",
-    optionKeys: ["Ninebot", "Kukirin", "Xiaomi", "Segway"],
+    optionKeys: ["CST", "Voltz", "Segway-Ninebot", "Universal","Dualtron"],
   },
   {
     titleKey: "category",
@@ -77,7 +77,7 @@ export const SCOOTER_GROUPS: Group[] = [
   {
     titleKey: "brand",
     type: "checkbox",
-    optionKeys: ["Ninebot", "Kukirin", "Xiaomi", "Segway"],
+    optionKeys: ["Kaabo", "Inokim", "Xiaomi", "E-Twow","Apollo"],
   },
   {
     titleKey: "enginePower",
