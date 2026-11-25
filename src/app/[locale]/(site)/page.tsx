@@ -27,8 +27,7 @@ export default async function Home() {
             alt="item image"
             width={1296}
             height={304}
-            priority
-           
+            sizes="(min-width: 768px) calc(100vw - 144px), calc(100vw - 31px)"
           />
 
           <div className="absolute inset-0 flex items-end pl-[15px] pb-[8px] md:pl-[30px] md:pb-[19px]">
@@ -70,6 +69,7 @@ export default async function Home() {
                   alt="service image"
                   width={853}
                   height={411}
+                  sizes="(min-width: 1024px) 60vw, (min-width: 768px) calc(100vw - 144px), calc(100vw - 31px)"
                 />
                 <span className="flex items-center gap-3 absolute bottom-0 left-0 rounded-tr-3xl bg-secondary py-2 pr-6 text-xl font-medium text-foreground/80">
                   <div className="size-7.5 bg-[#2C3E50] flex flex-shrink-0 rounded-full items-center justify-center">
