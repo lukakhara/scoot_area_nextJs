@@ -33,12 +33,7 @@ export default async function RootLayout({
 
   const messages = await getMessages();
 
-  const clientMessages = {
-    HomePage: messages.HomePage,
-    Header:messages.Header,
-    Cart:messages.Cart
-    // other namespaces used by "use client" components
-  };
+ const { BlogDetailPage, About, Repair, ...clientMessages } = messages;
 
   return (
     <html lang={locale} className={`${notoSansGeorgian.variable} antialiased`}>
