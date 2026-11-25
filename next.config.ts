@@ -15,7 +15,6 @@ const nextConfig: NextConfig = {
         pathname: "/us6agyt1/**",
       },
     ],
-    formats: ["image/avif", "image/webp"],
   },
   async rewrites() {
     return [
