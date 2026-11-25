@@ -5,6 +5,7 @@ import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Eye, EyeOff, Lock } from "lucide-react";
+import { API_URL } from "@/lib/config";
 
 type Values = {
   email: string;

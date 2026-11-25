@@ -75,7 +75,7 @@ export async function ProductCard({ item }: { item: Product }) {
     : [];
 
   const detailHref = `${DETAIL_ROUTES[item.productType]}/${item.id}`;
-  console.log("detailHref=",detailHref)
+ 
   const releaseYear = isScooter
     ? new Date(item.releaseDate).getUTCFullYear()
     : undefined;
