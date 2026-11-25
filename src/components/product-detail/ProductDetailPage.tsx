@@ -23,6 +23,8 @@ import ProductCardImage from "../ui/ProductCardImage";
 import { getDiscountInfo } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { AddToCartButtonDetailedPage, BuyNowButton } from "../ui/AddToCartButton";
+import Link from "next/link";
 
 type PageType = "scooter" | "accessory" | "parts";
 
@@ -43,15 +45,27 @@ function getScooterSpecs(
       label: t("specs.maxRange"),
       value: `${scooter.maxRange} ${units.km}`,
     },
-    { Icon: Weight, label: t("specs.weight"), value: `${scooter.weight} ${units.kg}` },
+    {
+      Icon: Weight,
+      label: t("specs.weight"),
+      value: `${scooter.weight} ${units.kg}`,
+    },
     {
       Icon: CalendarDays,
       label: t("specs.releaseDate"),
       value: String(new Date(scooter.releaseDate).getFullYear()),
     },
     { Icon: CircleCheck, label: t("specs.warranty"), value: scooter.warranty },
-    { Icon: Mountain, label: t("specs.inclineAngle"), value: scooter.inclineAngle },
-    { Icon: Timer, label: t("specs.chargingTime"), value: scooter.chargingTime },
+    {
+      Icon: Mountain,
+      label: t("specs.inclineAngle"),
+      value: scooter.inclineAngle,
+    },
+    {
+      Icon: Timer,
+      label: t("specs.chargingTime"),
+      value: scooter.chargingTime,
+    },
     {
       Icon: Package,
       label: t("specs.maxRiderWeight"),
@@ -67,7 +81,11 @@ function getScooterSpecs(
       label: t("specs.motorCount"),
       value: String(scooter.motorCount),
     },
-    { Icon: CircleCheck, label: t("specs.wheelSize"), value: scooter.wheelSize },
+    {
+      Icon: CircleCheck,
+      label: t("specs.wheelSize"),
+      value: scooter.wheelSize,
+    },
   ];
 }
 
@@ -159,18 +177,32 @@ export default async function ProductDetailPage({
             <div className="mt-6 flex flex-wrap items-stretch gap-3 border-b border-b-[#EA6200] pb-6 lg:mt-8 lg:gap-5">
               <QuantitySelector isScooter={isScooter} />
 
-              <button
+              {/* <button
                 type="button"
                 className="flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]"
               >
                 {t("addToCart")}
               </button>
-              <button
+            */}
+              <AddToCartButtonDetailedPage
+                item={{
+                  productId: product.id,
+                  productType: pageType,
+                  quantity: 1,
+                }}
+              />
+              <BuyNowButton item={{
+                  productId: product.id,
+                  productType:pageType,
+                  quantity: 1,
+                }}/>
+              {/* <Link
+                href={"/cart"}
                 type="button"
                 className="flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]"
               >
                 {t("buyNow")}
-              </button>
+              </Link> */}
             </div>
 
             {isScooter && units ? (

@@ -2,10 +2,16 @@
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type ActionButtonVariant = "ghost" | "outline" | "notHeader" | "filter" | "addToCartCompare";
+type ActionButtonVariant =
+  | "ghost"
+  | "outline"
+  | "notHeader"
+  | "filter"
+  | "addToCartCompare"
+  | "addToCart";
 
 interface ActionButtonProps {
-  icon: LucideIcon;
+  icon?: LucideIcon;
   label?: string; // now optional, for icon-only usages
   onClick?: () => void;
   compact?: boolean;
@@ -16,9 +22,13 @@ interface ActionButtonProps {
 const variantStyles: Record<ActionButtonVariant, string> = {
   ghost: "bg-[#F5F5F5]",
   outline: "bg-[#F5F5F5] border border-[#1a1a1a] px-[37.5px]! py-3",
-  notHeader: "text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121]" ,
-  filter:"cursor-default",
-  addToCartCompare:'text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121] active:scale-95  w-full ',
+  notHeader:
+    "text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121]",
+  filter: "cursor-default",
+  addToCartCompare:
+    "text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121] active:scale-95  w-full ",
+  addToCart:
+    "flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]",
 };
 
 export function ActionButton({
@@ -41,12 +51,15 @@ export function ActionButton({
         active && "border-primary text-primary bg-primary/10",
       )}
     >
-      <Icon
-        className={cn(
-          "size-[13.06px] sm:size-[15.08px] shrink-0",
-           variant !== "notHeader" && "size-4! sm:size-6!",
-        )}
-      />
+      {Icon && (
+        <Icon
+          className={cn(
+            "size-[13.06px] sm:size-[15.08px] shrink-0",
+            variant !== "notHeader" && "size-4! sm:size-6!",
+          )}
+        />
+      )}
+
       {label}
     </button>
   );

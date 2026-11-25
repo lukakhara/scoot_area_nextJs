@@ -72,7 +72,8 @@
       "filter": "Filter",
       "sort": "Sort",
       "compare": "Compare",
-      "addToCart": "Add to cart"
+      "addToCart": "Add to cart",
+      "buyNow": "Buy now"
     },
     "pagination": {
       "pages": "Pages",
