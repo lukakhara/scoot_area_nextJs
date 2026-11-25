@@ -28,6 +28,7 @@ export default async function Home() {
             width={1296}
             height={304}
             priority
+           
           />
 
           <div className="absolute inset-0 flex items-end pl-[15px] pb-[8px] md:pl-[30px] md:pb-[19px]">

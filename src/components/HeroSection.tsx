@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { getImageProps } from "next/image";
 
 const heroImages = [
   {
@@ -29,27 +30,52 @@ export function HeroSection() {
   };
 
   return (
-    <section className=" grid *:col-start-1 *:row-start-1 ">
-      {heroImages.map((image, index) => (
-        <picture
-          key={index}
-          className={`col-start-1 row-start-1 transition-opacity duration-500  ${
-            index === activeIndex
-              ? "opacity-100 z-10"
-              : "opacity-0 z-0 pointer-events-none"
-          }`}
-        >
-          <source media="(min-width: 768px)" srcSet={image.desktop} />
-          <Image
-            src={image.mobile}
-            className="w-full h-auto object-cover xl:h-[1024px] aspect-[3/4] sm:aspect-[4/3] lg:aspect-[16/9] 2xl:aspect-[16/9]"
-            alt="item image"
-            width={1440}
-            height={1024}
-            priority={index === 0}
-          />
-        </picture>
-      ))}
+    <section className="grid *:col-start-1 *:row-start-1">
+      {heroImages.map((image, index) => {
+        const isFirst = index === 0;
+        const common = {
+          alt: "item image",
+          sizes: "100vw",
+          quality: 70,
+          priority: isFirst,
+        };
+
+        const {
+          props: { srcSet: desktopSrcSet },
+        } = getImageProps({
+          ...common,
+          src: image.desktop,
+          width: 1440,
+          height: 1024,
+        });
+
+        const {
+          props: { srcSet: mobileSrcSet, ...imgProps },
+        } = getImageProps({
+          ...common,
+          src: image.mobile,
+          width: 768,
+          height: 1024,
+        });
+
+        return (
+          <picture
+            key={index}
+            className={`col-start-1 row-start-1 transition-opacity duration-500 ${
+              index === activeIndex
+                ? "opacity-100 z-10"
+                : "opacity-0 z-0 pointer-events-none"
+            }`}
+          >
+            <source media="(min-width: 768px)" srcSet={desktopSrcSet} />
+            <source media="(max-width: 767px)" srcSet={mobileSrcSet} />
+            <img
+              {...imgProps}
+              className="w-full h-auto object-cover xl:h-[1024px] aspect-[3/4] sm:aspect-[4/3] lg:aspect-[16/9] 2xl:aspect-[16/9]"
+            />
+          </picture>
+        );
+      })}
 
       <div className="w-full flex flex-col justify-end bg-gradient-to-t from-brand-ink/95 via-brand-ink/40 to-transparent pl-4 pr-5.5 pb-10 md:px-18 z-20  ">
         <div className="items-center w-full flex  xl:max-w-[1400px] 2xl:max-w-full h-full justify-end flex-col gap-4 text-primary-foreground">
