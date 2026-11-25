@@ -67,7 +67,7 @@ export default function Footer() {
             src="/logoMobile.png"
             alt="Scoot Area logo"
             width={76}
-            height={58}
+            height={76}
             className="block h-auto w-[76px] object-contain md:hidden"
           />
           <Image

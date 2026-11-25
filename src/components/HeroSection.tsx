@@ -1,10 +1,7 @@
-"use client";
-
-import { useState } from "react";
-import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+// components/HeroSection.tsx  (no "use client")
 import { getImageProps } from "next/image";
+import { getTranslations } from "next-intl/server";
+import { HeroControls } from "./HeroControls";
 
 const heroImages = [
   {
@@ -17,17 +14,8 @@ const heroImages = [
   },
 ];
 
-export function HeroSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const t = useTranslations("HomePage.HeroSection");
-
-  const goPrev = () => {
-    setActiveIndex((prev) => (prev === 0 ? heroImages.length - 1 : prev - 1));
-  };
-
-  const goNext = () => {
-    setActiveIndex((prev) => (prev === heroImages.length - 1 ? 0 : prev + 1));
-  };
+export async function HeroSection() {
+  const t = await getTranslations("HomePage.HeroSection");
 
   return (
     <section className="grid *:col-start-1 *:row-start-1">
@@ -38,6 +26,7 @@ export function HeroSection() {
           sizes: "100vw",
           quality: 70,
           priority: isFirst,
+          fetchPriority: isFirst ? ("high" as const) : ("low" as const),
         };
 
         const {
@@ -61,11 +50,9 @@ export function HeroSection() {
         return (
           <picture
             key={index}
-            className={`col-start-1 row-start-1 transition-opacity duration-500 ${
-              index === activeIndex
-                ? "opacity-100 z-10"
-                : "opacity-0 z-0 pointer-events-none"
-            }`}
+            data-hero-slide
+            data-active={isFirst}
+            className="col-start-1 row-start-1 z-0 opacity-0 pointer-events-none transition-opacity duration-500 data-[active=true]:z-10 data-[active=true]:opacity-100 data-[active=true]:pointer-events-auto"
           >
             <source media="(min-width: 768px)" srcSet={desktopSrcSet} />
             <source media="(max-width: 767px)" srcSet={mobileSrcSet} />
@@ -77,37 +64,19 @@ export function HeroSection() {
         );
       })}
 
-      <div className="w-full flex flex-col justify-end bg-gradient-to-t from-brand-ink/95 via-brand-ink/40 to-transparent pl-4 pr-5.5 pb-10 md:px-18 z-20  ">
-        <div className="items-center w-full flex  xl:max-w-[1400px] 2xl:max-w-full h-full justify-end flex-col gap-4 text-primary-foreground">
-          <div className="flex w-full justify-between  flex-wrap flex-col sm:gap-6">
-            <h1
-              className="max-w-2xl font-bold tracking-tight uppercase text-[27px] lg:text-[58px] xl:text-[64px]
-    md:max-w-[1029px]"
-            >
+      <div className="z-20 flex w-full flex-col justify-end bg-gradient-to-t from-brand-ink/95 via-brand-ink/40 to-transparent pl-4 pr-5.5 pb-10 md:px-18">
+        <div className="flex h-full w-full flex-col items-center justify-end gap-4 text-primary-foreground xl:max-w-[1400px] 2xl:max-w-full">
+          <div className="flex w-full flex-col flex-wrap justify-between sm:gap-6">
+            <h1 className="max-w-2xl text-[27px] font-bold uppercase tracking-tight md:max-w-[1029px] lg:text-[58px] xl:text-[64px]">
               {t("title")}
             </h1>
             <div className="flex items-end justify-between">
-              <h1 className="flex-1 min-w-[200px] text-[16px] lg:text-[33px] xl:text-[36px]">
+              <p className="min-w-[200px] flex-1 text-[16px] lg:text-[33px] xl:text-[36px]">
                 {t.rich("subtitle", {
                   br: () => <br className="block md:hidden" />,
                 })}
-              </h1>
-              <div className="gap-2 flex  shrink-0">
-                <button
-                  aria-label="წინა"
-                  onClick={goPrev}
-                  className="rounded-full border md:border-[1.28px] border-white size-4 sm:size-9 flex items-center justify-center cursor-pointer hover:opacity-60"
-                >
-                  <ChevronLeft className="size-2 sm:size-6" />
-                </button>
-                <button
-                  aria-label="შემდეგი"
-                  onClick={goNext}
-                  className="rounded-full border md:border-[1.28px] border-white size-4 sm:size-9 flex items-center justify-center cursor-pointer hover:opacity-60"
-                >
-                  <ChevronRight className="size-2 sm:size-6" />
-                </button>
-              </div>
+              </p>
+              <HeroControls count={heroImages.length} />
             </div>
           </div>
         </div>
