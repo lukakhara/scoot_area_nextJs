@@ -24,7 +24,7 @@ export default async function ScooterDetailRoute({
     throw new Error(`Failed to fetch scooter ${id}: ${res.status}`);
   }
 
-  const { data: scooterData, } = (await res.json()) as { data: ScooterApi };
+  const { data: scooterData } = (await res.json()) as { data: ScooterApi };
 
 
   // Similar scooters — simple approach: fetch a small page, exclude current id

@@ -39,16 +39,21 @@ export function ActionButton({
   variant = "ghost",
   active = false,
 }: ActionButtonProps) {
+   const hasOwnSizing = variant === "addToCart";
+
+
   return (
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={cn(
-        "flex items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold capitalize cursor-pointer ",
+       className={cn(
+        "flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold capitalize",
+        compact
+          ? "lg:hidden"
+          : !hasOwnSizing && "lg:bg-transparent lg:px-0 lg:text-lg",
+        onClick && "hover:bg-[#EAEAEA]",
         variantStyles[variant],
-        onClick ? "hover:bg-[#EAEAEA] cursor-pointer " : "",
-        compact ? "lg:hidden" : "lg:bg-transparent lg:px-0 lg:text-lg",
-        active && "border-primary text-primary bg-primary/10",
+        active && "border-primary bg-primary/10 text-primary",
       )}
     >
       {Icon && (

@@ -4,7 +4,7 @@ import { ActionButton } from "./ActionButton";
 import { ShoppingBasket } from "lucide-react";
 import type { CartItem } from "@/types/cart";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
+import { useRouter } from "@/i18n/navigation";
 
 export default function AddToCartButton({ item }: { item: CartItem }) {
   const addItem = useCartStore((state) => state.addItem);
@@ -34,13 +34,15 @@ export function AddToCartButtonDetailedPage({ item }: { item: CartItem }) {
 export function BuyNowButton({ item }: { item: CartItem }) {
   const addItem = useCartStore((state) => state.addItem);
   const t = useTranslations("actions");
+  const router = useRouter();
   return (
-    <Link href={"/cart"}>
-      <ActionButton
-        variant="addToCart"
-        label={t("buyNow")}
-        onClick={() => addItem(item)}
-      />
-    </Link>
+    <ActionButton
+      variant="addToCart"
+      label={t("buyNow")}
+      onClick={() => {
+        (addItem(item),
+         router.push("/cart"));
+      }}
+    />
   );
 }
