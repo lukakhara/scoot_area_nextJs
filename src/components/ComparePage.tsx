@@ -109,7 +109,7 @@ export default function ComparePage() {
             ))}
           </ul>
 
-          <button className="mt-8 flex w-full items-center justify-center gap-2 rounded-full border px-6 py-3.5 text-xs font-semibold uppercase transition-colors hover:border-primary hover:text-primary">
+          <button className="mt-8 flex w-full items-center justify-center gap-2 rounded-full border px-6 py-3.5 text-xs font-semibold uppercase transition-colors hover:border-primary hover:text-primary ">
             <Plus className="size-4" /> შედარება
           </button>
         </section>

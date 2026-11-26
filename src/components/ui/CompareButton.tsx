@@ -4,7 +4,7 @@ import { ActionButton } from "@/components/ui/ActionButton";
 import { Shuffle } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 
-type ActionButtonVariant = "ghost" | "outline" | "notHeader" | "addToCartCompare";
+type ActionButtonVariant = "ghost" | "outline" | "notHeader" | "addToCartCompare"| "iconButton";
 
 interface CompareButtonProps {
   onClick?: () => void;
@@ -29,6 +29,30 @@ export function CompareButton({
     <ActionButton 
       icon={Shuffle}
       label={showLabel ? t("compare") : undefined}
+      onClick={onClick}
+      compact={compact}
+      variant={variant}
+      active={active}
+    />
+  );
+
+  return href ? <Link href={href} >{button}</Link> : button;
+}
+
+export function CompareButtonMobile({
+  onClick,
+  compact = false,
+  variant = "outline",
+  href,
+  active = false,
+  showLabel = true,
+}: CompareButtonProps) {
+  const t = useTranslations("actions");
+
+  const button = (
+    <ActionButton 
+      icon={Shuffle}
+      label={undefined}
       onClick={onClick}
       compact={compact}
       variant={variant}

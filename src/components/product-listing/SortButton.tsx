@@ -49,7 +49,7 @@ export function SortButton({
   const currentSort = searchParams.get("sort") ?? sortOptions[0].param;
 
   return (
-    <div className="relative">
+    <div className="relative text-[#606060]">
       <ActionButton
         icon={ListFilter}
         label={t("sort")}
@@ -57,7 +57,7 @@ export function SortButton({
       />
 
       {showSortDropdown && (
-        <ul className="bg-white border border-gray-400 rounded-sm flex flex-col justify-center gap-2  absolute z-999 py-2 text-nowrap  left-1/2 -translate-x-1/2">
+        <ul className="bg-white border border-gray-400 rounded-sm flex flex-col justify-center gap-2  absolute z-999 py-2 text-nowrap  left-1/2 -translate-x-1/2 ">
           {sortOptions.map((item, i) => (
             <li
               key={item.text}

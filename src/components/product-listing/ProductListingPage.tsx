@@ -104,8 +104,8 @@ export default async function ProductListingPage({
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="flex flex-col w-full pr-3.75 pl-4 pt-10 pb-20 md:pt-20 md:px-18 md:pb-30">
-        <div className="flex flex-col gap-4">
+      <main className="flex flex-col w-full pr-3.75 pl-4 pt-10 pb-20 md:pt-20 md:px-18 md:pb-30 ">
+        <div className="flex flex-col gap-4 ">
           {config.headerActions ? (
             <div className="flex items-center justify-between">
               <h1 className="max-w-xl text-[1.5rem] font-bold tracking-tight uppercase sm:text-[40px]">
@@ -122,17 +122,17 @@ export default async function ProductListingPage({
           )}
 
           {config.description && (
-            <div className="mt-6 w-full space-y-4 text-[0.875rem] text-muted-foreground sm:text-[20px]">
+            <div className="mt-6 w-full space-y-4 text-[0.875rem] text-muted-foreground sm:text-[20px] ">
               {config.description.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}
             </div>
           )}
-
-          <FilterToolbar haveFilterToolbarOnTop={config.headerActions} />
         </div>
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8">
+        <FilterToolbar haveFilterToolbarOnTop={config.headerActions} />
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:mt-8 ">
           <Suspense>
             <FilterPanel groups={config.filterGroups} />
           </Suspense>

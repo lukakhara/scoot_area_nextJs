@@ -8,7 +8,8 @@ type ActionButtonVariant =
   | "notHeader"
   | "filter"
   | "addToCartCompare"
-  | "addToCart";
+  | "addToCart"
+  | "iconButton";
 
 interface ActionButtonProps {
   icon?: LucideIcon;
@@ -21,7 +22,9 @@ interface ActionButtonProps {
 
 const variantStyles: Record<ActionButtonVariant, string> = {
   ghost: "bg-[#F5F5F5]",
-  outline: "bg-[#F5F5F5] border border-[#1a1a1a] px-[37.5px]! py-3",
+  iconButton: "bg-[#F5F5F5] border border-[#1a1a1a] p-[5.6px] border-[#606060]",
+  outline:
+    "bg-[#F5F5F5] border border-[#1a1a1a] px-[37.5px]! py-3 border-[#606060]",
   notHeader:
     "text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121]",
   filter: "cursor-default",
@@ -39,14 +42,13 @@ export function ActionButton({
   variant = "ghost",
   active = false,
 }: ActionButtonProps) {
-   const hasOwnSizing = variant === "addToCart";
-
+  const hasOwnSizing = variant === "addToCart";
 
   return (
     <button
       onClick={onClick}
       aria-pressed={active}
-       className={cn(
+      className={cn(
         "flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold capitalize",
         compact
           ? "lg:hidden"

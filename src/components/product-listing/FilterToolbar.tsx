@@ -1,7 +1,7 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { FilterButton } from "./FilterButton";
 import { SortButton } from "./SortButton";
-import { CompareButton } from "../ui/CompareButton";
+import { CompareButton, CompareButtonMobile } from "../ui/CompareButton";
 import { cn } from "@/lib/utils";
 
 const FilterToolbar = ({
@@ -12,8 +12,8 @@ const FilterToolbar = ({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-3 w-full ",
-        haveFilterToolbarOnTop ? "mt-6 lg:mt-8" : "mt-10 pb-2",
+        "flex items-center justify-between gap-2 md:gap-3 w-full text-[#606060] ",
+        haveFilterToolbarOnTop ? "mt-6 lg:mt-8" : "mt-10 pb-2 ",
       )}
     >
       <Suspense fallback={null}>
@@ -22,9 +22,10 @@ const FilterToolbar = ({
         ) : (
           <>
             <FilterButton />
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-2 md:gap-8">
               <SortButton />
-              <CompareButton href="/compare" />
+              <div className="hidden md:flex"><CompareButton href="/compare" /></div>
+               <div className="md:hidden flex"><CompareButtonMobile href="/compare" variant="iconButton"/></div>
             </div>
           </>
         )}

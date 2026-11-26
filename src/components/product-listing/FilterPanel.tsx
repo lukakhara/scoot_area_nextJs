@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useFilterStore } from "@/store/filterStore";
 
 export type Group = {
   titleKey: string;
@@ -16,7 +17,7 @@ export const ACCESSORY_GROUPS: Group[] = [
   {
     titleKey: "brand",
     type: "radio",
-    optionKeys: ["GUB", "Voltz", "Kryptonite", "Scorpion","Segway"],
+    optionKeys: ["GUB", "Voltz", "Kryptonite", "Scorpion", "Segway"],
   },
   {
     titleKey: "category",
@@ -50,7 +51,7 @@ export const PART_GROUPS: Group[] = [
   {
     titleKey: "brand",
     type: "radio",
-    optionKeys: ["CST", "Voltz", "Segway-Ninebot", "Universal","Dualtron"],
+    optionKeys: ["CST", "Voltz", "Segway-Ninebot", "Universal", "Dualtron"],
   },
   {
     titleKey: "category",
@@ -77,7 +78,7 @@ export const SCOOTER_GROUPS: Group[] = [
   {
     titleKey: "brand",
     type: "checkbox",
-    optionKeys: ["Kaabo", "Inokim", "Xiaomi", "E-Twow","Apollo"],
+    optionKeys: ["Kaabo", "Inokim", "Xiaomi", "E-Twow", "Apollo"],
   },
   {
     titleKey: "enginePower",
@@ -123,56 +124,30 @@ export const SCOOTER_GROUPS: Group[] = [
   },
 ];
 
-function FilterGroup({ group }: { group: Group }) {
-  const [open, setOpen] = useState(true);
-  const t = useTranslations("FilterPanel");
+const DEBOUNCE_MS = 400;
 
-  const pathname = usePathname(); // for /en/scooters?sort=price&page=2 we get /scooters
-  const searchParams = useSearchParams(); // ?sort=price&page=2  const sort = searchParams.get("sort");
-  const router = useRouter(); // moves us to url router.push("/scooters?sort=rating");
-
-  function updateFilter(
+function FilterGroup({
+  group,
+  params,
+  onToggle,
+}: {
+  group: Group;
+  params: string;
+  onToggle: (
     property: string,
     value: string,
     type: "checkbox" | "radio",
-  ) {
-    const params = new URLSearchParams(searchParams.toString()); // clone, don't mutate
+  ) => void;
+}) {
+  const [open, setOpen] = useState(true);
+  const t = useTranslations("FilterPanel");
 
-    if (type === "radio") {
-      // single-select: clicking the active option clears it, clicking a different one replaces it
-      const existing = params.get(property);
-      if (existing === value) {
-        params.delete(property);
-      } else {
-        params.set(property, value);
-      }
-    } else {
-      // multi-select: comma-separated list under one key
-      const existing = params.get(property);
-      const values = existing ? existing.split(",") : [];
-
-      if (values.includes(value)) {
-        // already selected -> remove (toggle off)
-        const next = values.filter((v) => v !== value);
-        next.length > 0
-          ? params.set(property, next.join(","))
-          : params.delete(property);
-      } else {
-        // not selected -> add
-        params.set(property, [...values, value].join(","));
-      }
-    }
-
-    params.set("page", "1"); // reset pagination whenever a filter changes
-    router.push(`${pathname}?${params.toString()}`);
-  }
-
-  const currentValues = (searchParams.get(group.titleKey) ?? "")
+  const currentValues = (new URLSearchParams(params).get(group.titleKey) ?? "")
     .split(",")
     .filter(Boolean);
 
   return (
-    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121]  p-4  ">
+    <div className="rounded-2xl bg-[#F5F5F5] text-[#212121]  p-4 ">
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-3 border-b-[0.5px] border-[#606060] pb-2 text-left text-base font-normal uppercase text-[20px] text-[#212121] "
@@ -193,11 +168,9 @@ function FilterGroup({ group }: { group: Group }) {
                   <input
                     type={group.type}
                     name={group.titleKey}
-                    checked={isChecked}
+                    checked={currentValues.includes(opt)}
                     onChange={() => {}}
-                    onClick={() =>
-                      updateFilter(group.titleKey, opt, group.type)
-                    }
+                    onClick={() => onToggle(group.titleKey, opt, group.type)}
                     className={`size-4 shrink-0 appearance-none border border-muted-foreground/60  hover:opacity-90 hover:cursor-pointer  ${
                       group.type === "radio" ? "rounded-full" : "rounded-[3px] "
                     } checked:border-primary checked:bg-primary`}
@@ -220,16 +193,78 @@ function FilterGroup({ group }: { group: Group }) {
 }
 
 export function FilterPanel({ groups }: { groups: Group[] }) {
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const filtersOpen = useFilterStore((s) => s.filtersOpen);
 
-  const toggleFilters = () => setFiltersOpen((v) => !v);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const urlString = searchParams.toString();
+  const [params, setParams] = useState(urlString);
+  const paramsRef = useRef(urlString);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // sync from URL (back/forward, clear filters) unless a push is pending
+  useEffect(() => {
+    if (timer.current) return;
+    paramsRef.current = urlString;
+    setParams(urlString);
+  }, [urlString]);
+
+  // cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, []);
+
+  const handleToggle = useCallback(
+    (property: string, value: string, type: "checkbox" | "radio") => {
+      const next = new URLSearchParams(paramsRef.current);
+      const existing = next.get(property);
+
+      if (type === "radio") {
+        if (existing === value) next.delete(property);
+        else next.set(property, value);
+      } else {
+        const values = existing ? existing.split(",") : [];
+        if (values.includes(value)) {
+          const filtered = values.filter((v) => v !== value);
+          if (filtered.length > 0) next.set(property, filtered.join(","));
+          else next.delete(property);
+        } else {
+          next.set(property, [...values, value].join(","));
+        }
+      }
+
+      next.set("page", "1");
+      const nextString = next.toString();
+
+      // update UI immediately
+      paramsRef.current = nextString;
+      setParams(nextString);
+
+      // debounce the navigation
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => {
+        timer.current = null;
+        router.push(`${pathname}?${paramsRef.current}`, { scroll: false });
+      }, DEBOUNCE_MS);
+    },
+    [pathname, router],
+  );
 
   return (
     <aside
-      className={`${filtersOpen ? "block" : "hidden"} lg:flex   flex-col gap-4 `}
+      className={`${filtersOpen ? "flex" : "hidden"} lg:flex flex-col gap-4`}
     >
       {groups.map((g) => (
-        <FilterGroup key={g.titleKey} group={g} />
+        <FilterGroup
+          key={g.titleKey}
+          group={g}
+          params={params}
+          onToggle={handleToggle}
+        />
       ))}
     </aside>
   );
