@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Menu, ShoppingCart, X, User } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -8,7 +8,6 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useCartStore } from "@/store/cartStore";
 import { useHydrated } from "@/hooks/useHydrated";
-import { useShallow } from "zustand/react/shallow";
 import { cartKey, unitPrice, useCartProducts } from "@/hooks/useCartProducts";
 
 export default function Header({
@@ -23,9 +22,13 @@ export default function Header({
   const router = useRouter();
   const locale = useLocale(); // "en" | "ka"
 
+  
+  useEffect(() => {
+    setCartOpen(false);
+  }, [pathname]);
+
   function toggleLocale() {
     const nextLocale = locale === "en" ? "ka" : "en";
-    // window.location.search always holds the current query, even after replaceState
     router.replace(`${pathname}${window.location.search}`, {
       locale: nextLocale,
     });
@@ -162,7 +165,7 @@ export default function Header({
             )}
             aria-label="Account"
           >
-            <User size={20} color="black"/>
+            <User size={20} color="black" />
           </Link>
 
           {cartOpen && <CartPopover onClose={() => setCartOpen(false)} />}
@@ -182,7 +185,6 @@ export default function Header({
               alt="flag icon"
               width={22.08}
               height={220}
-          
             />
           </div>
 
