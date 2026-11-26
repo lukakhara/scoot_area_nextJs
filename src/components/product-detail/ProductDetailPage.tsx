@@ -23,8 +23,12 @@ import ProductCardImage from "../ui/ProductCardImage";
 import { getDiscountInfo } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { AddToCartButtonDetailedPage, BuyNowButton } from "../ui/AddToCartButton";
+import {
+  AddToCartButtonDetailedPage,
+  BuyNowButton,
+} from "../ui/AddToCartButton";
 import Link from "next/link";
+import { ProductActions } from "./ProductActions";
 
 type PageType = "scooter" | "accessory" | "parts";
 
@@ -175,34 +179,11 @@ export default async function ProductDetailPage({
             </div>
 
             <div className="mt-6 flex flex-wrap items-stretch gap-3 border-b border-b-[#EA6200] pb-6 lg:mt-8 lg:gap-5">
-              <QuantitySelector isScooter={isScooter} />
-
-              {/* <button
-                type="button"
-                className="flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]"
-              >
-                {t("addToCart")}
-              </button>
-            */}
-              <AddToCartButtonDetailedPage
-                item={{
-                  productId: product.id,
-                  productType: pageType,
-                  quantity: 1,
-                }}
+              <ProductActions
+                productId={product.id}
+                pageType={pageType}
+                isScooter={isScooter}
               />
-              <BuyNowButton item={{
-                  productId: product.id,
-                  productType:pageType,
-                  quantity: 1,
-                }}/>
-              {/* <Link
-                href={"/cart"}
-                type="button"
-                className="flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]"
-              >
-                {t("buyNow")}
-              </Link> */}
             </div>
 
             {isScooter && units ? (
