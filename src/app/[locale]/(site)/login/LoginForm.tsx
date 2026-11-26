@@ -27,8 +27,8 @@ export default function LoginForm() {
   const t = useTranslations("LoginForm");
   const router = useRouter();
   const [values, setValues] = useState<Values>({
-    email: "mariam.user@example.com",
-    password: "SecurePassword123!",
+    email: "",
+    password: "",
   });
   const [touched, setTouched] = useState<
     Partial<Record<keyof Values, boolean>>

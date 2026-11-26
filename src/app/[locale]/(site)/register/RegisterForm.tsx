@@ -21,15 +21,15 @@ type Values = {
   password: string;
 };
 
-type FieldName = keyof Values | "confirm"; // confirm exists only in the browser
+type FieldName = keyof Values | "confirm" | "terms"; // confirm exists only in the browser
 type Errors = Partial<Record<FieldName, string>>;
 
 const initial: Values = {
-  firstName: "მარიამ  ",
-  lastName: "გიორგაძე",
-  email: "mariam.user@example.com",
-  phone: "+995555112233",
-  password: "SecurePassword12345!",
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  password: "",
 };
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -46,7 +46,7 @@ function getStrength(pw: string) {
   return score <= 2 ? 1 : score === 3 ? 2 : 3;
 }
 
-function validate(v: Values, confirm: string,terms:boolean): Errors {
+function validate(v: Values, confirm: string, terms: boolean): Errors {
   const e: Errors = {};
   if (v.firstName.trim().length < 2) e.firstName = "შეიყვანეთ სახელი";
   if (v.lastName.trim().length < 2) e.lastName = "შეიყვანეთ გვარი";
@@ -84,16 +84,25 @@ export default function RegisterForm() {
   const router = useRouter();
   const [values, setValues] = useState<Values>(initial);
   const [confirm, setConfirm] = useState(""); // browser-only, never sent
-  const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({});
+  const [terms, setTerms] = useState(false); // browser-only, never sent
+  const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>(
+    {},
+  );
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [serverError, setServerError] = useState("");
   const [serverFieldErrors, setServerFieldErrors] = useState<Errors>({});
   const [debugInfo, setDebugInfo] = useState("");
-
-  const errors = useMemo(() => validate(values, confirm), [values, confirm]);
-  const strength = useMemo(() => getStrength(values.password), [values.password]);
+  // false hardcoded
+  const errors = useMemo(
+    () => validate(values, confirm, terms),
+    [values, confirm, terms],
+  );
+  const strength = useMemo(
+    () => getStrength(values.password),
+    [values.password],
+  );
 
   const err = (k: FieldName) =>
     serverFieldErrors[k] ?? (touched[k] || submitted ? errors[k] : undefined);
@@ -103,11 +112,10 @@ export default function RegisterForm() {
 
     if (name === "confirm") {
       setConfirm(value);
+    } else if (name === "terms") {
+      setTerms(checked);
     } else {
-      setValues((prev) => ({
-        ...prev,
-        [name]: type === "checkbox" ? checked : value,
-      }));
+      setValues((prev) => ({ ...prev, [name]: value }));
     }
 
     setServerFieldErrors((prev) => {
@@ -133,11 +141,8 @@ export default function RegisterForm() {
       return;
     }
 
-   
-
     const url = `${API_URL}/auth/register`;
     setLoading(true);
-   
 
     try {
       const res = await fetch(url, {
@@ -286,8 +291,8 @@ export default function RegisterForm() {
           <input
             type="checkbox"
             name="terms"
-            checked={values.terms}
-          
+            checked={terms}
+            onChange={onChange}
             onBlur={onBlur}
             className="mt-0.5 size-4 accent-[var(--primary)]"
           />
