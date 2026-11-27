@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { API_URL } from "./config";
 
 export type User = {
   id: string;
@@ -14,15 +15,11 @@ export type User = {
 
 export const getCurrentUser = cache(async (): Promise<User | null> => {
   const cookieStore = await cookies();
-  // console.log("cookies seen by Next:", cookieStore.getAll().map((c) => c.name));
 
   if (!cookieStore.get("sid")) {
-    // console.log("no sid cookie");
     return null;
   }
-
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/me`;
-  // console.log("fetching:", url);
+  const url = `${API_URL}/auth/me`;
 
   try {
     const res = await fetch(url, {
@@ -33,7 +30,6 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
     if (!res.ok) return null;
     return (await res.json()) as User;
   } catch (e) {
-    // console.log("fetch failed:", e);
     return null;
   }
 });
