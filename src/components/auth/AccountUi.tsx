@@ -10,7 +10,7 @@ export function Panel({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-3xl border bg-card p-5 sm:p-7">
+    <section className="rounded-3xl border bg-card p-5 sm:p-7 ">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b pb-4">
         <h2 className="text-lg font-extrabold tracking-tight capitalize">{title}</h2>
         {action}

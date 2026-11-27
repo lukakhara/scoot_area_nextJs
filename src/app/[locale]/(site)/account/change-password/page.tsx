@@ -56,7 +56,7 @@ export default async function Page() {
         title={t("sessions.title")}
         action={
           <RevokeSessionButton
-            path="/api/sessions/others"
+            path="/sessions/others"
             className="inline-flex items-center gap-2 rounded-full border-2 border-destructive px-5 py-2.5 text-xs font-bold tracking-wide text-destructive capitalize transition-colors hover:bg-destructive hover:text-destructive-foreground"
           >
             <LogOut className="size-3.5" /> {t("session.revokeOthers")}
@@ -83,7 +83,7 @@ export default async function Page() {
                   </span>
                 ) : (
                   <RevokeSessionButton
-                    path={`/api/sessions/${s.sid}`}
+                    path={`/sessions/${s.sid}`}
                     className="text-xs font-bold text-primary capitalize hover:underline"
                   >
                     {t("session.revoke")}
