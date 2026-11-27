@@ -24,7 +24,6 @@ export async function HeroSection() {
         const common = {
           alt: "item image",
           sizes: "100vw",
-          quality: 70,
           priority: isFirst,
           fetchPriority: isFirst ? ("high" as const) : ("low" as const),
         };

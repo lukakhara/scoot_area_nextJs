@@ -1,7 +1,8 @@
 import "server-only";
 import { cookies } from "next/headers";
+import { API_URL } from "./config";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+
 
 export interface ActiveSession {
   sid: string;
@@ -17,7 +18,7 @@ export interface ActiveSession {
 export async function getSessions(): Promise<ActiveSession[]> {
   const cookieStore = await cookies();
 
-  const res = await fetch(`${API}/sessions`, {
+  const res = await fetch(`${API_URL}/sessions`, {
     headers: { cookie: cookieStore.toString() }, // sends the session cookie to Express
     cache: "no-store",
   });

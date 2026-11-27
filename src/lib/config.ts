@@ -1,7 +1,6 @@
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const BACKEND = process.env.NEXT_PUBLIC_API_URL;
 
-if (!apiUrl) {
-  throw new Error("NEXT_PUBLIC_API_URL is not set");
-}
-
-export const API_URL = apiUrl;
+export const API_URL =
+  typeof window === "undefined"
+    ? `${BACKEND}/api` // server components: call the backend directly
+    : "/api"; // browser: goes through the Next.js rewrite

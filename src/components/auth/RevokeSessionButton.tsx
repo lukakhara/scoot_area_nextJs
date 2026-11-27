@@ -2,6 +2,7 @@
 
 import { useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/config";
 
 interface Props {
   path: string; // e.g. "/api/sessions/abc" or "/api/sessions/others"
@@ -14,7 +15,7 @@ export function RevokeSessionButton({ path, className, children }: Props) {
   const [pending, startTransition] = useTransition();
 
   async function handleClick() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}`, {
+    const res = await fetch(`${API_URL}${path}`, {
       method: "DELETE",
       credentials: "include",
     });
