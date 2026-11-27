@@ -137,7 +137,7 @@ export default function Header({}: {}) {
           <Link
             href="/login"
             className={cn(
-              "hidden size-8 rounded-full sm:flex items-center justify-center",
+              "flex size-8 rounded-full sm:flex items-center justify-center",
               solid ? "bg-foreground/15" : "bg-primary-foreground/20",
             )}
             aria-label="Account"

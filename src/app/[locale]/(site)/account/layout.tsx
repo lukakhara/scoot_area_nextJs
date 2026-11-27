@@ -49,7 +49,7 @@ export default async function AccountLayout({
           </div>
         </div>
 
-        <nav className="flex gap-2 overflow-x-auto rounded-3xl border bg-card p-2 lg:flex-col ">
+        <nav className="flex gap-2 overflow-x-auto rounded-3xl border bg-card p-2 flex-col ">
           {LINKS.map(({ to, key, Icon }) => (
             <AccountNavLink key={to} href={to}>
               <Icon className="size-4" /> {t(`links.${key}`)}
