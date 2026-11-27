@@ -37,9 +37,6 @@ const socials = [
 const iconCircle =
   "flex size-7 shrink-0 items-center justify-center rounded-full bg-[#2C3E50] text-white";
 
-
-
-
 export default function Footer() {
   const t = useTranslations("Footer");
 
@@ -56,28 +53,26 @@ export default function Footer() {
     { label: t("contact"), href: "/contact" },
   ] as const;
 
- 
-
   return (
     <footer className="border-none md:border-t bg-secondary/60">
-      <div className="flex flex-col gap-8 px-5 py-10 md:grid md:grid-cols-[1fr_2fr_2fr_1.5fr] md:items-center md:gap-4 md:px-8 md:py-[52px] lg:px-[87px]">
+      <div className="flex flex-col gap-8 px-5 py-10 md:grid md:grid-cols-[1fr_2fr_2fr_1.5fr] md:items-center md:gap-4 md:px-8 md:py-[52px] lg:px-[87px] ">
         {/* Logo */}
-        <Link href="/">
-          <Image
-            src="/logoMobile.png"
-            alt="Scoot Area logo"
-            width={76}
-            height={76}
-            className="block h-auto w-[76px] object-contain md:hidden"
-          />
-          <Image
-            src="/logoDesk.png"
-            alt="Scoot Area logo"
-            width={113}
-            height={88}
-            className="hidden h-auto w-[113px] object-contain md:block"
-          />
-        </Link>
+        <Image
+          src="/logoMobile.svg"
+          alt="Scoot Area logo"
+          width={76}
+          height={76}
+          unoptimized
+          className="flex md:hidden"
+        />
+        <Image
+          src="/logoDesk.svg"
+          alt="Scoot Area logo"
+          width={113}
+          height={88}
+          unoptimized
+          className="hidden md:flex"
+        />
 
         {/* Contacts */}
         <ul className="flex flex-col gap-4 text-sm text-[#212121]">

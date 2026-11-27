@@ -18,7 +18,6 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
   if (res.status === 404) {
     notFound();
   }
-  console.log("res", res);
   if (!res.ok) {
     throw new Error(`Failed to fetch scooter ${id}: ${res.status}`);
   }

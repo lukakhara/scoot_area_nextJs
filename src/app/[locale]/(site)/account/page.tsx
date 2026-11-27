@@ -7,15 +7,28 @@ import {
   PrimaryBtn,
 } from "@/components/auth/AccountUi";
 import { requireUser } from "@/lib/auth";
+import { apiFetch } from "@/lib/api";
+
+type Stats = { orders: number; addresses: number};
+
+async function getStats(): Promise<Stats> {
+  const res = await apiFetch("/api/user/stats");
+  if (!res.ok) return { orders: 0, addresses: 0};
+  const { data } = (await res.json()) as { data: Stats };
+  return data;
+}
 
 export default async function PersonalInfo() {
-  const t = await getTranslations("PersonalInfo");
-  const user = await requireUser();
+  const [t, user, counts] = await Promise.all([
+    getTranslations("PersonalInfo"),
+    requireUser(),
+    getStats(),
+  ]);
 
   const stats = [
-    { n: "12", l: t("stats.orders"), c: "bg-primary" },
-    { n: "3", l: t("stats.addresses"), c: "bg-sale" },
-    { n: "8", l: t("stats.favorites"), c: "bg-brand-ink" },
+    { n: counts.orders, l: t("stats.orders"), c: "bg-primary" },
+    { n: counts.addresses, l: t("stats.addresses"), c: "bg-sale" },
+   
   ];
 
   return (

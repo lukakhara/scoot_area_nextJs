@@ -21,7 +21,6 @@ export const getUser = cache(async (): Promise<CurrentUser | null> => {
     cache: "no-store",
 
   });
- console.log("getUser called",res,API_URL);
  
   if (res.status === 401) return null;
   if (!res.ok) throw new Error("Failed to load user");

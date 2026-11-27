@@ -16,18 +16,12 @@ import {
 } from "lucide-react";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { ProductCard } from "@/components/cards/ProductCard";
-import { QuantitySelector } from "@/components/product-detail/QuantitySelector";
 import { ImageThumbnailGallery } from "@/components/product-detail/ImageThumbnailGallery";
 import { type Product, type ProductUnits, type Scooter } from "@/types/product";
 import ProductCardImage from "../ui/ProductCardImage";
 import { getDiscountInfo } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import {
-  AddToCartButtonDetailedPage,
-  BuyNowButton,
-} from "../ui/AddToCartButton";
-import Link from "next/link";
 import { ProductActions } from "./ProductActions";
 
 type PageType = "scooter" | "accessory" | "parts";

@@ -1,6 +1,5 @@
 import { BlogCardProduct } from "@/types/product";
 import Image from "next/image";
-import ProductCardImage from "../ui/ProductCardImage";
 import { formatDate } from "@/lib/formatDate";
 import Link from "next/link";
 import { Placeholder } from "../ui/Placeholder";

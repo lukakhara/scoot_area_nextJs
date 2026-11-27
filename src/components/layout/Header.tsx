@@ -10,11 +10,7 @@ import { useCartStore } from "@/store/cartStore";
 import { useHydrated } from "@/hooks/useHydrated";
 import { cartKey, unitPrice, useCartProducts } from "@/hooks/useCartProducts";
 
-export default function Header({
-  variant = "overlay",
-}: {
-  variant?: "overlay" | "solid";
-}) {
+export default function Header({}: {}) {
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
@@ -22,7 +18,6 @@ export default function Header({
   const router = useRouter();
   const locale = useLocale(); // "en" | "ka"
 
-  
   useEffect(() => {
     setCartOpen(false);
   }, [pathname]);
@@ -64,26 +59,6 @@ export default function Header({
     return product ? sum + unitPrice(product) * item.quantity : sum;
   }, 0);
 
-  // const hydrated = useHydrated();
-
-  // const { items } = useCartStore(
-  //   useShallow((state) => ({
-  //     items: state.items,
-  //   })),
-  // );
-  // const { products, loading, error } = useCartProducts(items);
-
-  // const lines = items.map((item) => ({
-  //   item,
-  //   product: products[cartKey(item)],
-  // }));
-
-  // const priceToPay = lines.reduce(
-  //   (sum, { item, product }) =>
-  //     product ? sum + unitPrice(product) * item.quantity : sum,
-  //   0,
-  // );
-
   return (
     <header
       className={cn(
@@ -103,20 +78,22 @@ export default function Header({
           href="/"
           className="shrink-0 text-2xl leading-5 font-extrabold tracking-tight hover:opacity-90 hover:scale-105"
         >
-          <picture className="size-[64px] sm:size-[110px]">
-            <source
-              media="(min-width: 768px)"
-              srcSet="/logoDesk.png"
-              className=""
-            />
-            <Image
-              src="/logoMobile.png"
-              className=" w-full object-cover"
-              alt="product image"
-              width={110}
-              height={110}
-            />
-          </picture>
+          <Image
+            src="/logoMobile.svg"
+            alt="Scoot Area logo"
+            width={64}
+            height={64}
+            unoptimized
+            className="flex md:hidden"
+          />
+          <Image
+            src="/logoDesk.svg"
+            alt="Scoot Area logo"
+            width={110}
+            height={110}
+            unoptimized
+            className="hidden md:flex"
+          />
         </Link>
 
         <nav className=" flex-1 items-center justify-center gap-6 text-[14px] font-medium hidden xl:flex ">

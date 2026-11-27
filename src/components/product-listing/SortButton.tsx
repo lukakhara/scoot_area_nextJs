@@ -10,11 +10,7 @@ import { useState } from "react";
 import { cn } from "cn";
 
 export function SortButton({
-  onClick,
-  compact = false,
 }: {
-  onClick?: () => void;
-  compact?: boolean;
 }) {
   const [showSortDropdown, setShowSortDropdown] = useState(false);
 
@@ -57,8 +53,8 @@ export function SortButton({
       />
 
       {showSortDropdown && (
-        <ul className="bg-white border border-gray-400 rounded-sm flex flex-col justify-center gap-2  absolute z-999 py-2 text-nowrap  left-1/2 -translate-x-1/2 ">
-          {sortOptions.map((item, i) => (
+        <ul className="bg-white border border-gray-400 rounded-sm flex flex-col justify-center gap-2  absolute z-999 py-2 text-nowrap  left-1/2 -translate-x-1/2 text-black">
+          {sortOptions.map((item) => (
             <li
               key={item.text}
               className={cn(

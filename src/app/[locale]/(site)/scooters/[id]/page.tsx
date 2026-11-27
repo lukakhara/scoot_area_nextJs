@@ -32,12 +32,12 @@ export default async function ScooterDetailRoute({
     `${API_URL}/scooters?limit=4`,
     { next: { revalidate: 60 } },
   );
-   console.log("similarRes", similarRes);
+  
   const { data: rawSimilar } = similarRes.ok
     ? ((await similarRes.json()) as { data: Scooter[] })
     : { data: [] };
 
-    console.log("rawSimilar", rawSimilar);
+   
   const similar = rawSimilar
     .filter((s) => s.id !== id)
     .slice(0, 3)

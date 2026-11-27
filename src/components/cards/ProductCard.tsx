@@ -80,7 +80,7 @@ export async function ProductCard({ item }: { item: Product }) {
     ? new Date(item.releaseDate).getUTCFullYear()
     : undefined;
 
-  const { hasDiscount, finalPrice, discountPercent } = getDiscountInfo(item);
+  const {discountPercent } = getDiscountInfo(item);
 
   return (
     <article className="flex h-full flex-col rounded-2xl bg-secondary p-4 ">

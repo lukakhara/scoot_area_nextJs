@@ -1,5 +1,5 @@
 export const ADDRESSES_PATH = "/account/addresses"; // adjust to your route
-export const ADDRESSES_API = "/api/address";
+export const ADDRESSES_API = "/address";
 
 export interface Address {
   id: string;

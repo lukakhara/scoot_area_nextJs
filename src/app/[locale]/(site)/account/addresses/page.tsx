@@ -11,9 +11,9 @@ import { ADDRESSES_API, ADDRESSES_PATH, type Address } from "./address";
 
 async function getAddresses(): Promise<Address[]> {
   const res = await apiFetch(ADDRESSES_API);
+  console.log("apiFetch ->", res.url, res.status);
   if (res.status === 401) redirect("/login");
   if (!res.ok) throw new Error(`Failed to fetch addresses: ${res.status}`);
-
   const { data } = (await res.json()) as { data: Address[] };
   return data;
 }
@@ -66,7 +66,9 @@ export default async function AddressesPage({
                   )}
                 </div>
 
-                <p className="mt-4 text-sm">{t("street", { street: a.street })}</p>
+                <p className="mt-4 text-sm">
+                  {t("street", { street: a.street })}
+                </p>
 
                 <div className="mt-4 flex flex-wrap items-center gap-4 border-t pt-4 text-xs font-bold capitalize">
                   <Link
