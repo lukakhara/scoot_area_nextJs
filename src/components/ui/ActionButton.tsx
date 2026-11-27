@@ -9,7 +9,8 @@ type ActionButtonVariant =
   | "filter"
   | "addToCartCompare"
   | "addToCart"
-  | "iconButton";
+  | "iconButton"
+  | "sort";
 
 interface ActionButtonProps {
   icon?: LucideIcon;
@@ -27,11 +28,12 @@ const variantStyles: Record<ActionButtonVariant, string> = {
     "bg-[#F5F5F5] border border-[#1a1a1a] px-[37.5px]! py-3 border-[#606060]",
   notHeader:
     "text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121]",
-  filter: "cursor-default",
+  filter: "cursor-pointer hover:opacity-70 md:cursor-default",
   addToCartCompare:
     "text-[10.89px]! sm:text-[13.16px]! border-[0.66px] border-[#212121] active:scale-95  w-full ",
   addToCart:
     "flex cursor-pointer items-center justify-center rounded-[100px] border border-[#212121] px-[13px] py-[6.5px] text-[13px] md:px-6 md:py-[12.5px] md:text-[24px]",
+  sort:"px-2"
 };
 
 export function ActionButton({
@@ -49,7 +51,7 @@ export function ActionButton({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-6 py-2 text-xs font-semibold capitalize",
+        "flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#F5F5F5] px-4 md:px-6 py-2 text-xs font-semibold capitalize ",
         compact
           ? "lg:hidden"
           : !hasOwnSizing && "lg:bg-transparent lg:px-0 lg:text-lg",

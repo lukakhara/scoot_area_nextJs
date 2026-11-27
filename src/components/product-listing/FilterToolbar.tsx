@@ -12,7 +12,7 @@ const FilterToolbar = ({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-2 md:gap-3 w-full text-[#606060] ",
+        "flex items-center justify-start  md:justify-between gap-2 md:gap-3 w-full text-[#606060] ",
         haveFilterToolbarOnTop ? "mt-6 lg:mt-8" : "mt-10 pb-2 ",
       )}
     >

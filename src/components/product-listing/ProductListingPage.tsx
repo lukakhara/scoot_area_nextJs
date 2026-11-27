@@ -64,10 +64,9 @@ export default async function ProductListingPage({
   query.set("locale", locale);
 
   const { endpoint, map } = FETCH_CONFIG[pageType];
-  const res = await fetch(
-    `${API_URL}/${endpoint}?${query.toString()}`,
-    { next: { revalidate: 60 } },
-  );
+  const res = await fetch(`${API_URL}/${endpoint}?${query.toString()}`, {
+    next: { revalidate: 60 },
+  });
 
   if (!res.ok) {
     throw new Error(`Failed to fetch ${endpoint}: ${res.status}`);
@@ -90,13 +89,13 @@ export default async function ProductListingPage({
     parts: {
       title: t("titles.spareParts"),
       filterGroups: PART_GROUPS,
-      gridClassName: "grid grid-cols-2 gap-4 sm:gap-6",
+      gridClassName: "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6",
       headerActions: true,
     },
     accessories: {
       title: t("titles.accessories"),
       filterGroups: ACCESSORY_GROUPS,
-      gridClassName: "grid grid-cols-2 gap-4 sm:gap-6",
+      gridClassName: "grid grid-cols-1  md:grid-cols-2 gap-4 sm:gap-6",
       headerActions: true,
     },
   };
