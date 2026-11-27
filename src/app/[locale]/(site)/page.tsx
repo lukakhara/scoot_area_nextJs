@@ -20,10 +20,18 @@ export default async function Home() {
 
       {/* Promo banner */}
       <section className="w-full pt-[60px] md:pt-[99px] pr-[15px] pl-4 md:px-[72px]">
-        <div className="relative overflow-hidden rounded-2xl">
+        <div className="relative overflow-hidden rounded-2xl ">
           <Image
-            src="/landingPageBannerDesktop.png"
-            className="w-full object-cover"
+            src="/landingPageBannerDesktop.svg"
+            className="w-full object-cover  hidden md:flex"
+            alt="item image"
+            width={1296}
+            height={304}
+            sizes="(min-width: 768px) calc(100vw - 144px), calc(100vw - 31px)"
+          />
+          <Image
+            src="/landingPageBannerMobile.svg"
+            className="w-full object-cover flex md:hidden"
             alt="item image"
             width={1296}
             height={304}
