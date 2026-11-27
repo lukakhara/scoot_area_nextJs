@@ -160,7 +160,7 @@ function FilterGroup({
       {open && (
         <ul className="mt-4 space-y-3 text-[18px] ">
           {group.optionKeys.map((opt, i) => {
-            const isChecked = currentValues.includes(opt); // ← per-option, inside map
+          
 
             return (
               <li key={`${opt}-${i}`} className=" shadow-4xl">

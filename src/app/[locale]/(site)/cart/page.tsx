@@ -70,7 +70,6 @@ function CartPage() {
   // changes only when a product is added/removed, not when quantity changes
   const itemsKey = items.map(cartKey).sort().join(",");
 
-  console.log('form',form);
   const lines = items.map((item) => ({
     item,
     product: products[cartKey(item)],
@@ -317,7 +316,6 @@ function CartPage() {
     );
   }
 
-  console.log(emptyForm);
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center w-full md:pt-20 md:pb-30 md:px-[75px] px-5 pt-8">

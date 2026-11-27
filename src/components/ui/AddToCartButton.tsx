@@ -1,14 +1,18 @@
 "use client";
-import { useCartStore } from "@/store/cartStore";
-import { ActionButton } from "./ActionButton";
+
 import { ShoppingBasket } from "lucide-react";
-import type { CartItem } from "@/types/cart";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
+import { useCartStore } from "@/store/cartStore";
+import type { CartItem } from "@/types/cart";
+import { ActionButton } from "./ActionButton";
+
+const NAMESPACE = "ProductListingPage.actions";
 
 export default function AddToCartButton({ item }: { item: CartItem }) {
   const addItem = useCartStore((state) => state.addItem);
-  const t = useTranslations("actions");
+  const t = useTranslations(NAMESPACE);
+
   return (
     <ActionButton
       icon={ShoppingBasket}
@@ -21,7 +25,8 @@ export default function AddToCartButton({ item }: { item: CartItem }) {
 
 export function AddToCartButtonDetailedPage({ item }: { item: CartItem }) {
   const addItem = useCartStore((state) => state.addItem);
-  const t = useTranslations("actions");
+  const t = useTranslations(NAMESPACE);
+
   return (
     <ActionButton
       variant="addToCart"
@@ -33,15 +38,16 @@ export function AddToCartButtonDetailedPage({ item }: { item: CartItem }) {
 
 export function BuyNowButton({ item }: { item: CartItem }) {
   const addItem = useCartStore((state) => state.addItem);
-  const t = useTranslations("actions");
+  const t = useTranslations(NAMESPACE);
   const router = useRouter();
+
   return (
     <ActionButton
       variant="addToCart"
       label={t("buyNow")}
       onClick={() => {
-        (addItem(item),
-         router.push("/cart"));
+        addItem(item);
+        router.push("/cart");
       }}
     />
   );

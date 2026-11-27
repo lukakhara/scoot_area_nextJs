@@ -45,10 +45,7 @@ export function CompareButtonMobile({
   variant = "outline",
   href,
   active = false,
-  showLabel = true,
 }: CompareButtonProps) {
-  const t = useTranslations("actions");
-
   const button = (
     <ActionButton 
       icon={Shuffle}

@@ -33,7 +33,6 @@ export default async function RootLayout({
 
   const messages = await getMessages();
 
-
   return (
     <html lang={locale} className={`${notoSansGeorgian.variable} antialiased`}>
       <body className="flex flex-col font-sans">

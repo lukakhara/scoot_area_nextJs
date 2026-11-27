@@ -3,7 +3,6 @@ import ProductCardImage from "@/components/ui/ProductCardImage";
 import { API_URL } from "@/lib/config";
 import { formatDate } from "@/lib/formatDate";
 import { BlogListResponse } from "@/types/blog";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +15,6 @@ export default async function BlogPage({
 }) {
   const t = await getTranslations("");
   const { locale } = await params;
-  console.log("locale", locale);
   const queryString = `locale=${locale}`;
   const res = await fetch(
     `${API_URL}/blog?${queryString}`,
@@ -26,7 +24,6 @@ export default async function BlogPage({
   }
   const { data: posts, meta }: BlogListResponse = await res.json();
 
-  const detailHref = `/blog/`;
 
   return (
     <div className="min-h-screen bg-background">

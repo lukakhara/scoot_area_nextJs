@@ -29,7 +29,7 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
 
     if (!res.ok) return null;
     return (await res.json()) as User;
-  } catch (e) {
+  } catch (error) {
     return null;
   }
 });

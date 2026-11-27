@@ -11,9 +11,7 @@ import { useHydrated } from "@/hooks/useHydrated";
 import { cartKey, unitPrice, useCartProducts } from "@/hooks/useCartProducts";
 
 export default function Header({
-  variant = "overlay",
 }: {
-  variant?: "overlay" | "solid";
 }) {
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);

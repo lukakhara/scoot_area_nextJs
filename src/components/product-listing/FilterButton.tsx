@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { useFilterStore } from "@/store/filterStore";
 
-export function FilterButton({ onClick }: { onClick?: () => void }) {
+export function FilterButton() {
   const filtersOpen = useFilterStore((s) => s.filtersOpen);
   const toggleFilters = useFilterStore((s) => s.toggleFilters);
 
