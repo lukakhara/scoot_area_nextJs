@@ -26,7 +26,7 @@ export default async function BlogPage({
 
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background ">
       <main className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-12 gap-8">
         <h1 className="text-3xl font-extrabold tracking-tight  sm:text-4xl">
           {t("blog")}
@@ -37,12 +37,12 @@ export default async function BlogPage({
             <Link
               key={post.id}
               href={`/blog/${post.id}`}
-              className="uppercase transition-opacity hover:opacity-70"
+              className="uppercase transition-opacity hover:opacity-70 "
               // activeProps={{ className: "text-primary" }}
             >
               <article
                 key={i}
-                className="rounded-3xl bg-secondary p-5 sm:p-6 min-h-[679px] flex flex-col "
+                className="rounded-3xl bg-secondary p-5 sm:p-6 min-h-[170px]  md:min-h-[679px] flex flex-col "
               >
                 <div className="relative  flex-1">
                   {post.coverImage ? (

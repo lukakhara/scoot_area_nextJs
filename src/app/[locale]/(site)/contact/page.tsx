@@ -133,10 +133,10 @@ export default function ContactPage() {
       </h1>
 
       <div className="-mx-4 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-6 bg-muted px-4 py-8 md:-mx-18 md:px-18">
-        <h2 className="text-[16px] font-extrabold uppercase tracking-tight sm:text-[22px]">
+        <h2 className="text-[16px] font-extrabold uppercase tracking-tight  sm:text-[22px]">
           {t("socials")}
         </h2>
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 ">
           {SOCIALS.map(({ icon, href, label }) => (
             <a
               key={label}
@@ -165,13 +165,13 @@ export default function ContactPage() {
               <h2 className="text-[24px] font-extrabold uppercase tracking-tight">
                 {title}
               </h2>
-              <div className="mt-4 grid gap-8 rounded-2xl bg-card p-4 shadow-md lg:grid-cols-[1.3fr_0.5fr_0.9fr]">
+              <div className="mt-4 grid gap-8 rounded-2xl bg-card p-4 shadow-md lg:grid-cols-[1.3fr_0.5fr_0.9fr] ">
                 <a
                   href={googleMapsUrl(address)}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={t("openInMaps", { title })}
-                  className="grid aspect-[2/1] w-full place-items-center rounded-xl border border-primary bg-muted text-primary"
+                  className="grid aspect-[2/1] w-full place-items-center rounded-xl border border-primary bg-muted text-primary "
                 >
                   <FiMapPin className="size-8" />
                 </a>
@@ -188,7 +188,7 @@ export default function ContactPage() {
                         })}
                         className="flex items-center gap-3 hover:text-primary"
                       >
-                        <Badge icon={icon} color={color} className="size-9" />
+                        <Badge icon={icon} color={color} className="size-9 " />
                         {label}
                       </a>
                     ))}
@@ -208,7 +208,7 @@ export default function ContactPage() {
                 </div>
 
                 <ul className="flex flex-col gap-4 text-sm text-[18px]">
-                  <li className="flex items-center gap-3">
+                  <li className="flex items-center gap-3 ">
                     <Badge
                       icon={FiClock}
                       color={COLORS.ink}
@@ -224,7 +224,7 @@ export default function ContactPage() {
                     />
                     <span>{address}</span>
                   </li>
-                  <li className="flex items-center gap-3">
+                  <li className="flex items-center gap-3 ">
                     <a
                       href={wazeUrl(address)}
                       target="_blank"

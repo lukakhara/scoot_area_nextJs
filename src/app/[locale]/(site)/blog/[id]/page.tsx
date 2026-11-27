@@ -28,7 +28,7 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <div className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-12 gap-8">
-      <h1 className="text-3xl font-extrabold tracking-tight uppercase sm:text-4xl pb-[31px]">
+      <h1 className="text-3xl font-extrabold tracking-tight uppercase sm:text-4xl  pb-[31px]">
         {t("title")}
       </h1>
 
@@ -58,7 +58,7 @@ async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
             className="flex  flex-col gap-4 "
           >
             {section.title && (
-              <h1 className="text-[40px] font-bold">{section.title}</h1>
+              <h1 className="md:text-[40px] text-2xl font-bold">{section.title}</h1>
             )}
             {section.content
               .split(/\n{2,}/)

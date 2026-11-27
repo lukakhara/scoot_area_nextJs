@@ -7,7 +7,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
- 
   Mail,
   MapPin,
   Phone,
@@ -16,6 +15,8 @@ import {
 import {
   SiFacebook as Facebook,
   SiInstagram as Instagram,
+  SiGooglemaps,
+  SiWaze,
   SiYoutube as Youtube,
 } from "@icons-pack/react-simple-icons";
 import { Placeholder } from "@/components/ui/Placeholder";
@@ -23,13 +24,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import GalleryImage from "@/components/GalleryImage";
-import {
-  EMAIL,
-  PHONE_DISPLAY,
-  PHONE_E164,
-  SOCIAL_URLS,
-  googleMapsUrl,
-} from "@/lib/contact";
+import { EMAIL, PHONE_DISPLAY, PHONE_E164, SOCIAL_URLS } from "@/lib/contact";
 
 const PARAGRAPH_KEYS = ["p1", "p2", "p3", "p4", "p5"] as const;
 const FAQ_KEYS = ["1", "2", "3"] as const;
@@ -46,6 +41,11 @@ const ABOUT_LINKS = [
   { key: "link1", href: "/blog" },
   { key: "link2", href: "/contact" },
 ] as const;
+
+const googleMapsUrl = (address: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+const wazeUrl = (address: string) =>
+  `https://waze.com/ul?q=${encodeURIComponent(address)}&navigate=yes`;
 
 const CONTACTS = [
   {
@@ -76,19 +76,22 @@ const CONTACTS = [
   },
 ];
 
+const COLORS = {
+  waze: "#33CCFF",
+  gmaps: "#EA4335",
+} as const;
+
 const GALLERY_IMAGES = [
   { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk2.png" },
   { mobile: "/BlogImageMob3.png", desktop: "/blogImageDesk3.png" },
   {
     mobile: "/blogImageMob2.png",
     desktop: "/blogImageDesk4.png",
-    desktopOnly: true,
   },
   { mobile: "/BlogImageMob3.png", desktop: "/blogImageDesk3.png" },
   {
     mobile: "/blogImageMob2.png",
     desktop: "/blogImageDesk4.png",
-    desktopOnly: true,
   },
   { mobile: "/blogImageMob2.png", desktop: "/blogImageDesk2.png" },
 ];
@@ -96,6 +99,7 @@ const GALLERY_IMAGES = [
 function AboutPage() {
   const t = useTranslations("About");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const address = `${t("addressLine1")}, ${t("addressLine2")}`;
 
   return (
     <main className="px-4 md:pl-[75px] md:pr-[70px] pt-10 md:pt-20 pb-30 lg:pt-25">
@@ -159,7 +163,7 @@ function AboutPage() {
               <Link
                 key={key}
                 href={href}
-                className="rounded-full border px-5 py-2 text-xs font-semibold transition-colors hover:border-primary hover:text-primary text-[24px]"
+                className="rounded-full border px-5 py-2 text-xs font-semibold transition-colors hover:border-primary hover:text-primary text-[14px] md:text-[24px] "
               >
                 {t(key)}
               </Link>
@@ -169,36 +173,36 @@ function AboutPage() {
 
         {/* Partners 4 */}
         <section>
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto]  items-center gap-4">
             <h2 className="truncate text-xl font-extrabold tracking-tight capitalize sm:text-2xl">
               {t("partners")}
             </h2>
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 items-center gap-2 ">
               <span className="hidden text-xs text-muted-foreground sm:inline">
                 {t("seeAll")}
               </span>
               <button
                 aria-label={t("prev")}
-                className="grid size-7 place-items-center rounded-full border hover:border-primary"
+                className="grid size-7 place-items-center rounded-full border hover:border-primary "
               >
                 <ChevronLeft className="size-4" />
               </button>
               <button
                 aria-label={t("next")}
-                className="grid size-7 place-items-center rounded-full border hover:border-primary"
+                className=" grid size-7 place-items-center rounded-full border hover:border-primary"
               >
                 <ChevronRight className="size-4" />
               </button>
             </div>
           </div>
-          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 ">
-            {Array.from({ length: 6 }).map((_, i) => (
+          <div className="mt-5 flex gap-4 ">
+            {Array.from({ length: 10}).map((_, i) => (
               <div key={i}>
                 <Placeholder
-                  className="aspect-square w-full rounded-lg"
+                  className="aspect-square w-full rounded-lg size-[122px]"
                   label="logo"
                 />
-                <p className="mt-3 text-[11px] leading-tight font-extrabold capitalize">
+                <p className="mt-3 text-[14px] leading-tight font-extrabold capitalize">
                   {t("companyLine1")}
                   <br />
                   {t("companyLine2")}
@@ -210,7 +214,7 @@ function AboutPage() {
 
         {/* FAQ */}
         <section className="bg-secondary/60 py-12 ">
-          <h2 className="text-xl font-extrabold tracking-tight capitalize sm:text-2xl">
+          <h2 className="text-[24px] font-extrabold tracking-tight capitalize sm:text-2xl">
             {t("faqTitle")}
           </h2>
 
@@ -222,7 +226,9 @@ function AboutPage() {
                   aria-expanded={openFaq === i}
                   className="flex w-full items-center gap-3 px-4 py-3 text-left text-xs font-medium capitalize sm:text-sm"
                 >
-                  <span className="min-w-0 flex-1">{t(`faq.${key}.q`)}</span>
+                  <span className="min-w-0 flex-1 text-[12px]">
+                    {t(`faq.${key}.q`)}
+                  </span>
                   <ChevronDown
                     className={`size-4 shrink-0 text-muted-foreground transition-transform ${
                       openFaq === i ? "rotate-180" : ""
@@ -241,13 +247,13 @@ function AboutPage() {
 
         {/* Head office */}
         <section>
-          <h2 className="text-xl font-extrabold tracking-tight capitalize sm:text-2xl">
+          <h2 className="text-[24px] font-extrabold tracking-tight capitalize sm:text-2xl">
             {t("headOffice")}
           </h2>
 
           <div className="mt-5 grid gap-6 rounded-2xl bg-secondary/60 p-4 sm:p-6 lg:grid-cols-[2fr_1fr_1fr]">
             <a
-              href={googleMapsUrl()}
+              href={googleMapsUrl(address)}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t("headOffice")}
@@ -258,7 +264,7 @@ function AboutPage() {
               />
             </a>
 
-            <ul className="space-y-3 text-sm lg:border-r lg:pr-6">
+            <ul className="space-y-3 text-sm lg:border-r lg:pr-6 text-[18px]  ">
               {CONTACTS.map(({ icon: Icon, label, tone, href, external }) => (
                 <li key={href}>
                   <a
@@ -267,14 +273,14 @@ function AboutPage() {
                       target: "_blank",
                       rel: "noopener noreferrer",
                     })}
-                    className="flex items-center gap-3 hover:text-primary"
+                    className="flex items-center gap-3 hover:text-primary "
                   >
                     <span
                       className={`grid size-7 shrink-0 place-items-center rounded-full ${tone}`}
                     >
                       <Icon
                         className={cn(
-                          "size-3.5 text-primary-foreground",
+                          "size-3.5 text-primary-foreground ",
                           Icon === Phone ? "rotate-270" : "",
                         )}
                       />
@@ -283,7 +289,7 @@ function AboutPage() {
                   </a>
                 </li>
               ))}
-              <li className="pt-4">
+              <li className="pt-4 ">
                 <a
                   href={`mailto:${EMAIL}`}
                   className="flex items-center gap-3 hover:text-primary"
@@ -296,7 +302,7 @@ function AboutPage() {
               </li>
             </ul>
 
-            <ul className="space-y-4 text-sm">
+            <ul className="space-y-4  text-[18px] ">
               <li className="flex items-center gap-3">
                 <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand-ink">
                   <Clock className="size-3.5 text-primary-foreground" />
@@ -313,6 +319,28 @@ function AboutPage() {
                   {t("addressLine2")}
                 </span>
               </li>
+               <div className="flex items-center gap-3">
+                  <a
+                    href={wazeUrl(address)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Waze"
+                    className="grid size-7 place-items-center rounded-md"
+                    style={{ backgroundColor: COLORS.waze }}
+                  >
+                    <SiWaze className="size-4 text-white" />
+                  </a>
+                  <a
+                    href={googleMapsUrl(address)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Google Maps"
+                    className="grid size-7 place-items-center"
+                    style={{ color: COLORS.gmaps }}
+                  >
+                    <SiGooglemaps className="size-5" />
+                  </a>
+                </div>
               <li className="flex items-center gap-3 pt-4">
                 <div className="flex items-center gap-3">
                   {SOCIALS.filter(({ label }) => label !== "YouTube").map(
@@ -325,12 +353,15 @@ function AboutPage() {
                         rel="noopener noreferrer"
                         className="hover:text-primary"
                       >
-                        <Icon className="size-4" />
+                        <Icon className="size-8" />
                       </a>
                     ),
                   )}
                 </div>
-                <span className="text-muted-foreground">@ScootArea</span>
+               
+                <span className="text-muted-foreground text-[18px]">
+                  @ScootArea
+                </span>
               </li>
             </ul>
           </div>
@@ -341,7 +372,7 @@ function AboutPage() {
           <h2 className="text-xl font-extrabold tracking-tight capitalize sm:text-2xl">
             {t("gallery")}
           </h2>
-          <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-3">
+          <div className="mt-5 grid grid-cols-2 gap-3  md:gap-4 lg:grid-cols-3 ">
             {GALLERY_IMAGES.map((img, i) => (
               <GalleryImage key={i} {...img} />
             ))}
