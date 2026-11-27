@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 import type { ProductType } from "@/types/product";
 import type { ApiProduct, CartItem } from "@/types/cart";
+import { API_URL } from "@/lib/config";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
 const PRODUCT_ENDPOINTS: Record<ProductType, string> = {
   scooter: "scooters",

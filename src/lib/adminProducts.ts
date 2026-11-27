@@ -1,6 +1,7 @@
 import type { ProductKind, ProductRow } from "@/components/admin/productFields";
+import { API_URL } from "./config";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api";
+
 
 // adjust paths to match your backend routes
 const endpoints: Record<ProductKind, string> = {

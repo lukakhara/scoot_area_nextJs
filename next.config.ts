@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `${API_URL}/api/:path*`,
+        destination: "https://scootarea-backend.onrender.com/api/:path*",
       },
     ];
   },

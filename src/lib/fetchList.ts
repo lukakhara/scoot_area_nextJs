@@ -1,7 +1,9 @@
+import { API_URL } from "./config";
+
 export async function fetchList<T>(path: string, locale?: string): Promise<T[]> {
   const query = locale ? `?locale=${locale}` : "";
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/${path}${query}`,
+    `${API_URL}/${path}${query}`,
     { next: { revalidate: 60 } },
   );
   if (!res.ok) throw new Error(`Failed to fetch ${path}: ${res.status}`);

@@ -5,12 +5,13 @@ import { BlogPost } from "@/types/blog";
 import { Play } from "lucide-react";
 import { notFound } from "next/navigation";
 import { parseMarkdownSections } from "@/lib/parseMarkdownSections";
+import { API_URL } from "@/lib/config";
 
 async function BlogDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const [res, t] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/${id}`),
+    fetch(`${API_URL}/blog/${id}`),
     getTranslations("BlogDetailPage"),
   ]);
 

@@ -2,8 +2,9 @@ import ProductDetailPage from "@/components/product-detail/ProductDetailPage";
 import type { SparePartApi } from "@/types/product";
 import { notFound } from "next/navigation";
 import { toSparePartCardProduct } from "@/lib/mappers/product";
+import { API_URL } from "@/lib/config";
 
-const API = process.env.NEXT_PUBLIC_API_URL;
+
 
 export default async function PartsDetailRoute({
   params,
@@ -12,7 +13,7 @@ export default async function PartsDetailRoute({
 }) {
   const { id } = await params;
 
-  const res = await fetch(`${API}/parts/${id}`, {
+  const res = await fetch(`${API_URL}/parts/${id}`, {
     next: { revalidate: 60 },
   });
 
@@ -23,7 +24,7 @@ export default async function PartsDetailRoute({
   const part: SparePartApi | undefined = json.data ?? json;
   if (!part) notFound();
 
-  const similarRes = await fetch(`${API}/parts?limit=4`, {
+  const similarRes = await fetch(`${API_URL}/parts?limit=4`, {
     next: { revalidate: 60 },
   });
   const rawSimilar: SparePartApi[] = similarRes.ok

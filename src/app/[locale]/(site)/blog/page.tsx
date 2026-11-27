@@ -1,5 +1,6 @@
 import Pagination from "@/components/ui/Pagination";
 import ProductCardImage from "@/components/ui/ProductCardImage";
+import { API_URL } from "@/lib/config";
 import { formatDate } from "@/lib/formatDate";
 import { BlogListResponse } from "@/types/blog";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -18,7 +19,7 @@ export default async function BlogPage({
   console.log("locale", locale);
   const queryString = `locale=${locale}`;
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/blog?${queryString}`,
+    `${API_URL}/blog?${queryString}`,
   );
   if (!res.ok) {
     throw new Error(`Failed to fetch ${res.status}`);

@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { API_URL } from "./config";
 
 export type User = {
   id: string;
@@ -21,7 +22,7 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
     return null;
   }
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/me`;
+  const url = `${API_URL}/auth/me`;
   // console.log("fetching:", url);
 
   try {
