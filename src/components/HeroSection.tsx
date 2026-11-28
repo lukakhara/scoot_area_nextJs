@@ -9,8 +9,8 @@ const heroImages = [
     desktop: "/langindPageBgDesktop.svg",
   },
   {
-    mobile: "/landingPage.svg",
-    desktop: "/landingPage.svg",
+    mobile: "/landingPage.png",
+    desktop: "/landingPage.png",
   },
 ];
 
